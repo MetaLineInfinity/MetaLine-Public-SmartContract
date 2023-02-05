@@ -1,0 +1,16 @@
+{
+ "comment0":"private keys for test",
+ "comment1":"change private keys for deploy, DON'T COMMIT TO GIT",
+ "comment2":"namedkeys is keys with name，use 'HardhatRuntimeEnvironment.getNamedAccounts()' to get'em",
+ "namedkeys":{
+	 "deployer":0,
+	 "simpleERC20Beneficiary":1
+ },
+ "comment3":"4 private keys, use ethers.getSigners() to get'em",
+ "prikeys": [
+	"0x19a44758c2b49ada55177e30df7203c0eaa0e022f6b5135a278539500fb56cae",
+	"0x277326e70e25b340ad3ef2e0ae3393ccb310698f1e3e3df2a07803fa5bee222a",
+	"0xce80c0ab7b05bee7bc381d545e9811e450fb03d5972ecbbf02b350d480b7184a",
+	"0xb7a652db55e9573a1e4feae4ad516a48be9d1bcca33852010a016ab60db11324"
+	]
+}
