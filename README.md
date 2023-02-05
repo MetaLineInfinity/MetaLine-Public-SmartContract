@@ -15,4 +15,6 @@ npx hardhat --network localhost xgento 1
 
 # 🛠️ Test
 
+```
 npx hardhat --network localhost xgentest 1
+```
