@@ -86,6 +86,7 @@ contract HeroNFTMysteryBoxRandSource is
         });
 
         HeroNFTWriteableData_V1 memory wdata = HeroNFTWriteableData_V1({
+            starLevel: 0,
             level : 1,
             exp : 0
         });

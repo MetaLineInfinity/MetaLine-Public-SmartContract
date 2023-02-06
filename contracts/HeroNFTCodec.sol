@@ -27,7 +27,8 @@ struct HeroNFTFixedData_V1 {
  * @dev hero writeable nft data version 1
  */
 struct HeroNFTWriteableData_V1 {
-    uint32 level;
+    uint8 starLevel;
+    uint16 level;
     uint64 exp;
 }
 
@@ -107,8 +108,9 @@ contract HeroNFTCodec_V1 is IHeroNFTCodec_V1 {
             (uint256(fdata.battleAttr) << (8 + 8 + 16));
 
         basedata.writeableData = 
-            (uint256(wdata.level)) |
-            (uint256(wdata.exp << 32));
+            (uint256(wdata.starLevel)) |
+            (uint256(wdata.level << 8)) |
+            (uint256(wdata.exp << (8 + 16)));
     }
 
     function getHeroNftFixedData(HeroNFTDataBase memory data)
@@ -129,8 +131,9 @@ contract HeroNFTCodec_V1 is IHeroNFTCodec_V1 {
         override 
         returns(HeroNFTWriteableData_V1 memory hndata)
     {
-        hndata.level = uint32(data.writeableData & 0xffffffff);
-        hndata.exp = uint64((data.writeableData >> 32) & 0xffffffffffffffff);
+        hndata.starLevel = uint8(data.writeableData & 0xff);
+        hndata.level = uint16((data.writeableData >> 8) & 0xffff);
+        hndata.exp = uint64((data.writeableData >> 8 + 16) & 0xffffffffffffffff);
     }
 
     function getCharacterId(HeroNFTDataBase memory data) 
