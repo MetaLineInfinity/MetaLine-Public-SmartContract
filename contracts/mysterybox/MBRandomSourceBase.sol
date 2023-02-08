@@ -107,7 +107,6 @@ abstract contract MBRandomSourceBase is
 
     function setRandomSet(uint32 mbTypeID, uint32[] calldata poolIds) external {
         require(hasRole(MANAGER_ROLE, _msgSender()),"not a manager");
-
         delete _mbRandomSets[mbTypeID];
         uint32[] storage poolIDArray = _mbRandomSets[mbTypeID];
         for(uint i=0; i< poolIds.length; ++i){

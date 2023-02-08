@@ -30,7 +30,7 @@ contract HeroNFTMysteryBoxRandSource is
 
         uint32[] storage poolIDArray = _mbRandomSets[mysteryTp];
 
-        require(poolIDArray.length == 7, "mb type config wrong");
+        require(poolIDArray.length == 17, "mb type config wrong");
 
         HeroNFTDataBase memory baseData = _getSingleRandHero(r, poolIDArray);
 
@@ -102,7 +102,7 @@ contract HeroNFTMysteryBoxRandSource is
 
         uint32[] storage poolIDArray = _mbRandomSets[mysteryTp];
 
-        require(poolIDArray.length == 7, "mb type config wrong");
+        require(poolIDArray.length == 17, "mb type config wrong");
 
         nfts = new MBContentMinterNftInfo[](1); // 1 nft
         sfts = new MBContentMinter1155Info[](0); // no sft record

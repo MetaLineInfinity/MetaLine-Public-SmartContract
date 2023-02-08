@@ -193,7 +193,7 @@ contract MysteryBoxShop is
             if(onSalePair.tokenId > 0)
             {
                 // 1155
-                require(IERC1155(onSalePair.tokenAddr).balanceOf( _msgSender(), onSalePair.tokenId) >= realPrice , "MysteryBoxShop: insufficient token");
+                require(IERC1155(onSalePair.tokenAddr).balanceOf( _msgSender(), onSalePair.tokenId) >= realPrice , "MysteryBoxShop: erc1155 insufficient token");
 
                 if(onSalePair.isBurn) {
                     // burn
@@ -206,7 +206,7 @@ contract MysteryBoxShop is
             }
             else{
                 // 20
-                require(IERC20(onSalePair.tokenAddr).balanceOf(_msgSender()) >= realPrice , "MysteryBoxShop: insufficient token");
+                require(IERC20(onSalePair.tokenAddr).balanceOf(_msgSender()) >= realPrice , "MysteryBoxShop: erc20 insufficient token");
 
                 if(onSalePair.isBurn) {
                     // burn
