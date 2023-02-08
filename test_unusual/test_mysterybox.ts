@@ -6,7 +6,7 @@ import { logtools } from "../utils/util_log";
 import { TestTool } from '../utils/util_testtool';
 
 
-describe("XWorldDCLevel Test", function () {
+describe("mystery box Test", function () {
     before(inittest);
     it("should openmb succ", openmb);
     it("should openmb batch succ", openmb_batch);

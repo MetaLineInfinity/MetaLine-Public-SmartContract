@@ -50,14 +50,6 @@ export class Init_MysteryBox
 
         await ContractTool.CallState(HeroNFTMysteryBoxRandSource, "setRandSource",["addr:Random"]);
         await ContractTool.CallState(HeroNFTMysteryBoxRandSource, "grantRole", [MINTER_ROLE, "addr:HeroNFTMysteryBox"]);
-        await ContractTool.CallState(HeroNFTMysteryBoxRandSource, "setRandomSet", [1, [1,1,1,1,1,1,1
-            ,1,1,1,1,1,1,1
-            ,1,1,1]]);
-    
-        await Init_MysteryBox.HeroNFTMysteryBoxRandSource_AddPool(1,[[1000,0,2]]);
-
-  
-
 
         logtools.loggreen("--init mystery box shop contract");
 
@@ -85,6 +77,14 @@ export class Init_MysteryBox
     static async  ConfigAll(hre:HardhatRuntimeEnvironment):Promise<boolean>
     {
         logtools.logblue("==Config_MysteryBox");
+        
+        // config random source
+        let HeroNFTMysteryBoxRandSource = ContractInfo.getContract("HeroNFTMysteryBoxRandSource");
+        await ContractTool.CallState(HeroNFTMysteryBoxRandSource, "setRandomSet", [1, [1,1,1,1,1,1,1
+            ,1,1,1,1,1,1,1
+            ,1,1,1]]);
+    
+        await Init_MysteryBox.HeroNFTMysteryBoxRandSource_AddPool(1,[[1000,0,2]]);
 
         let MysteryBoxShop = ContractInfo.getContract("MysteryBoxShop");
 
