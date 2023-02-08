@@ -50,7 +50,15 @@ export class Init_MysteryBox
 
         await ContractTool.CallState(HeroNFTMysteryBoxRandSource, "setRandSource",["addr:Random"]);
         await ContractTool.CallState(HeroNFTMysteryBoxRandSource, "grantRole", [MINTER_ROLE, "addr:HeroNFTMysteryBox"]);
-     
+        await ContractTool.CallState(HeroNFTMysteryBoxRandSource, "setRandomSet", [1, [1,1,1,1,1,1,1
+            ,1,1,1,1,1,1,1
+            ,1,1]]);
+    
+        await Init_MysteryBox.HeroNFTMysteryBoxRandSource_AddPool(1,[[1000,0,2]]);
+
+  
+
+
         logtools.loggreen("--init mystery box shop contract");
 
         let MysteryBoxShop = ContractInfo.getContract("MysteryBoxShop");
@@ -59,6 +67,20 @@ export class Init_MysteryBox
         await ContractTool.CallState(MysteryBox1155, "grantRole", [MINTER_ROLE, MysteryBoxShop.address]);
 
         return true;
+    }
+    static async HeroNFTMysteryBoxRandSource_AddPool(poolid:number,pooldata:any[])
+    {
+        let HeroNFTMysteryBoxRandSource = ContractInfo.getContract("HeroNFTMysteryBoxRandSource");
+        let b= await ContractTool.CallView(HeroNFTMysteryBoxRandSource,"hasPool",[poolid]);
+        if(b==0)
+        {
+            await ContractTool.CallState(HeroNFTMysteryBoxRandSource, "addPool", [poolid, pooldata]);
+        }
+        else
+        {
+            await ContractTool.CallState(HeroNFTMysteryBoxRandSource, "modifyPool", [poolid, pooldata]);
+        }
+        
     }
     static async  ConfigAll(hre:HardhatRuntimeEnvironment):Promise<boolean>
     {

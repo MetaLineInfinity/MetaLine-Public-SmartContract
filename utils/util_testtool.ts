@@ -1,4 +1,4 @@
-import { Signer } from "ethers";
+import { ethers,Signer } from "ethers";
 import * as hre from "hardhat";
 import { ContractInfo } from "./util_contractinfo";
 import { ContractTool } from "./util_contracttool";
@@ -13,7 +13,8 @@ export class TestTool
     addr1: string;
     addr2: string;
     addr3: string;
-    constructor(signer0: Signer,signer1: Signer,signer2: Signer,signer3: Signer)
+    provider: ethers.providers.JsonRpcProvider;
+    constructor(signer0: Signer,signer1: Signer,signer2: Signer,signer3: Signer, provider: ethers.providers.JsonRpcProvider)
     {
         this.signer0=signer0;
         this.signer1=signer1;
@@ -23,6 +24,7 @@ export class TestTool
         this.addr1="";
         this.addr2="";
         this.addr3="";
+        this.provider=provider;
     }
     async InitAddr():Promise<void>
     {
@@ -34,9 +36,9 @@ export class TestTool
     static async Init(): Promise<TestTool>
     {
         await ContractTool.LoadDeployInfo(hre);
-        await ContractInfo.LoadFromFile(hre);
+        await ContractInfo.LoadFromFile(hre); 
         let signers = await hre.ethers.getSigners();
-        let tool = new TestTool(signers[0],signers[1],signers[2],signers[3]);
+        let tool = new TestTool(signers[0],signers[1],signers[2],signers[3],hre.ethers.provider);
     
         await tool.InitAddr();
 
