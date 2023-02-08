@@ -38,6 +38,8 @@ contract MysteryBoxShop is
 
         uint32 whitelistId; // = 0 means open sale, else will check if buyer address in white list
         address nftholderCheck; // = address(0) won't check, else will check if buyer hold some other nft
+
+        uint32 perAddrLimit; // = 0 means no limit, else means each user address max buying count
     }
 
     struct OnSaleMysterBoxRunTime {
@@ -58,6 +60,7 @@ contract MysteryBoxShop is
 
     mapping(string=>OnSaleMysterBox) public _onSaleMysterBoxes;
     mapping(string=>OnSaleMysterBoxRunTime) public _onSaleMysterBoxDatas;
+    mapping(string=>mapping(address=>uint32)) public _perAddrBuyCount;
     address public _receiveIncomAddress;
 
     mapping(uint32=>mapping(address=>bool)) public _whitelists;
@@ -175,12 +178,28 @@ contract MysteryBoxShop is
         }
     }
 
-    function _chargeByDesiredCount(OnSaleMysterBox storage onSalePair, OnSaleMysterBoxRunTime storage onSalePairData, uint256 count) internal returns (uint256 realCount){
+    function _chargeByDesiredCount(
+        string calldata pairName, OnSaleMysterBox storage onSalePair, OnSaleMysterBoxRunTime storage onSalePairData, uint256 count) 
+        internal returns (uint256 realCount)
+    {
 
         realCount = count;
         if(realCount > onSalePairData.countLeft)
         {
             realCount = onSalePairData.countLeft;
+        }
+
+        if(onSalePair.perAddrLimit > 0)
+        {
+            uint32 buyCount = _perAddrBuyCount[pairName][_msgSender()];
+            uint32 buyCountLeft = (onSalePair.perAddrLimit > buyCount)? (onSalePair.perAddrLimit - buyCount) : 0;
+            if(buyCountLeft < realCount){
+                realCount = buyCountLeft;
+            }
+
+            if(realCount > 0){
+                _perAddrBuyCount[pairName][_msgSender()] += uint32(realCount);
+            }
         }
 
         require(realCount > 0, "MysteryBoxShop: insufficient mystery box");
@@ -228,7 +247,7 @@ contract MysteryBoxShop is
 
         _checkSellCondition(onSalePair, onSalePairData);
 
-        _chargeByDesiredCount(onSalePair, onSalePairData, 1);
+        _chargeByDesiredCount(pairName, onSalePair, onSalePairData, 1);
 
         MysteryBox1155(onSalePair.mysteryBox1155Addr).mint(_msgSender(), onSalePair.mbTokenId, 1, "buy mb");
 
@@ -243,7 +262,7 @@ contract MysteryBoxShop is
 
         _checkSellCondition(onSalePair, onSalePairData);
 
-        uint256 realCount = _chargeByDesiredCount(onSalePair, onSalePairData, count);
+        uint256 realCount = _chargeByDesiredCount(pairName, onSalePair, onSalePairData, count);
 
         MysteryBox1155(onSalePair.mysteryBox1155Addr).mint(_msgSender(), onSalePair.mbTokenId, realCount, "buy mb");
 
