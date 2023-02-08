@@ -52,7 +52,7 @@ export class Init_MysteryBox
         await ContractTool.CallState(HeroNFTMysteryBoxRandSource, "grantRole", [MINTER_ROLE, "addr:HeroNFTMysteryBox"]);
         await ContractTool.CallState(HeroNFTMysteryBoxRandSource, "setRandomSet", [1, [1,1,1,1,1,1,1
             ,1,1,1,1,1,1,1
-            ,1,1]]);
+            ,1,1,1]]);
     
         await Init_MysteryBox.HeroNFTMysteryBoxRandSource_AddPool(1,[[1000,0,2]]);
 
