@@ -2,7 +2,7 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { ContractInfo } from "../utils/util_contractinfo";
 import { ContractTool } from '../utils/util_contracttool';
 import { logtools } from "../utils/util_log";
-
+import { Contract, BigNumber } from "ethers";
 import * as InitConfig from "./init_config";
 
 
@@ -86,6 +86,48 @@ export class Init_MysteryBox
     {
         logtools.logblue("==Config_MysteryBox");
 
+        let MysteryBoxShop = ContractInfo.getContract("MysteryBoxShop");
+
+        let randomid = BigNumber.from(1);
+        let mysterytype = 1;
+    
+        //tokenid = (uint64)(randomid)<<32 | (uint32)mysterytype
+        let tokenId = randomid.shl(32).add(1);
+    
+        let zeroadd = "0x0000000000000000000000000000000000000000";
+        // struct OnSaleMysterBox{
+        //     // config data --------------------------------------------------------
+        //     address mysteryBox1155Addr; // mystery box address
+        //     uint256 mbTokenId; // mystery box token id
+    
+        //     address tokenAddr; // charge token addr, could be 20 or 1155
+        //     uint256 tokenId; // =0 means 20 token, else 1155 token
+        //     uint256 price; // price value
+    
+        //     bool isBurn; // = ture means charge token will be burned, else charge token save in this contract
+    
+        //     uint256 beginBlock; // start sale block, =0 ignore this condition
+        //     uint256 endBlock; // end sale block, =0 ignore this condition
+    
+        //     uint256 renewBlocks; // how many blocks for each renew
+        //     uint256 renewCount; // how many count put on sale for each renew
+    
+        //     uint32 whitelistId; // = 0 means open sale, else will check if buyer address in white list
+        //     address nftholderCheck; // = address(0) won't check, else will check if buyer hold some other nft
+        // }
+        let isburn=0;
+        let saleconfig=[ContractInfo.getContractAddress("MysteryBox1155"),tokenId,ContractInfo.getContractAddress("MockERC20"),0,100,
+        isburn,
+        0,0,100,100,0,zeroadd];
+        // struct OnSaleMysterBoxRunTime {
+        //     // runtime data -------------------------------------------------------
+        //     uint256 nextRenewBlock; // after this block num, will put at max [renewCount] on sale
+    
+        //     // config & runtime data ----------------------------------------------
+        //     uint256 countLeft; // how many boxies left
+        // }
+        
+        await ContractTool.CallState(MysteryBoxShop,"setOnSaleMysteryBox",["testpair",saleconfig,[100,10000]]);
         return true;
     }
 }     
