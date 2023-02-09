@@ -53,10 +53,10 @@ contract MysteryBoxShop is
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
 
-    event DIOnSaleMysterBox(string pairName, OnSaleMysterBox saleConfig, OnSaleMysterBoxRunTime saleData);
-    event DIOffSaleMysterBox(string pairName, OnSaleMysterBox saleConfig, OnSaleMysterBoxRunTime saleData);
-    event DIBuyMysteryBox(address userAddr, string pairName, OnSaleMysterBox saleConfig, OnSaleMysterBoxRunTime saleData);
-    event DIBatchBuyMysteryBox(address userAddr, string pairName, OnSaleMysterBox saleConfig, OnSaleMysterBoxRunTime saleData, uint256 count);
+    event SetOnSaleMysterBox(string pairName, OnSaleMysterBox saleConfig, OnSaleMysterBoxRunTime saleData);
+    event UnsetOnSaleMysterBox(string pairName, OnSaleMysterBox saleConfig, OnSaleMysterBoxRunTime saleData);
+    event BuyMysteryBox(address userAddr, string pairName, OnSaleMysterBox saleConfig, OnSaleMysterBoxRunTime saleData);
+    event BatchBuyMysteryBox(address userAddr, string pairName, OnSaleMysterBox saleConfig, OnSaleMysterBoxRunTime saleData, uint256 count);
 
     mapping(string=>OnSaleMysterBox) public _onSaleMysterBoxes;
     mapping(string=>OnSaleMysterBoxRunTime) public _onSaleMysterBoxDatas;
@@ -112,7 +112,7 @@ contract MysteryBoxShop is
         _onSaleMysterBoxes[pairName] = saleConfig;
         _onSaleMysterBoxDatas[pairName] = saleData;
 
-        emit DIOnSaleMysterBox(pairName, saleConfig, saleData);
+        emit SetOnSaleMysterBox(pairName, saleConfig, saleData);
     }
 
     function unsetOnSaleMysteryBox(string calldata pairName) external whenNotPaused {
@@ -121,19 +121,20 @@ contract MysteryBoxShop is
         OnSaleMysterBox storage onSalePair = _onSaleMysterBoxes[pairName];
         OnSaleMysterBoxRunTime storage onSalePairData = _onSaleMysterBoxDatas[pairName];
 
-        emit DIOffSaleMysterBox(pairName, onSalePair, onSalePairData);
+        emit UnsetOnSaleMysterBox(pairName, onSalePair, onSalePairData);
 
         delete _onSaleMysterBoxes[pairName];
         delete _onSaleMysterBoxDatas[pairName];
     }
 
-    function setOnSaleMBCheckCondition(string calldata pairName, uint32 whitelistId, address nftholderCheck) external {
+    function setOnSaleMBCheckCondition(string calldata pairName, uint32 whitelistId, address nftholderCheck, uint32 perAddrLimit) external {
         require(hasRole(MANAGER_ROLE, _msgSender()), "MysteryBoxShop: must have manager role to manage");
 
         OnSaleMysterBox storage onSalePair = _onSaleMysterBoxes[pairName];
 
         onSalePair.whitelistId = whitelistId;
         onSalePair.nftholderCheck = nftholderCheck;
+        onSalePair.perAddrLimit = perAddrLimit;
     }
 
     function setOnSaleMBCountleft(string calldata pairName, uint countLeft) external {
@@ -251,7 +252,7 @@ contract MysteryBoxShop is
 
         MysteryBox1155(onSalePair.mysteryBox1155Addr).mint(_msgSender(), onSalePair.mbTokenId, 1, "buy mb");
 
-        emit DIBuyMysteryBox(_msgSender(), pairName, onSalePair, onSalePairData);
+        emit BuyMysteryBox(_msgSender(), pairName, onSalePair, onSalePairData);
     }
 
     function batchBuyMysterBox(string calldata pairName, uint32 count) external whenNotPaused {
@@ -266,7 +267,7 @@ contract MysteryBoxShop is
 
         MysteryBox1155(onSalePair.mysteryBox1155Addr).mint(_msgSender(), onSalePair.mbTokenId, realCount, "buy mb");
 
-        emit DIBatchBuyMysteryBox(_msgSender(), pairName, onSalePair, onSalePairData, realCount);
+        emit BatchBuyMysteryBox(_msgSender(), pairName, onSalePair, onSalePairData, realCount);
     }
 
     function fetchIncome(address tokenAddr, uint256 value) external {
