@@ -127,11 +127,18 @@ contract MysteryBoxShop is
         delete _onSaleMysterBoxDatas[pairName];
     }
 
-    function setOnSaleMBCheckCondition(string calldata pairName, uint32 whitelistId, address nftholderCheck, uint32 perAddrLimit) external {
+    function setOnSaleMBCheckCondition(
+        string calldata pairName, 
+        uint256 price, 
+        uint32 whitelistId, 
+        address nftholderCheck, 
+        uint32 perAddrLimit
+    ) external {
         require(hasRole(MANAGER_ROLE, _msgSender()), "MysteryBoxShop: must have manager role to manage");
 
         OnSaleMysterBox storage onSalePair = _onSaleMysterBoxes[pairName];
 
+        onSalePair.price = price;
         onSalePair.whitelistId = whitelistId;
         onSalePair.nftholderCheck = nftholderCheck;
         onSalePair.perAddrLimit = perAddrLimit;
