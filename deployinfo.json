@@ -3,7 +3,8 @@
         {
             "network":"bscTest",
             "addresses":{
-                "oracle_rand_fee_addr":""
+                "oracle_rand_fee_addr":"",
+                "receive_mb_income_addr":""
             },
             "contracts":{
             }
@@ -12,7 +13,8 @@
         {
             "network":"bscMain",
             "addresses":{
-                "oracle_rand_fee_addr":""
+                "oracle_rand_fee_addr":"",
+                "receive_mb_income_addr":""
             },
             "contracts":{
             }
@@ -20,7 +22,8 @@
         {
             "network":"arbitrumOne",
             "addresses":{
-                "oracle_rand_fee_addr":""
+                "oracle_rand_fee_addr":"",
+                "receive_mb_income_addr":""
             },
             "contracts":{
             }
@@ -29,7 +32,8 @@
         {
             "network":"arbitrumTest",
             "addresses":{
-                "oracle_rand_fee_addr":""
+                "oracle_rand_fee_addr":"",
+                "receive_mb_income_addr":""
             },
             "contracts":{
             }
@@ -37,13 +41,15 @@
         {
             "network":"localhost",
             "addresses":{
-                "oracle_rand_fee_addr":"0x9812752121fb9eBEc49A4B8153240866156E87C5"
+                "oracle_rand_fee_addr":"0x9812752121fb9eBEc49A4B8153240866156E87C5",
+                "receive_mb_income_addr":"0x9812752121fb9eBEc49A4B8153240866156E87C5"
             }
         },
         {
             "network":"hardhat",
             "addresses":{
-                "oracle_rand_fee_addr":""
+                "oracle_rand_fee_addr":"",
+                "receive_mb_income_addr":""
             }
         }
     ],

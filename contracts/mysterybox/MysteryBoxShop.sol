@@ -30,10 +30,10 @@ contract MysteryBoxShop is
 
         bool isBurn; // = ture means charge token will be burned, else charge token save in this contract
 
-        uint256 beginBlock; // start sale block, =0 ignore this condition
-        uint256 endBlock; // end sale block, =0 ignore this condition
+        uint64 beginTime; // start sale timeStamp in seconds since unix epoch, =0 ignore this condition
+        uint64 endTime; // end sale timeStamp in seconds since unix epoch, =0 ignore this condition
 
-        uint256 renewBlocks; // how many blocks for each renew
+        uint64 renewTime; // how long in seconds for each renew
         uint256 renewCount; // how many count put on sale for each renew
 
         uint32 whitelistId; // = 0 means open sale, else will check if buyer address in white list
@@ -44,7 +44,7 @@ contract MysteryBoxShop is
 
     struct OnSaleMysterBoxRunTime {
         // runtime data -------------------------------------------------------
-        uint256 nextRenewBlock; // after this block num, will put at max [renewCount] on sale
+        uint64 nextRenewTime; // after this timeStamp in seconds since unix epoch, will put at max [renewCount] on sale
 
         // config & runtime data ----------------------------------------------
         uint256 countLeft; // how many boxies left
@@ -53,10 +53,18 @@ contract MysteryBoxShop is
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
 
-    event SetOnSaleMysterBox(string pairName, OnSaleMysterBox saleConfig, OnSaleMysterBoxRunTime saleData);
-    event UnsetOnSaleMysterBox(string pairName, OnSaleMysterBox saleConfig, OnSaleMysterBoxRunTime saleData);
-    event BuyMysteryBox(address userAddr, string pairName, OnSaleMysterBox saleConfig, OnSaleMysterBoxRunTime saleData);
-    event BatchBuyMysteryBox(address userAddr, string pairName, OnSaleMysterBox saleConfig, OnSaleMysterBoxRunTime saleData, uint256 count);
+    event SetOnSaleMysterBox(string indexed pairName, OnSaleMysterBox saleConfig, OnSaleMysterBoxRunTime saleData);
+    event UnsetOnSaleMysterBox(string indexed pairName, OnSaleMysterBox saleConfig, OnSaleMysterBoxRunTime saleData);
+    event SetOnSaleMBCheckCondition(
+        string indexed pairName, 
+        uint256 price, 
+        uint32 whitelistId, 
+        address nftholderCheck, 
+        uint32 perAddrLimit);
+    event SetOnSaleMBCountleft(string indexed pairName, uint countLeft);
+    event PerAddrBuyCountChange(string indexed pairName, address indexed userAddr, uint32 count);
+    event BuyMysteryBox(address indexed userAddr, string indexed pairName, OnSaleMysterBox saleConfig, OnSaleMysterBoxRunTime saleData);
+    event BatchBuyMysteryBox(address indexed userAddr, string indexed pairName, OnSaleMysterBox saleConfig, OnSaleMysterBoxRunTime saleData, uint256 count);
 
     mapping(string=>OnSaleMysterBox) public _onSaleMysterBoxes;
     mapping(string=>OnSaleMysterBoxRunTime) public _onSaleMysterBoxDatas;
@@ -104,9 +112,9 @@ contract MysteryBoxShop is
     function setOnSaleMysteryBox(string calldata pairName, OnSaleMysterBox memory saleConfig, OnSaleMysterBoxRunTime memory saleData) external whenNotPaused {
         require(hasRole(MANAGER_ROLE, _msgSender()), "MysteryBoxShop: must have manager role to manage");
 
-        if(saleConfig.renewBlocks > 0)
+        if(saleConfig.renewTime > 0)
         {
-            saleData.nextRenewBlock = block.number + saleConfig.renewBlocks;
+            saleData.nextRenewTime = (uint64)(block.timestamp + saleConfig.renewTime);
         }
 
         _onSaleMysterBoxes[pairName] = saleConfig;
@@ -142,6 +150,8 @@ contract MysteryBoxShop is
         onSalePair.whitelistId = whitelistId;
         onSalePair.nftholderCheck = nftholderCheck;
         onSalePair.perAddrLimit = perAddrLimit;
+
+        emit SetOnSaleMBCheckCondition(pairName, price, whitelistId, nftholderCheck, perAddrLimit);
     }
 
     function setOnSaleMBCountleft(string calldata pairName, uint countLeft) external {
@@ -150,6 +160,8 @@ contract MysteryBoxShop is
         OnSaleMysterBoxRunTime storage onSalePairData = _onSaleMysterBoxDatas[pairName];
 
         onSalePairData.countLeft = countLeft;
+
+        emit SetOnSaleMBCountleft(pairName, countLeft);
     }
 
     function setReceiveIncomeAddress(address incomAddr) external {
@@ -159,13 +171,13 @@ contract MysteryBoxShop is
     }
 
     function _checkSellCondition(OnSaleMysterBox storage onSalePair, OnSaleMysterBoxRunTime storage onSalePairData) internal {
-        if(onSalePair.beginBlock > 0)
+        if(onSalePair.beginTime > 0)
         {
-            require(block.number >= onSalePair.beginBlock, "MysteryBoxShop: sale not begin");
+            require(block.timestamp >= onSalePair.beginTime, "MysteryBoxShop: sale not begin");
         }
-        if(onSalePair.endBlock > 0)
+        if(onSalePair.endTime > 0)
         {
-            require(block.number <= onSalePair.endBlock, "MysteryBoxShop: sale finished");
+            require(block.timestamp <= onSalePair.endTime, "MysteryBoxShop: sale finished");
         }
         if(onSalePair.whitelistId > 0)
         {
@@ -176,11 +188,11 @@ contract MysteryBoxShop is
             require(IERC721(onSalePair.nftholderCheck).balanceOf(_msgSender()) > 0, "MysteryBoxShop: no authority");
         }
 
-        if(onSalePair.renewBlocks > 0)
+        if(onSalePair.renewTime > 0)
         {
-            if(block.number > onSalePairData.nextRenewBlock)
+            if(block.timestamp > onSalePairData.nextRenewTime)
             {
-                onSalePairData.nextRenewBlock = onSalePairData.nextRenewBlock + onSalePair.renewBlocks * (1 + ((block.number - onSalePairData.nextRenewBlock) / onSalePair.renewBlocks));
+                onSalePairData.nextRenewTime = (uint64)(onSalePairData.nextRenewTime + onSalePair.renewTime * (1 + ((block.timestamp - onSalePairData.nextRenewTime) / onSalePair.renewTime)));
                 onSalePairData.countLeft = onSalePair.renewCount;
             }
         }
@@ -206,7 +218,10 @@ contract MysteryBoxShop is
             }
 
             if(realCount > 0){
-                _perAddrBuyCount[pairName][_msgSender()] += uint32(realCount);
+                buyCount += uint32(realCount);
+                _perAddrBuyCount[pairName][_msgSender()] = buyCount;
+
+                emit PerAddrBuyCountChange(pairName, _msgSender(), buyCount);
             }
         }
 
@@ -217,7 +232,14 @@ contract MysteryBoxShop is
         if(onSalePair.price > 0){
             uint256 realPrice = onSalePair.price * realCount;
 
-            if(onSalePair.tokenId > 0)
+            if(onSalePair.tokenAddr == address(0)){
+                require(msg.value >= realPrice, "MysteryBoxShop: insufficient value");
+
+                // receive eth
+                (bool sent, ) = _receiveIncomAddress.call{value:msg.value}("");
+                require(sent, "MysteryBoxShop: transfer income error");
+            }
+            else if(onSalePair.tokenId > 0)
             {
                 // 1155
                 require(IERC1155(onSalePair.tokenAddr).balanceOf( _msgSender(), onSalePair.tokenId) >= realPrice , "MysteryBoxShop: erc1155 insufficient token");

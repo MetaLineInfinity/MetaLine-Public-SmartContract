@@ -47,6 +47,9 @@ export class Init_MysteryBox
 
         let RAND_ROLE = await ContractTool.CallView(HeroNFTMysteryBox, "RAND_ROLE", []);
         await ContractTool.CallState(HeroNFTMysteryBox, "grantRole", [RAND_ROLE, "addr:Random"]);
+        
+        // pause mystery box
+        //await ContractTool.CallState(HeroNFTMysteryBox, "pause", []);
 
         await ContractTool.CallState(HeroNFTMysteryBoxRandSource, "setRandSource",["addr:Random"]);
         await ContractTool.CallState(HeroNFTMysteryBoxRandSource, "grantRole", [MINTER_ROLE, "addr:HeroNFTMysteryBox"]);
@@ -57,6 +60,10 @@ export class Init_MysteryBox
         let MysteryBox1155 = ContractInfo.getContract("MysteryBox1155");
         await ContractTool.CallState(MysteryBox1155, "grantRole", [DATA_ROLE, MysteryBoxShop.address]);
         await ContractTool.CallState(MysteryBox1155, "grantRole", [MINTER_ROLE, MysteryBoxShop.address]);
+
+        await ContractTool.CallState(MysteryBoxShop, "setReceiveIncomeAddress",["addr:receive_mb_income_addr"]);
+        let receive_mb_income_addr = ContractTool.GetAddrInValues("receive_mb_income_addr");
+        logtools.loggreen(`MysteryBoxShop set income receiver to addr:${receive_mb_income_addr}`);
 
         return true;
     }
@@ -106,19 +113,21 @@ export class Init_MysteryBox
     
         //     bool isBurn; // = ture means charge token will be burned, else charge token save in this contract
     
-        //     uint256 beginBlock; // start sale block, =0 ignore this condition
-        //     uint256 endBlock; // end sale block, =0 ignore this condition
+        //     uint64 beginTime; // start sale timeStamp in seconds since unix epoch, =0 ignore this condition
+        //     uint64 endTime; // end sale timeStamp in seconds since unix epoch, =0 ignore this condition
     
-        //     uint256 renewBlocks; // how many blocks for each renew
+        //     uint64 renewTime; // how long in seconds for each renew
         //     uint256 renewCount; // how many count put on sale for each renew
     
         //     uint32 whitelistId; // = 0 means open sale, else will check if buyer address in white list
         //     address nftholderCheck; // = address(0) won't check, else will check if buyer hold some other nft
+    
+        //     uint32 perAddrLimit; // = 0 means no limit, else means each user address max buying count
         // }
         let isburn=0;
         let saleconfig=[ContractInfo.getContractAddress("MysteryBox1155"),tokenId,ContractInfo.getContractAddress("MockERC20"),0,100,
         isburn,
-        0,0,100,100,0,zeroadd];
+        0,0,100,100,0,zeroadd,0];
         // struct OnSaleMysterBoxRunTime {
         //     // runtime data -------------------------------------------------------
         //     uint256 nextRenewBlock; // after this block num, will put at max [renewCount] on sale
