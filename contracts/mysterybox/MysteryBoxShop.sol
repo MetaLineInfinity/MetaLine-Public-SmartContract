@@ -52,6 +52,7 @@ contract MysteryBoxShop is
 
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
+    bytes32 public constant OPERATER_ROLE = keccak256("OPERATER_ROLE");
 
     event SetOnSaleMysterBox(string indexed pairName, OnSaleMysterBox saleConfig, OnSaleMysterBoxRunTime saleData);
     event UnsetOnSaleMysterBox(string indexed pairName, OnSaleMysterBox saleConfig, OnSaleMysterBoxRunTime saleData);
@@ -78,6 +79,7 @@ contract MysteryBoxShop is
 
         _setupRole(PAUSER_ROLE, _msgSender());
         _setupRole(MANAGER_ROLE, _msgSender());
+        _setupRole(OPERATER_ROLE, _msgSender());
     }
 
     function pause() public virtual {
@@ -142,7 +144,7 @@ contract MysteryBoxShop is
         address nftholderCheck, 
         uint32 perAddrLimit
     ) external {
-        require(hasRole(MANAGER_ROLE, _msgSender()), "MysteryBoxShop: must have manager role to manage");
+        require(hasRole(OPERATER_ROLE, _msgSender()), "MysteryBoxShop: must have manager role to manage");
 
         OnSaleMysterBox storage onSalePair = _onSaleMysterBoxes[pairName];
 
@@ -155,7 +157,7 @@ contract MysteryBoxShop is
     }
 
     function setOnSaleMBCountleft(string calldata pairName, uint countLeft) external {
-        require(hasRole(MANAGER_ROLE, _msgSender()), "MysteryBoxShop: must have manager role to manage");
+        require(hasRole(OPERATER_ROLE, _msgSender()), "MysteryBoxShop: must have manager role to manage");
 
         OnSaleMysterBoxRunTime storage onSalePairData = _onSaleMysterBoxDatas[pairName];
 

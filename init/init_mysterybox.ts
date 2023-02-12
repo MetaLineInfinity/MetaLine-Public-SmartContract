@@ -61,6 +61,11 @@ export class Init_MysteryBox
         await ContractTool.CallState(MysteryBox1155, "grantRole", [DATA_ROLE, MysteryBoxShop.address]);
         await ContractTool.CallState(MysteryBox1155, "grantRole", [MINTER_ROLE, MysteryBoxShop.address]);
 
+        let OPERATER_ROLE = await ContractTool.CallView(MysteryBoxShop, "OPERATER_ROLE", []);
+        await ContractTool.CallState(MysteryBoxShop, "grantRole",[OPERATER_ROLE, "addr:operater_address"]);
+        let operater_address = ContractTool.GetAddrInValues("operater_address");
+        logtools.loggreen(`MysteryBoxShop grantRole OPERATER_ROLE to addr:${operater_address}`);
+
         await ContractTool.CallState(MysteryBoxShop, "setReceiveIncomeAddress",["addr:receive_mb_income_addr"]);
         let receive_mb_income_addr = ContractTool.GetAddrInValues("receive_mb_income_addr");
         logtools.loggreen(`MysteryBoxShop set income receiver to addr:${receive_mb_income_addr}`);
