@@ -144,7 +144,7 @@ contract MysteryBoxShop is
         address nftholderCheck, 
         uint32 perAddrLimit
     ) external {
-        require(hasRole(OPERATER_ROLE, _msgSender()), "MysteryBoxShop: must have manager role to manage");
+        require(hasRole(OPERATER_ROLE, _msgSender()), "MysteryBoxShop: must have operater role");
 
         OnSaleMysterBox storage onSalePair = _onSaleMysterBoxes[pairName];
 
@@ -157,7 +157,7 @@ contract MysteryBoxShop is
     }
 
     function setOnSaleMBCountleft(string calldata pairName, uint countLeft) external {
-        require(hasRole(OPERATER_ROLE, _msgSender()), "MysteryBoxShop: must have manager role to manage");
+        require(hasRole(OPERATER_ROLE, _msgSender()), "MysteryBoxShop: must have operater role");
 
         OnSaleMysterBoxRunTime storage onSalePairData = _onSaleMysterBoxDatas[pairName];
 
