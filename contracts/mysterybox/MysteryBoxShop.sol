@@ -272,7 +272,7 @@ contract MysteryBoxShop is
 
     }
 
-    function buyMysteryBox(string calldata pairName) external whenNotPaused {
+    function buyMysteryBox(string calldata pairName) external payable whenNotPaused {
         OnSaleMysterBox storage onSalePair = _onSaleMysterBoxes[pairName];
         OnSaleMysterBoxRunTime storage onSalePairData = _onSaleMysterBoxDatas[pairName];
         require(address(onSalePair.mysteryBox1155Addr) != address(0), "MysteryBoxShop: mystery box not on sale");
@@ -286,7 +286,7 @@ contract MysteryBoxShop is
         emit BuyMysteryBox(_msgSender(), pairName, onSalePair, onSalePairData);
     }
 
-    function batchBuyMysterBox(string calldata pairName, uint32 count) external whenNotPaused {
+    function batchBuyMysterBox(string calldata pairName, uint32 count) external payable whenNotPaused {
 
         OnSaleMysterBox storage onSalePair = _onSaleMysterBoxes[pairName];
         OnSaleMysterBoxRunTime storage onSalePairData = _onSaleMysterBoxDatas[pairName];
