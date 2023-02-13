@@ -59,7 +59,7 @@ contract ERC721PresetMinterPauserAutoId is
         string memory baseTokenURI
     ) ERC721(name, symbol) {
         _baseTokenURI = baseTokenURI;
-        _royalties = 25; // 0.25%
+        _royalties = 300; // 3%
 
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
 
