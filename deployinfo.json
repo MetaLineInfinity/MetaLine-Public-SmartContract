@@ -24,9 +24,9 @@
         {
             "network":"arbitrumOne",
             "addresses":{
-                "oracle_rand_fee_addr":"",
-                "receive_mb_income_addr":"",
-                "operater_address":""
+                "oracle_rand_fee_addr":"0xB70FEaA31d51e5873653f58f92070273f98934d9",
+                "receive_mb_income_addr":"0xB70FEaA31d51e5873653f58f92070273f98934d9",
+                "operater_address":"0xB70FEaA31d51e5873653f58f92070273f98934d9"
             },
             "contracts":{
             }
@@ -77,14 +77,20 @@
             ]
         },
         {
-            "group":"mysterybox",
+            "group":"mysteryboxShop",
             "gen":1,
             "contracts":[
-                {"name":"HeroNFT","deployer":"deployer","args":[0, "Hero NFT","HERO", "https://"]},
+                {"name":"MysteryBox1155","deployer":"deployer","args":["https://metadata.metaline.games/a/{id}"]},
+                {"name":"MysteryBoxShop","deployer":"deployer","args":[]}
+            ]
+        },
+        {
+            "group":"mysterybox",
+            "gen":2,
+            "contracts":[
+                {"name":"HeroNFT","deployer":"deployer","args":[0, "Hero NFT","HERO", "https://metadata.metaline.games/b/"]},
                 {"name":"HeroNFTCodec_V1","deployer":"deployer","args":[]},
                 {"name":"HeroNFTAttrSource_V1","deployer":"deployer","args":[]},
-                {"name":"MysteryBox1155","deployer":"deployer","args":["https://"]},
-                {"name":"MysteryBoxShop","deployer":"deployer","args":[]},
                 {"name":"HeroNFTMysteryBox","deployer":"deployer","args":[]},
                 {"name":"HeroNFTMysteryBoxRandSource","deployer":"deployer","args":["addr:HeroNFT"],"libraries":{"RandomPoolLib":"addr:RandomPoolLib"}}
             ]
