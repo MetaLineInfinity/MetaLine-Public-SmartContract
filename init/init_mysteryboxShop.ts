@@ -57,42 +57,74 @@ export class Init_MysteryBoxShop
         //tokenid = (uint64)(randomid)<<32 | (uint32)mysterytype
         let tokenId = randomid.shl(32).add(1);
     
-        let zeroadd = "0x0000000000000000000000000000000000000000";
-        // struct OnSaleMysterBox{
-        //     // config data --------------------------------------------------------
-        //     address mysteryBox1155Addr; // mystery box address
-        //     uint256 mbTokenId; // mystery box token id
-    
-        //     address tokenAddr; // charge token addr, could be 20 or 1155
-        //     uint256 tokenId; // =0 means 20 token, else 1155 token
-        //     uint256 price; // price value
-    
-        //     bool isBurn; // = ture means charge token will be burned, else charge token save in this contract
-    
-        //     uint64 beginTime; // start sale timeStamp in seconds since unix epoch, =0 ignore this condition
-        //     uint64 endTime; // end sale timeStamp in seconds since unix epoch, =0 ignore this condition
-    
-        //     uint64 renewTime; // how long in seconds for each renew
-        //     uint256 renewCount; // how many count put on sale for each renew
-    
-        //     uint32 whitelistId; // = 0 means open sale, else will check if buyer address in white list
-        //     address nftholderCheck; // = address(0) won't check, else will check if buyer hold some other nft
-    
-        //     uint32 perAddrLimit; // = 0 means no limit, else means each user address max buying count
-        // }
+        let zeroaddr = "0x0000000000000000000000000000000000000000";
         let isburn=0;
-        let saleconfig=[ContractInfo.getContractAddress("MysteryBox1155"),tokenId,ContractInfo.getContractAddress("MockERC20"),0,100,
-        isburn,
-        0,0,100,100,0,zeroadd,0];
-        // struct OnSaleMysterBoxRunTime {
-        //     // runtime data -------------------------------------------------------
-        //     uint256 nextRenewBlock; // after this block num, will put at max [renewCount] on sale
-    
-        //     // config & runtime data ----------------------------------------------
-        //     uint256 countLeft; // how many boxies left
-        // }
+        let mb1155Addr = ContractInfo.getContractAddress("MysteryBox1155");
+
+        let saleconfig1=[
+            mb1155Addr, 
+            '4294967297',  // mb token id
+
+            zeroaddr,  // charge token id, 0:eth
+            0,  // 1155 token id
+            '180000000000', // price
+
+            false, // isBurn
+            0, 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+
+            1,  // whiteListId
+            zeroaddr, // nft holder check
+            1 // perLimit
+        ];
+        let saledata1=[
+            0, // nextRenewTime
+            100 // countLeft
+        ];
         
-        await ContractTool.CallState(MysteryBoxShop,"setOnSaleMysteryBox",["testpair",saleconfig,[100,10000]]);
+        let saleconfig2=[
+            mb1155Addr, 
+            '4294967298',  // mb token id
+
+            zeroaddr,  // charge token id, 0:eth
+            0,  // 1155 token id
+            '190000000000', // price
+
+            false, // isBurn
+            0, 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+
+            1,  // whiteListId
+            zeroaddr, // nft holder check
+            1 // perLimit
+        ];
+        let saledata2=[
+            0, // nextRenewTime
+            200 // countLeft
+        ];
+        
+        let saleconfig3=[
+            mb1155Addr, 
+            '4294967299',  // mb token id
+
+            zeroaddr,  // charge token id, 0:eth
+            0,  // 1155 token id
+            '200000000000', // price
+
+            false, // isBurn
+            0, 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+
+            1,  // whiteListId
+            zeroaddr, // nft holder check
+            1 // perLimit
+        ];
+        let saledata3=[
+            0, // nextRenewTime
+            300 // countLeft
+        ];
+
+        await ContractTool.CallState(MysteryBoxShop,"setOnSaleMysteryBox",["sale1",saleconfig1,saledata1]);
+        await ContractTool.CallState(MysteryBoxShop,"setOnSaleMysteryBox",["sale2",saleconfig2,saledata2]);
+        await ContractTool.CallState(MysteryBoxShop,"setOnSaleMysteryBox",["sale3",saleconfig3,saledata3]);
+
         return true;
     }
 }
