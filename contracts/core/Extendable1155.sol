@@ -59,7 +59,7 @@ contract ERC1155PresetMinterPauser is
     ) ERC1155(uri) {
         _name = name_;
         _symbol = symbol_;
-        _royalties = 300; // 3%
+        _royalties = 500; // 5%
 
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
 
