@@ -33,8 +33,17 @@ async function inittest() {
     MockERC1155_V1 = ContractInfo.getContract("MockERC1155_V1");
     MysteryBox1155 = ContractInfo.getContract("MysteryBox1155");
     MysteryBoxShop = ContractInfo.getContract("MysteryBoxShop");
-    ContractTool.PassBlock(hre, 1000);
 
+    let randomid = BigNumber.from(1);
+    let tokenId = randomid.shl(32).add(1);    
+    let zeroadd = "0x0000000000000000000000000000000000000000";
+    let isburn=0;
+    let saleconfig=[ContractInfo.getContractAddress("MysteryBox1155"),tokenId,ContractInfo.getContractAddress("MockERC20"),0,100,
+    isburn,
+    0,0,100,100,0,zeroadd,0];
+    await ContractTool.CallState(MysteryBoxShop,"setOnSaleMysteryBox",["testpair",saleconfig,[100,10000]]);
+
+    ContractTool.PassBlock(hre, 1000);
 }
 
 async function buymb() {
