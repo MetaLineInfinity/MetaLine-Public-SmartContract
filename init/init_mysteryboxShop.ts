@@ -67,10 +67,10 @@ export class Init_MysteryBoxShop
 
             zeroaddr,  // charge token id, 0:eth
             0,  // 1155 token id
-            '180000000000', // price
+            '32000000000000000', // price
 
             false, // isBurn
-            0, 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+            '1676462400', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
 
             1,  // whiteListId
             zeroaddr, // nft holder check
@@ -78,7 +78,7 @@ export class Init_MysteryBoxShop
         ];
         let saledata1=[
             0, // nextRenewTime
-            100 // countLeft
+            1600 // countLeft
         ];
         
         let saleconfig2=[
@@ -87,10 +87,10 @@ export class Init_MysteryBoxShop
 
             zeroaddr,  // charge token id, 0:eth
             0,  // 1155 token id
-            '190000000000', // price
+            '65000000000000000', // price
 
             false, // isBurn
-            0, 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+            '1676462400', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
 
             1,  // whiteListId
             zeroaddr, // nft holder check
@@ -98,7 +98,7 @@ export class Init_MysteryBoxShop
         ];
         let saledata2=[
             0, // nextRenewTime
-            200 // countLeft
+            1300 // countLeft
         ];
         
         let saleconfig3=[
@@ -107,10 +107,10 @@ export class Init_MysteryBoxShop
 
             zeroaddr,  // charge token id, 0:eth
             0,  // 1155 token id
-            '200000000000', // price
+            '131000000000000000', // price
 
             false, // isBurn
-            0, 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+            '1676462400', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
 
             1,  // whiteListId
             zeroaddr, // nft holder check
@@ -118,7 +118,7 @@ export class Init_MysteryBoxShop
         ];
         let saledata3=[
             0, // nextRenewTime
-            300 // countLeft
+            600 // countLeft
         ];
 
         await ContractTool.CallState(MysteryBoxShop,"setOnSaleMysteryBox",["sale1",saleconfig1,saledata1]);

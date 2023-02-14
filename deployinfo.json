@@ -24,9 +24,9 @@
         {
             "network":"arbitrumOne",
             "addresses":{
-                "oracle_rand_fee_addr":"0xB70FEaA31d51e5873653f58f92070273f98934d9",
-                "receive_mb_income_addr":"0xB70FEaA31d51e5873653f58f92070273f98934d9",
-                "operater_address":"0xB70FEaA31d51e5873653f58f92070273f98934d9"
+                "oracle_rand_fee_addr":"0xE7EFAcb6F9A8C85bea83455eD6AA8822e34F8e2B",
+                "receive_mb_income_addr":"0x00072931DcBf9953e8170704757673d7A010284D",
+                "operater_address":"0xE7EFAcb6F9A8C85bea83455eD6AA8822e34F8e2B"
             },
             "contracts":{
             }
