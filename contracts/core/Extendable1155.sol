@@ -206,6 +206,13 @@ contract ERC1155PresetMinterPauser is
             TransferHelper.safeTransfer(erc20, _msgSender(), amount);
         }
     }
+    function fetchIncomeEth() external {
+        require(hasRole(MINTER_ROLE, _msgSender()), "ERC1155PresetMinterPauser: must have minter role");
+
+        // send eth
+        (bool sent, ) = _msgSender().call{value:address(this).balance}("");
+        require(sent, "ERC1155PresetMinterPauser: transfer error");
+    }
 }
 
 contract Extendable1155 is ERC1155PresetMinterPauser {

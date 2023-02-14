@@ -70,13 +70,6 @@
             ]
         },
         {
-            "group":"base",
-            "contracts":[
-                {"name":"RandomPoolLib","deployer":"deployer","args":[]},
-                {"name":"Random","deployer":"deployer","args":[]}
-            ]
-        },
-        {
             "group":"mysteryboxShop",
             "gen":1,
             "contracts":[
@@ -88,6 +81,8 @@
             "group":"mysterybox",
             "gen":2,
             "contracts":[
+                {"name":"RandomPoolLib","deployer":"deployer","args":[]},
+                {"name":"Random","deployer":"deployer","args":[]},
                 {"name":"HeroNFT","deployer":"deployer","args":[0, "Hero NFT","HERO", "https://metadata.metaline.games/b/"]},
                 {"name":"HeroNFTCodec_V1","deployer":"deployer","args":[]},
                 {"name":"HeroNFTAttrSource_V1","deployer":"deployer","args":[]},
