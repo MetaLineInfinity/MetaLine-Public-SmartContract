@@ -87,7 +87,8 @@
                 {"name":"HeroNFTCodec_V1","deployer":"deployer","args":[]},
                 {"name":"HeroNFTAttrSource_V1","deployer":"deployer","args":[]},
                 {"name":"HeroNFTMysteryBox","deployer":"deployer","args":[]},
-                {"name":"HeroNFTMysteryBoxRandSource","deployer":"deployer","args":["addr:HeroNFT"],"libraries":{"RandomPoolLib":"addr:RandomPoolLib"}}
+                {"name":"HeroNFTMysteryBoxRandSource","deployer":"deployer","args":["addr:HeroNFT"],"libraries":{"RandomPoolLib":"addr:RandomPoolLib"}},
+                {"name":"HeroPetNFTMysteryBoxRandSource","deployer":"deployer","args":["addr:HeroNFT"],"libraries":{"RandomPoolLib":"addr:RandomPoolLib"}}
             ]
         }
     ]
