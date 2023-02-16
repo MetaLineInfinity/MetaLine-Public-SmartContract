@@ -16,6 +16,7 @@ export class Init_MysteryBox
         let HeroNFTCodec_V1 = ContractInfo.getContract("HeroNFTCodec_V1");
         let HeroNFTMysteryBox = ContractInfo.getContract("HeroNFTMysteryBox");
         let HeroNFTMysteryBoxRandSource = ContractInfo.getContract("HeroNFTMysteryBoxRandSource");
+        let HeroPetNFTMysteryBoxRandSource = ContractInfo.getContract("HeroPetNFTMysteryBoxRandSource");
 
         logtools.loggreen("--init random contract");
         let ORACLE_ROLE = await ContractTool.CallView(Random, "ORACLE_ROLE", []);
@@ -29,6 +30,7 @@ export class Init_MysteryBox
 
         //await ContractTool.CallState(HeroNFT, "grantRole", [DATA_ROLE, addrtool.addr0]);
         await ContractTool.CallState(HeroNFT, "grantRole", [MINTER_ROLE, "addr:HeroNFTMysteryBoxRandSource"]);
+        await ContractTool.CallState(HeroNFT, "grantRole", [MINTER_ROLE, "addr:HeroPetNFTMysteryBoxRandSource"]);
         await ContractTool.CallState(HeroNFT,"setCodec",["addr:HeroNFTCodec_V1"]);
         await ContractTool.CallState(HeroNFT,"setAttrSource",["addr:HeroNFTAttrSource_V1"]);
        
@@ -43,6 +45,7 @@ export class Init_MysteryBox
         let addr= await ContractTool.CallView(HeroNFTMysteryBox,"getNftAddress",[]);
         logtools.loggreen("mystery box 1155 contract addr="+addr);
         await  ContractTool.CallState(HeroNFTMysteryBox,"setRandomSource",[1,"addr:HeroNFTMysteryBoxRandSource"]);
+        await  ContractTool.CallState(HeroNFTMysteryBox,"setRandomSource",[2,"addr:HeroPetNFTMysteryBoxRandSource"]);
 
         let RAND_ROLE = await ContractTool.CallView(HeroNFTMysteryBox, "RAND_ROLE", []);
         await ContractTool.CallState(HeroNFTMysteryBox, "grantRole", [RAND_ROLE, "addr:Random"]);
@@ -50,6 +53,9 @@ export class Init_MysteryBox
         // pause mystery box
         //await ContractTool.CallState(HeroNFTMysteryBox, "pause", []);
 
+        await ContractTool.CallState(HeroNFTMysteryBoxRandSource, "setRandSource",["addr:Random"]);
+        await ContractTool.CallState(HeroNFTMysteryBoxRandSource, "grantRole", [MINTER_ROLE, "addr:HeroNFTMysteryBox"]);
+        
         await ContractTool.CallState(HeroNFTMysteryBoxRandSource, "setRandSource",["addr:Random"]);
         await ContractTool.CallState(HeroNFTMysteryBoxRandSource, "grantRole", [MINTER_ROLE, "addr:HeroNFTMysteryBox"]);
 

@@ -3,9 +3,9 @@
 
 pragma solidity ^0.8.0;
 
-import "./utility/ResetableCounters.sol";
+import "../utility/ResetableCounters.sol";
+import "../core/ExtendableNFT.sol";
 
-import "./core/ExtendableNFT.sol";
 import "./HeroNFTCodec.sol";
 
 /**
@@ -39,10 +39,11 @@ contract HeroNFT is ExtendableNFT {
     {
        _tokenIdTracker.reset(idStart);
 
-        mint(_msgSender(), HeroNFTDataBase({
-            fixedData:0,
-            writeableData:0
-        })); // mint first token to notify event scan
+        // mint(_msgSender(), HeroNFTDataBase({
+        //     nftType:0,
+        //     fixedData:0,
+        //     writeableData:0
+        // })); // mint first token to notify event scan
         
        _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
        _setupRole(DATA_ROLE, _msgSender());

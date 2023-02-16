@@ -3,10 +3,10 @@
 
 pragma solidity ^0.8.0;
 
+import "../mysterybox/MBRandomSourceBase.sol";
+
 import "./HeroNFTCodec.sol";
 import "./HeroNFT.sol";
-import "./mysterybox/MBRandomSourceBase.sol";
-import "./mysterybox/MysteryBoxBase.sol";
 
 contract HeroNFTMysteryBoxRandSource is 
     MBRandomSourceBase
@@ -122,13 +122,5 @@ contract HeroNFTMysteryBoxRandSource is
 
             nfts[0].tokenIds[i] = newId;
         }
-    }
-}
-
-contract HeroNFTMysteryBox is MysteryBoxBase
-{    
-    function getName() external virtual override returns(string memory)
-    {
-        return "Hero NFT Mystery Box";
     }
 }
