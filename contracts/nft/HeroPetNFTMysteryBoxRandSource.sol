@@ -30,7 +30,7 @@ contract HeroPetNFTMysteryBoxRandSource is
 
         uint32[] storage poolIDArray = _mbRandomSets[mysteryTp];
 
-        require(poolIDArray.length == 11, "mb type config wrong");
+        require(poolIDArray.length == 9, "mb type config wrong");
 
         HeroNFTDataBase memory baseData = _getSingleRandHero(r, poolIDArray);
 
@@ -88,22 +88,12 @@ contract HeroPetNFTMysteryBoxRandSource is
         require(pool.exist, "grade pool not exist");
         avatar_slot_5_6 |= uint8(pool.randPool.random(r));
 
-        r = _rand.nextRand(++index, r);
-        pool = _randPools[poolIDArray[7]]; // index 7 : avatar slot 7 rand (1-10)
-        require(pool.exist, "grade pool not exist");
-        uint8 avatar_slot_7_8 = uint8(pool.randPool.random(r)) << 4;
-        
-        r = _rand.nextRand(++index, r);
-        pool = _randPools[poolIDArray[8]]; // index 8 : avatar slot 8 rand (1-10)
-        require(pool.exist, "grade pool not exist");
-        avatar_slot_7_8 |= uint8(pool.randPool.random(r));
-
-        pool = _randPools[poolIDArray[9]]; // index 9 : mineAttr rand
+        pool = _randPools[poolIDArray[7]]; // index 7 : mineAttr rand
         r = _rand.nextRand(++index, r);
         require(pool.exist, "mineAttr pool not exist");
         uint16 mineAttr = uint8(pool.randPool.random(r));
 
-        pool = _randPools[poolIDArray[10]]; // index 10 : battleAttr rand
+        pool = _randPools[poolIDArray[8]]; // index 8 : battleAttr rand
         r = _rand.nextRand(++index, r);
         require(pool.exist, "battleAttr pool not exist");
         uint16 battleAttr = uint8(pool.randPool.random(r));
@@ -113,7 +103,6 @@ contract HeroPetNFTMysteryBoxRandSource is
             avatar_slot_1_2 : avatar_slot_1_2,
             avatar_slot_3_4 : avatar_slot_3_4,
             avatar_slot_5_6 : avatar_slot_5_6,
-            avatar_slot_7_8 : avatar_slot_7_8,
             minerAttr : mineAttr,
             battleAttr : battleAttr
         });
@@ -129,7 +118,7 @@ contract HeroPetNFTMysteryBoxRandSource is
 
         uint32[] storage poolIDArray = _mbRandomSets[mysteryTp];
 
-        require(poolIDArray.length == 11, "mb type config wrong");
+        require(poolIDArray.length == 9, "mb type config wrong");
 
         nfts = new MBContentMinterNftInfo[](1); // 1 nft
         sfts = new MBContentMinter1155Info[](0); // no sft record

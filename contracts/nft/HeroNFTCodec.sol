@@ -32,7 +32,6 @@ struct HeroPetNFTFixedData_V1 {
     uint8 avatar_slot_1_2;
     uint8 avatar_slot_3_4;
     uint8 avatar_slot_5_6;
-    uint8 avatar_slot_7_8;
 
     uint16 minerAttr;
     uint16 battleAttr;
@@ -137,9 +136,8 @@ contract HeroNFTCodec_V1 is IHeroNFTCodec_V1 {
             (uint240(data.avatar_slot_1_2) << 8) |
             (uint240(data.avatar_slot_3_4) << (8 + 8)) |
             (uint240(data.avatar_slot_5_6) << (8 + 8 + 8)) |
-            (uint240(data.avatar_slot_7_8) << (8 + 8 + 8 + 8)) |
-            (uint240(data.minerAttr) << (8 + 8 + 8 + 8 + 8)) |
-            (uint240(data.battleAttr) << (8 + 8 + 8 + 8 + 8 + 16));
+            (uint240(data.minerAttr) << (8 + 8 + 8 + 8)) |
+            (uint240(data.battleAttr) << (8 + 8 + 8 + 8 + 16));
 
         basedata.writeableData = 0;
     }
@@ -185,9 +183,8 @@ contract HeroNFTCodec_V1 is IHeroNFTCodec_V1 {
         hndata.avatar_slot_1_2 = uint8((data.fixedData >> 8) & 0xff);
         hndata.avatar_slot_3_4 = uint8((data.fixedData >> (8 + 8)) & 0xff);
         hndata.avatar_slot_5_6 = uint8((data.fixedData >> (8 + 8 + 8)) & 0xff);
-        hndata.avatar_slot_7_8 = uint8((data.fixedData >> (8 + 8 + 8 + 8)) & 0xff);
-        hndata.minerAttr = uint16((data.fixedData >> (8 + 8 + 8 + 8 + 8)) & 0xffff);
-        hndata.battleAttr = uint16((data.fixedData >> (8 + 8 + 8 + 8 + 8 + 16)) & 0xffff);
+        hndata.minerAttr = uint16((data.fixedData >> (8 + 8 + 8 + 8)) & 0xffff);
+        hndata.battleAttr = uint16((data.fixedData >> (8 + 8 + 8 + 8 + 16)) & 0xffff);
     }
 
     function getHeroNftWriteableData(HeroNFTDataBase memory data) 
