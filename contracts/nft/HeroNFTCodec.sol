@@ -8,8 +8,9 @@ pragma solidity ^0.8.0;
  */
 struct HeroNFTDataBase
 {
+    uint8 mintType; // = 0 normal mint, = 1: genesis mint
     uint16 nftType; // = 1: hero nft, = 2: pet nft
-    uint240 fixedData;
+    uint232 fixedData;
     uint256 writeableData;
 }
 
@@ -114,14 +115,15 @@ contract HeroNFTCodec_V1 is IHeroNFTCodec_V1 {
         override
         returns (HeroNFTDataBase memory basedata)
     {
-        basedata.nftType = 1;
         basedata.fixedData =
-            uint240(data.job) |
-            (uint240(data.grade) << 8) |
-            (uint240(data.minerAttr) << (8 + 8)) |
-            (uint240(data.battleAttr) << (8 + 8 + 16));
+            uint232(data.job) |
+            (uint232(data.grade) << 8) |
+            (uint232(data.minerAttr) << (8 + 8)) |
+            (uint232(data.battleAttr) << (8 + 8 + 16));
 
-        basedata.writeableData = 0;
+        basedata.nftType = 1;
+        //basedata.mintType = 0;
+        //basedata.writeableData = 0;
     }
     
     function fromHeroPetNftFixedData(HeroPetNFTFixedData_V1 memory data)
@@ -130,16 +132,17 @@ contract HeroNFTCodec_V1 is IHeroNFTCodec_V1 {
         override
         returns (HeroNFTDataBase memory basedata)
     {
-        basedata.nftType = 2;
         basedata.fixedData =
-            uint240(data.petId) |
-            (uint240(data.avatar_slot_1_2) << 8) |
-            (uint240(data.avatar_slot_3_4) << (8 + 8)) |
-            (uint240(data.avatar_slot_5_6) << (8 + 8 + 8)) |
-            (uint240(data.minerAttr) << (8 + 8 + 8 + 8)) |
-            (uint240(data.battleAttr) << (8 + 8 + 8 + 8 + 16));
+            uint232(data.petId) |
+            (uint232(data.avatar_slot_1_2) << 8) |
+            (uint232(data.avatar_slot_3_4) << (8 + 8)) |
+            (uint232(data.avatar_slot_5_6) << (8 + 8 + 8)) |
+            (uint232(data.minerAttr) << (8 + 8 + 8 + 8)) |
+            (uint232(data.battleAttr) << (8 + 8 + 8 + 8 + 16));
 
-        basedata.writeableData = 0;
+        basedata.nftType = 2;
+        //basedata.mintType = 0;
+        //basedata.writeableData = 0;
     }
 
     function fromHeroNftFixedAnWriteableData(HeroNFTFixedData_V1 memory fdata, HeroNFTWriteableData_V1 memory wdata) 
@@ -148,17 +151,19 @@ contract HeroNFTCodec_V1 is IHeroNFTCodec_V1 {
         override 
         returns (HeroNFTDataBase memory basedata)
     {
-        basedata.nftType = 1;
         basedata.fixedData =
-            uint240(fdata.job) |
-            (uint240(fdata.grade) << 8) |
-            (uint240(fdata.minerAttr) << (8 + 8)) |
-            (uint240(fdata.battleAttr) << (8 + 8 + 16));
+            uint232(fdata.job) |
+            (uint232(fdata.grade) << 8) |
+            (uint232(fdata.minerAttr) << (8 + 8)) |
+            (uint232(fdata.battleAttr) << (8 + 8 + 16));
 
         basedata.writeableData = 
-            (uint256(wdata.starLevel)) |
-            (uint256(wdata.level << 8)) |
-            (uint256(wdata.exp << (8 + 16)));
+            (uint232(wdata.starLevel)) |
+            (uint232(wdata.level << 8)) |
+            (uint232(wdata.exp << (8 + 16)));
+            
+        //basedata.mintType = 0;
+        basedata.nftType = 1;
     }
 
     function getHeroNftFixedData(HeroNFTDataBase memory data)
