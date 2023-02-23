@@ -78,8 +78,15 @@
             ]
         },
         {
-            "group":"mysterybox",
+            "group":"mysteryboxShopV1",
             "gen":2,
+            "contracts":[
+                {"name":"MysteryBoxShopV1","deployer":"deployer","args":[]}
+            ]
+        },
+        {
+            "group":"mysterybox",
+            "gen":3,
             "contracts":[
                 {"name":"RandomPoolLib","deployer":"deployer","args":[]},
                 {"name":"Random","deployer":"deployer","args":[]},
