@@ -331,39 +331,41 @@ contract MysteryBoxShopV1 is
 
             realPrice = _checkDiscount(realPrice, realCount, onSalePair);
 
-            if(onSalePair.tokenAddr == address(0)){
-                require(msg.value >= realPrice, "MysteryBoxShop: insufficient value");
+            if(realPrice > 0){
+                if(onSalePair.tokenAddr == address(0)){
+                    require(msg.value >= realPrice, "MysteryBoxShop: insufficient value");
 
-                // receive eth
-                (bool sent, ) = _receiveIncomAddress.call{value:msg.value}("");
-                require(sent, "MysteryBoxShop: transfer income error");
-            }
-            else if(onSalePair.tokenId > 0)
-            {
-                // 1155
-                require(IERC1155(onSalePair.tokenAddr).balanceOf( _msgSender(), onSalePair.tokenId) >= realPrice , "MysteryBoxShop: erc1155 insufficient token");
+                    // receive eth
+                    (bool sent, ) = _receiveIncomAddress.call{value:msg.value}("");
+                    require(sent, "MysteryBoxShop: transfer income error");
+                }
+                else if(onSalePair.tokenId > 0)
+                {
+                    // 1155
+                    require(IERC1155(onSalePair.tokenAddr).balanceOf( _msgSender(), onSalePair.tokenId) >= realPrice , "MysteryBoxShop: erc1155 insufficient token");
 
-                // if(onSalePair.isBurn) {
-                //     // burn
-                //     ERC1155Burnable(onSalePair.tokenAddr).burn(_msgSender(), onSalePair.tokenId, realPrice);
-                // }
-                //else {
-                    // charge
-                    IERC1155(onSalePair.tokenAddr).safeTransferFrom(_msgSender(), address(this), onSalePair.tokenId, realPrice, "buy mb");
-                //}
-            }
-            else{
-                // 20
-                require(IERC20(onSalePair.tokenAddr).balanceOf(_msgSender()) >= realPrice , "MysteryBoxShop: erc20 insufficient token");
+                    // if(onSalePair.isBurn) {
+                    //     // burn
+                    //     ERC1155Burnable(onSalePair.tokenAddr).burn(_msgSender(), onSalePair.tokenId, realPrice);
+                    // }
+                    //else {
+                        // charge
+                        IERC1155(onSalePair.tokenAddr).safeTransferFrom(_msgSender(), address(this), onSalePair.tokenId, realPrice, "buy mb");
+                    //}
+                }
+                else{
+                    // 20
+                    require(IERC20(onSalePair.tokenAddr).balanceOf(_msgSender()) >= realPrice , "MysteryBoxShop: erc20 insufficient token");
 
-                // if(onSalePair.isBurn) {
-                //     // burn
-                //     ERC20Burnable(onSalePair.tokenAddr).burnFrom(_msgSender(), realPrice);
-                // }
-                //else {
-                    // charge
-                    TransferHelper.safeTransferFrom(onSalePair.tokenAddr, _msgSender(), address(this), realPrice);
-                //}
+                    // if(onSalePair.isBurn) {
+                    //     // burn
+                    //     ERC20Burnable(onSalePair.tokenAddr).burnFrom(_msgSender(), realPrice);
+                    // }
+                    //else {
+                        // charge
+                        TransferHelper.safeTransferFrom(onSalePair.tokenAddr, _msgSender(), address(this), realPrice);
+                    //}
+                }
             }
         }
 
