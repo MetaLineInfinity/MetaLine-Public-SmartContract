@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Mateline Contracts (Random.sol)
+// Metaline Contracts (Random.sol)
 
 pragma solidity ^0.8.0;
 

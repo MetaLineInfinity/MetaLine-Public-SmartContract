@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Mateline Contracts (HeroNFTAttrSource.sol)
+// Metaline Contracts (HeroNFTAttrSource.sol)
 
 pragma solidity ^0.8.0;
 

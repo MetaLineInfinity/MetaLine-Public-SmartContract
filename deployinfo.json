@@ -78,15 +78,22 @@
             ]
         },
         {
-            "group":"mysteryboxShopV1",
+            "group":"MTT",
             "gen":2,
+            "contracts":[
+                {"name":"MTT","deployer":"deployer","args":[]}
+            ]
+        },
+        {
+            "group":"mysteryboxShopV1",
+            "gen":3,
             "contracts":[
                 {"name":"MysteryBoxShopV1","deployer":"deployer","args":[]}
             ]
         },
         {
             "group":"mysterybox",
-            "gen":3,
+            "gen":4,
             "contracts":[
                 {"name":"RandomPoolLib","deployer":"deployer","args":[]},
                 {"name":"Random","deployer":"deployer","args":[]},

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Mateline Contracts (GasFeeCharger.sol)
+// Metaline Contracts (GasFeeCharger.sol)
 
 pragma solidity ^0.8.0;
 

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Mateline Contracts (ExtendableNFT.sol)
+// Metaline Contracts (ExtendableNFT.sol)
 
 pragma solidity ^0.8.0;
 

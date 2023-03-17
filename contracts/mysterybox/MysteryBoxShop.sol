@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Mateline Contracts (MysteryBoxShop.sol)
+// Metaline Contracts (MysteryBoxShop.sol)
 
 pragma solidity ^0.8.0;
 
