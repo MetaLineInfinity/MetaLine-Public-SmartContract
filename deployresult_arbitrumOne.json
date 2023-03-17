@@ -103,7 +103,7 @@
   },
   "MTT": {
    "deployer": "0x14285A715A0d0C41Be39C47Df891E998824Bcb0A",
-   "addr": "0x575cbea5Ad6356610541211a54253c0ECaF5cD71",
+   "addr": "0xb8aFDF7c10D21ab4a98e08B857aEe752F2644e3E",
    "abi": [
     "constructor()",
     "event Approval(address indexed owner, address indexed spender, uint256 value)",

@@ -9,7 +9,7 @@ import "./core/CappedERC20.sol";
 contract MTT is CappedERC20 {
 
     constructor()
-        CappedERC20("Metaline Token", "MTT", 300000000000000000000000000)
+        CappedERC20("MetaLine Token", "MTT", 300000000000000000000000000)
     {
 
     }
