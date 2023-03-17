@@ -102,44 +102,25 @@
    ]
   },
   "MTT": {
-   "deployer": "0x9a9D8832534A9DC2efCf99B5f14C8C66F6317027",
-   "addr": "0xd4f193d3dca661e54Af44DE1538414f7A2d08e05",
+   "deployer": "0x14285A715A0d0C41Be39C47Df891E998824Bcb0A",
+   "addr": "0x575cbea5Ad6356610541211a54253c0ECaF5cD71",
    "abi": [
     "constructor()",
     "event Approval(address indexed owner, address indexed spender, uint256 value)",
-    "event Paused(address account)",
-    "event RoleAdminChanged(bytes32 indexed role, bytes32 indexed previousAdminRole, bytes32 indexed newAdminRole)",
-    "event RoleGranted(bytes32 indexed role, address indexed account, address indexed sender)",
-    "event RoleRevoked(bytes32 indexed role, address indexed account, address indexed sender)",
     "event Transfer(address indexed from, address indexed to, uint256 value)",
-    "event Unpaused(address account)",
-    "function DEFAULT_ADMIN_ROLE() view returns (bytes32)",
-    "function MINTER_ROLE() view returns (bytes32)",
-    "function PAUSER_ROLE() view returns (bytes32)",
     "function allowance(address owner, address spender) view returns (uint256)",
     "function approve(address spender, uint256 amount) returns (bool)",
     "function balanceOf(address account) view returns (uint256)",
     "function burn(uint256 amount)",
     "function burnFrom(address account, uint256 amount)",
-    "function cap() view returns (uint256)",
     "function decimals() view returns (uint8)",
     "function decreaseAllowance(address spender, uint256 subtractedValue) returns (bool)",
-    "function getRoleAdmin(bytes32 role) view returns (bytes32)",
-    "function grantRole(bytes32 role, address account)",
-    "function hasRole(bytes32 role, address account) view returns (bool)",
     "function increaseAllowance(address spender, uint256 addedValue) returns (bool)",
-    "function mint(address account, uint256 amount)",
     "function name() view returns (string)",
-    "function pause()",
-    "function paused() view returns (bool)",
-    "function renounceRole(bytes32 role, address account)",
-    "function revokeRole(bytes32 role, address account)",
-    "function supportsInterface(bytes4 interfaceId) view returns (bool)",
     "function symbol() view returns (string)",
     "function totalSupply() view returns (uint256)",
     "function transfer(address to, uint256 amount) returns (bool)",
-    "function transferFrom(address from, address to, uint256 amount) returns (bool)",
-    "function unpause()"
+    "function transferFrom(address from, address to, uint256 amount) returns (bool)"
    ]
   }
  }
