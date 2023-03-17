@@ -52,11 +52,15 @@ contract MysteryBoxShopV1 is
         uint256 countLeft; // how many boxies left
     }
 
-    struct DiscountAddress {
+    struct DiscountInfo {
         uint16 discount; // discountPrice = price * discount / 10000;
         uint32 maxCount; // must > 0, max buyin discount mb allowed
+    }
 
-        mapping(address=>bool) addrmap; // is in discount address list
+    struct DiscountInfoWithAddress {
+        uint16 discount; // discountPrice = price * discount / 10000;
+        uint32 maxCount; // must > 0, max buyin discount mb allowed
+        address addr; // discount addr
     }
 
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
@@ -84,7 +88,7 @@ contract MysteryBoxShopV1 is
     address public _receiveIncomAddress;
 
     mapping(uint32=>mapping(address=>bool)) public _whitelists;
-    mapping(uint32=>DiscountAddress) public _discountAddress;
+    mapping(uint32=>mapping(address=>DiscountInfo)) public _discountAddress;
     mapping(uint32=>mapping(address=>uint32)) public _discountBuyCount;
 
     constructor() {
@@ -124,48 +128,41 @@ contract MysteryBoxShopV1 is
         }
     }
     
-    function addDiscountAddress(uint32 daId, uint16 discount, uint32 maxCount, address[] memory discountAddrList) external {
+    function addDiscountAddress(uint32 daId, DiscountInfoWithAddress[] memory discountAddrList) external {
         require(hasRole(MANAGER_ROLE, _msgSender()), "MysteryBoxShop: must have manager role to manage");
-        require(discount<10000, "MysteryBoxShop: discount overflow");
 
-        DiscountAddress storage da = _discountAddress[daId];
-        da.discount = discount;
-        da.maxCount = maxCount;
+        mapping(address=>DiscountInfo) storage da = _discountAddress[daId];
 
         for(uint i=0; i< discountAddrList.length; ++i){
-            da.addrmap[discountAddrList[i]] = true;
+            require(discountAddrList[i].discount<10000, "MysteryBoxShop: discount overflow");
+            da[discountAddrList[i].addr].discount = discountAddrList[i].discount;
+            da[discountAddrList[i].addr].maxCount = discountAddrList[i].maxCount;
         }
     }
 
     function removeDiscountAddress(uint32 daId, address[] memory discountAddrList) external {
         require(hasRole(MANAGER_ROLE, _msgSender()), "MysteryBoxShop: must have manager role to manage");
 
-        DiscountAddress storage da = _discountAddress[daId];
+        mapping(address=>DiscountInfo) storage da = _discountAddress[daId];
 
         for(uint i=0; i< discountAddrList.length; ++i){
-            delete da.addrmap[discountAddrList[i]];
+            delete da[discountAddrList[i]];
         }
     }
 
-    function getDiscountInfo(uint32 daId) external view returns(uint16 discount, uint32 maxCount) {
-        DiscountAddress storage da = _discountAddress[daId];
-        discount = da.discount;
-        maxCount = da.maxCount;
+    function getDiscountInfo(uint32 daId, address addr) external view returns(uint16 discount, uint32 maxCount) {
+        mapping(address=>DiscountInfo) storage da = _discountAddress[daId];
+        discount = da[addr].discount;
+        maxCount = da[addr].maxCount;
     }
 
     function isDiscountAddress(uint32 daId, address addr) external view returns(bool){
-        DiscountAddress storage da = _discountAddress[daId];
-        return da.addrmap[addr];
+        mapping(address=>DiscountInfo) storage da = _discountAddress[daId];
+        return (da[addr].maxCount > 0);
     }
 
     function getDiscountCountLeft(uint32 daId, address addr) external view returns(uint32) {
         return _discountBuyCount[daId][addr];
-    }
-
-    function clearDiscountAddress(uint32 daId) external {
-        require(hasRole(MANAGER_ROLE, _msgSender()), "MysteryBoxShop: must have manager role to manage");
-
-        delete _discountAddress[daId];
     }
 
     function setOnSaleMysteryBox(string calldata pairName, OnSaleMysterBox memory saleConfig, OnSaleMysterBoxRunTime memory saleData) external whenNotPaused {
@@ -266,12 +263,9 @@ contract MysteryBoxShopV1 is
         }
         
         // check discount
-        DiscountAddress storage discountAddr = _discountAddress[onSalePair.discountId];
+        mapping(address=>DiscountInfo) storage da = _discountAddress[onSalePair.discountId];
+        DiscountInfo storage discountAddr = da[_msgSender()];
         if(discountAddr.maxCount == 0) {
-            return realPrice;
-        }
-
-        if(!discountAddr.addrmap[_msgSender()]) {
             return realPrice;
         }
         
