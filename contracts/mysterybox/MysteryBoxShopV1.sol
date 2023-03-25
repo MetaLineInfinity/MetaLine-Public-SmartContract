@@ -161,7 +161,7 @@ contract MysteryBoxShopV1 is
         return (da[addr].maxCount > 0);
     }
 
-    function getDiscountCountLeft(uint32 daId, address addr) external view returns(uint32) {
+    function getDiscountCountBuyCount(uint32 daId, address addr) external view returns(uint32) {
         return _discountBuyCount[daId][addr];
     }
 
@@ -256,21 +256,19 @@ contract MysteryBoxShopV1 is
         }
     }
 
-    function _checkDiscountCount(OnSaleMysterBox storage onSalePair) internal view returns(uint256) {
+    function _isDiscountExist(OnSaleMysterBox storage onSalePair) internal view returns(bool) {
         if(onSalePair.discountId == 0){
-            return 0;
+            return false;
         }
         
         // check discount
         mapping(address=>DiscountInfo) storage da = _discountAddress[onSalePair.discountId];
         DiscountInfo storage discountAddr = da[_msgSender()];
         if(discountAddr.maxCount == 0) {
-            return 0;
+            return false;
         }
         
-        uint32 discountCount = _discountBuyCount[onSalePair.discountId][_msgSender()];
-
-        return discountAddr.maxCount - discountCount;
+        return true;
     }
 
     function _checkDiscount(uint256 realPrice, uint256 realCount, OnSaleMysterBox storage onSalePair) internal returns(uint256) {
@@ -316,7 +314,7 @@ contract MysteryBoxShopV1 is
             realCount = onSalePairData.countLeft;
         }
         
-        if(_checkDiscountCount(onSalePair) == 0 && onSalePair.perAddrLimit > 0)
+        if(!_isDiscountExist(onSalePair) && onSalePair.perAddrLimit > 0)
         {
             uint32 buyCount = _perAddrBuyCount[pairName][_msgSender()];
             uint32 buyCountLeft = (onSalePair.perAddrLimit > buyCount)? (onSalePair.perAddrLimit - buyCount) : 0;

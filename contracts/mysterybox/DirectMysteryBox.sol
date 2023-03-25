@@ -14,7 +14,7 @@ import "../utility/GasFeeCharger.sol";
 
 import "./MBRandomSourceBase.sol";
 
-abstract contract DirectMysteryBox is 
+contract DirectMysteryBox is 
     Context,
     Pausable,
     AccessControl,
@@ -82,9 +82,7 @@ abstract contract DirectMysteryBox is
         _setupRole(RAND_ROLE, _msgSender());
     }
 
-    function getName() public virtual returns(string memory);
-
-    function pause() public virtual {
+    function pause() public {
         require(
             hasRole(PAUSER_ROLE, _msgSender()),
             "DirectMysteryBox: must have pauser role to pause"
@@ -92,7 +90,7 @@ abstract contract DirectMysteryBox is
         _pause();
     }
 
-    function unpause() public virtual {
+    function unpause() public {
         require(
             hasRole(PAUSER_ROLE, _msgSender()),
             "DirectMysteryBox: must have pauser role to unpause"
