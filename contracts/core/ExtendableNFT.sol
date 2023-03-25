@@ -180,9 +180,9 @@ contract ExtendableNFT is ERC721PresetMinterPauserAutoId {
     * @dev emit when token has been freezed or unfreeze
 
     * @param tokenId freezed token id
-    * @param freeze freezed or not
+    * @param freezeRef freezed ref count
     */
-    event NFTFreeze(uint256 indexed tokenId, bool freeze);
+    event NFTFreeze(uint256 indexed tokenId, int32 freezeRef);
     
     /**
     * @dev emit when new data section created
@@ -212,7 +212,7 @@ contract ExtendableNFT is ERC721PresetMinterPauserAutoId {
         mapping(uint256 => bytes) ExtendDatas; // tokenid => data mapping
     }
 
-    mapping(uint256 => bool) private _nftFreezed; // tokenid => is freezed
+    mapping(uint256 => int32) private _nftFreezed; // tokenid => freezed ref
     mapping(uint256 => NFTExtendsNames) private _nftExtendNames; // tokenid => extended data sections
     mapping(bytes32 => NFTExtendData) private _nftExtendDataMap; // extend name => extend datas mapping
 
@@ -235,9 +235,9 @@ contract ExtendableNFT is ERC721PresetMinterPauserAutoId {
     function freeze(uint256 tokenId) external {
         require(hasRole(FREEZE_ROLE, _msgSender()), "R2");
 
-        _nftFreezed[tokenId] = true;
+        _nftFreezed[tokenId]++;
 
-        emit NFTFreeze(tokenId, true);
+        emit NFTFreeze(tokenId, _nftFreezed[tokenId]);
     }
 
     /**
@@ -251,9 +251,12 @@ contract ExtendableNFT is ERC721PresetMinterPauserAutoId {
     function unfreeze(uint256 tokenId) external {
         require(hasRole(FREEZE_ROLE, _msgSender()), "R3");
 
-        delete _nftFreezed[tokenId];
+        --_nftFreezed[tokenId];
+        if(_nftFreezed[tokenId] <= 0){
+            delete _nftFreezed[tokenId];
+        }
 
-        emit NFTFreeze(tokenId, false);
+        emit NFTFreeze(tokenId, _nftFreezed[tokenId]);
     }
 
     /**
@@ -263,7 +266,7 @@ contract ExtendableNFT is ERC721PresetMinterPauserAutoId {
     * @return ture if token is not freezed
     */
     function notFreezed(uint256 tokenId) public view returns (bool) {
-        return !_nftFreezed[tokenId];
+        return _nftFreezed[tokenId] <= 0;
     }
 
     /**
@@ -273,7 +276,7 @@ contract ExtendableNFT is ERC721PresetMinterPauserAutoId {
     * @return ture if token is freezed
     */
     function isFreezed(uint256 tokenId) public view returns (bool) {
-        return _nftFreezed[tokenId];
+        return _nftFreezed[tokenId] > 0;
     }
 
     /**
