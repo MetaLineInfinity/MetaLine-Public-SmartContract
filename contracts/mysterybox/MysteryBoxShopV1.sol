@@ -346,8 +346,12 @@ contract MysteryBoxShopV1 is
                     require(msg.value >= realPrice, "MysteryBoxShop: insufficient value");
 
                     // receive eth
-                    (bool sent, ) = _receiveIncomAddress.call{value:msg.value}("");
+                    (bool sent, ) = _receiveIncomAddress.call{value:realPrice}("");
                     require(sent, "MysteryBoxShop: transfer income error");
+                    if(msg.value > realPrice){
+                        (sent, ) = msg.sender.call{value:(msg.value - realPrice)}(""); // send back
+                        require(sent, "MysteryBoxShop: transfer income error");
+                    }
                 }
                 else if(onSalePair.tokenId > 0)
                 {
@@ -360,7 +364,7 @@ contract MysteryBoxShopV1 is
                     // }
                     //else {
                         // charge
-                        IERC1155(onSalePair.tokenAddr).safeTransferFrom(_msgSender(), address(this), onSalePair.tokenId, realPrice, "buy mb");
+                        IERC1155(onSalePair.tokenAddr).safeTransferFrom(_msgSender(), _receiveIncomAddress, onSalePair.tokenId, realPrice, "buy mb");
                     //}
                 }
                 else{
@@ -373,7 +377,7 @@ contract MysteryBoxShopV1 is
                     // }
                     //else {
                         // charge
-                        TransferHelper.safeTransferFrom(onSalePair.tokenAddr, _msgSender(), address(this), realPrice);
+                        TransferHelper.safeTransferFrom(onSalePair.tokenAddr, _msgSender(), _receiveIncomAddress, realPrice);
                     //}
                 }
             }
