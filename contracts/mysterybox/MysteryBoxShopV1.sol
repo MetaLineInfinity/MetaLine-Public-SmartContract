@@ -256,8 +256,24 @@ contract MysteryBoxShopV1 is
         }
     }
 
-    function _checkDiscount(uint256 realPrice, uint256 realCount, OnSaleMysterBox storage onSalePair) internal returns(uint256) {
+    function _checkDiscountCount(OnSaleMysterBox storage onSalePair) internal view returns(uint256) {
+        if(onSalePair.discountId == 0){
+            return 0;
+        }
+        
+        // check discount
+        mapping(address=>DiscountInfo) storage da = _discountAddress[onSalePair.discountId];
+        DiscountInfo storage discountAddr = da[_msgSender()];
+        if(discountAddr.maxCount == 0) {
+            return 0;
+        }
+        
+        uint32 discountCount = _discountBuyCount[onSalePair.discountId][_msgSender()];
 
+        return discountAddr.maxCount - discountCount;
+    }
+
+    function _checkDiscount(uint256 realPrice, uint256 realCount, OnSaleMysterBox storage onSalePair) internal returns(uint256) {
         if(onSalePair.discountId == 0){
             return realPrice;
         }
@@ -299,8 +315,8 @@ contract MysteryBoxShopV1 is
         {
             realCount = onSalePairData.countLeft;
         }
-
-        if(onSalePair.perAddrLimit > 0)
+        
+        if(_checkDiscountCount(onSalePair) == 0 && onSalePair.perAddrLimit > 0)
         {
             uint32 buyCount = _perAddrBuyCount[pairName][_msgSender()];
             uint32 buyCountLeft = (onSalePair.perAddrLimit > buyCount)? (onSalePair.perAddrLimit - buyCount) : 0;
