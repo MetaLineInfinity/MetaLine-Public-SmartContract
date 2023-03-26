@@ -159,67 +159,176 @@ export class Init_MysteryBoxShopV1
 
         let saleconfig1=[
             mb1155Addr, 
-            '4294967297',  // mb token id
+            '8589934603',  // mb token id
 
             zeroaddr,  // charge token id, 0:eth
             0,  // 1155 token id
-            '32000000000000000', // price
+            '1000000000000000', // price
 
-            '1676462400', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+            '0', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
 
             1,  // whiteListId
             zeroaddr, // nft holder check
             1, // perLimit
-            1 // discountId
+            1, // discountId
+        ];
+        let saleconfig2=[
+            mb1155Addr, 
+            '8589934604',  // mb token id
+
+            zeroaddr,  // charge token id, 0:eth
+            0,  // 1155 token id
+            '1000000000000000', // price
+
+            '0', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+
+            1,  // whiteListId
+            zeroaddr, // nft holder check
+            1, // perLimit
+            1, // discountId
+        ];
+        let saleconfig3=[
+            mb1155Addr, 
+            '8589934605',  // mb token id
+
+            zeroaddr,  // charge token id, 0:eth
+            0,  // 1155 token id
+            '1000000000000000', // price
+
+            '0', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+
+            1,  // whiteListId
+            zeroaddr, // nft holder check
+            1, // perLimit
+            1, // discountId
+        ];
+        let saleconfig4=[
+            mb1155Addr, 
+            '8589934606',  // mb token id
+
+            zeroaddr,  // charge token id, 0:eth
+            0,  // 1155 token id
+            '1000000000000000', // price
+
+            '0', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+
+            1,  // whiteListId
+            zeroaddr, // nft holder check
+            1, // perLimit
+            1, // discountId
+        ];
+        let saleconfig5=[
+            mb1155Addr, 
+            '8589934607',  // mb token id
+
+            zeroaddr,  // charge token id, 0:eth
+            0,  // 1155 token id
+            '1000000000000000', // price
+
+            '0', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+
+            1,  // whiteListId
+            zeroaddr, // nft holder check
+            1, // perLimit
+            1, // discountId
         ];
         let saledata1=[
             0, // nextRenewTime
-            1600 // countLeft
+            880 // countLeft
         ];
+
         
-        let saleconfig2=[
+        let saleconfig6=[
             mb1155Addr, 
-            '4294967298',  // mb token id
+            '8589934603',  // mb token id
 
             zeroaddr,  // charge token id, 0:eth
             0,  // 1155 token id
-            '65000000000000000', // price
+            '1000000000000000', // price
 
-            '1676462400', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+            '0', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
 
-            1,  // whiteListId
+            2,  // whiteListId
             zeroaddr, // nft holder check
             1, // perLimit
-            1 // discountId
+            2, // discountId
+        ];
+        let saleconfig7=[
+            mb1155Addr, 
+            '8589934604',  // mb token id
+
+            zeroaddr,  // charge token id, 0:eth
+            0,  // 1155 token id
+            '1000000000000000', // price
+
+            '0', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+
+            2,  // whiteListId
+            zeroaddr, // nft holder check
+            1, // perLimit
+            2, // discountId
+        ];
+        let saleconfig8=[
+            mb1155Addr, 
+            '8589934605',  // mb token id
+
+            zeroaddr,  // charge token id, 0:eth
+            0,  // 1155 token id
+            '1000000000000000', // price
+
+            '0', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+
+            2,  // whiteListId
+            zeroaddr, // nft holder check
+            1, // perLimit
+            2, // discountId
+        ];
+        let saleconfig9=[
+            mb1155Addr, 
+            '8589934606',  // mb token id
+
+            zeroaddr,  // charge token id, 0:eth
+            0,  // 1155 token id
+            '1000000000000000', // price
+
+            '0', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+
+            2,  // whiteListId
+            zeroaddr, // nft holder check
+            1, // perLimit
+            2, // discountId
+        ];
+        let saleconfig10=[
+            mb1155Addr, 
+            '8589934607',  // mb token id
+
+            zeroaddr,  // charge token id, 0:eth
+            0,  // 1155 token id
+            '1000000000000000', // price
+
+            '0', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+
+            2,  // whiteListId
+            zeroaddr, // nft holder check
+            1, // perLimit
+            2, // discountId
         ];
         let saledata2=[
             0, // nextRenewTime
-            1300 // countLeft
-        ];
-        
-        let saleconfig3=[
-            mb1155Addr, 
-            '4294967299',  // mb token id
-
-            zeroaddr,  // charge token id, 0:eth
-            0,  // 1155 token id
-            '131000000000000000', // price
-
-            '1676462400', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
-
-            1,  // whiteListId
-            zeroaddr, // nft holder check
-            1, // perLimit
-            1 // discountId
-        ];
-        let saledata3=[
-            0, // nextRenewTime
-            600 // countLeft
+            120 // countLeft
         ];
 
         await ContractTool.CallState(MysteryBoxShopV1,"setOnSaleMysteryBox",["sale1",saleconfig1,saledata1]);
-        await ContractTool.CallState(MysteryBoxShopV1,"setOnSaleMysteryBox",["sale2",saleconfig2,saledata2]);
-        await ContractTool.CallState(MysteryBoxShopV1,"setOnSaleMysteryBox",["sale3",saleconfig3,saledata3]);
+        await ContractTool.CallState(MysteryBoxShopV1,"setOnSaleMysteryBox",["sale2",saleconfig2,saledata1]);
+        await ContractTool.CallState(MysteryBoxShopV1,"setOnSaleMysteryBox",["sale3",saleconfig3,saledata1]);
+        await ContractTool.CallState(MysteryBoxShopV1,"setOnSaleMysteryBox",["sale4",saleconfig4,saledata1]);
+        await ContractTool.CallState(MysteryBoxShopV1,"setOnSaleMysteryBox",["sale5",saleconfig5,saledata1]);
+        
+        await ContractTool.CallState(MysteryBoxShopV1,"setOnSaleMysteryBox",["sale6",saleconfig6,saledata2]);
+        await ContractTool.CallState(MysteryBoxShopV1,"setOnSaleMysteryBox",["sale7",saleconfig7,saledata2]);
+        await ContractTool.CallState(MysteryBoxShopV1,"setOnSaleMysteryBox",["sale8",saleconfig8,saledata2]);
+        await ContractTool.CallState(MysteryBoxShopV1,"setOnSaleMysteryBox",["sale9",saleconfig9,saledata2]);
+        await ContractTool.CallState(MysteryBoxShopV1,"setOnSaleMysteryBox",["sale10",saleconfig10,saledata2]);
 
         return true;
     }

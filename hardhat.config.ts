@@ -33,7 +33,7 @@ for (var i = 0; i < onlykeys.length; i++)
 
 const config: HardhatUserConfig = {
   solidity: {
-    version: "0.8.7",
+    version: "0.8.15",
     settings: {
       optimizer: {
         enabled: true,
