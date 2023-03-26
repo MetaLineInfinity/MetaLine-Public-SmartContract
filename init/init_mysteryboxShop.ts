@@ -163,9 +163,9 @@ export class Init_MysteryBoxShopV1
 
             zeroaddr,  // charge token id, 0:eth
             0,  // 1155 token id
-            '1000000000000000', // price
+            '33000000000000000', // price
 
-            '0', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+            '1679918400', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
 
             1,  // whiteListId
             zeroaddr, // nft holder check
@@ -178,9 +178,9 @@ export class Init_MysteryBoxShopV1
 
             zeroaddr,  // charge token id, 0:eth
             0,  // 1155 token id
-            '1000000000000000', // price
+            '33000000000000000', // price
 
-            '0', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+            '1679918400', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
 
             1,  // whiteListId
             zeroaddr, // nft holder check
@@ -193,9 +193,9 @@ export class Init_MysteryBoxShopV1
 
             zeroaddr,  // charge token id, 0:eth
             0,  // 1155 token id
-            '1000000000000000', // price
+            '33000000000000000', // price
 
-            '0', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+            '1679918400', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
 
             1,  // whiteListId
             zeroaddr, // nft holder check
@@ -208,9 +208,9 @@ export class Init_MysteryBoxShopV1
 
             zeroaddr,  // charge token id, 0:eth
             0,  // 1155 token id
-            '1000000000000000', // price
+            '33000000000000000', // price
 
-            '0', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+            '1679918400', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
 
             1,  // whiteListId
             zeroaddr, // nft holder check
@@ -223,9 +223,9 @@ export class Init_MysteryBoxShopV1
 
             zeroaddr,  // charge token id, 0:eth
             0,  // 1155 token id
-            '1000000000000000', // price
+            '33000000000000000', // price
 
-            '0', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+            '1679918400', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
 
             1,  // whiteListId
             zeroaddr, // nft holder check
@@ -244,9 +244,9 @@ export class Init_MysteryBoxShopV1
 
             zeroaddr,  // charge token id, 0:eth
             0,  // 1155 token id
-            '1000000000000000', // price
+            '33000000000000000', // price
 
-            '0', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+            '1679918400', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
 
             2,  // whiteListId
             zeroaddr, // nft holder check
@@ -259,9 +259,9 @@ export class Init_MysteryBoxShopV1
 
             zeroaddr,  // charge token id, 0:eth
             0,  // 1155 token id
-            '1000000000000000', // price
+            '33000000000000000', // price
 
-            '0', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+            '1679918400', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
 
             2,  // whiteListId
             zeroaddr, // nft holder check
@@ -274,9 +274,9 @@ export class Init_MysteryBoxShopV1
 
             zeroaddr,  // charge token id, 0:eth
             0,  // 1155 token id
-            '1000000000000000', // price
+            '33000000000000000', // price
 
-            '0', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+            '1679918400', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
 
             2,  // whiteListId
             zeroaddr, // nft holder check
@@ -289,9 +289,9 @@ export class Init_MysteryBoxShopV1
 
             zeroaddr,  // charge token id, 0:eth
             0,  // 1155 token id
-            '1000000000000000', // price
+            '33000000000000000', // price
 
-            '0', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+            '1679918400', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
 
             2,  // whiteListId
             zeroaddr, // nft holder check
@@ -304,9 +304,9 @@ export class Init_MysteryBoxShopV1
 
             zeroaddr,  // charge token id, 0:eth
             0,  // 1155 token id
-            '1000000000000000', // price
+            '33000000000000000', // price
 
-            '0', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+            '1679918400', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
 
             2,  // whiteListId
             zeroaddr, // nft holder check
