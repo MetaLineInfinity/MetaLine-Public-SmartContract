@@ -71,6 +71,7 @@ export class ContractInfo
         logtools.UpdateConfigFileName(hre);
         try
         {
+            logtools.log(`deploy result file:${logtools.configfile}`);
             let buffer = fs.readFileSync(logtools.configfile);
             let json = JSON.parse(buffer.toString());
 
@@ -91,10 +92,11 @@ export class ContractInfo
                 if (signer == null)
                     throw "error signer";
                 ContractInfo.contractinfos[key] = { address: addr, abi: abi, deployer: signer };
+                logtools.loggreen(`add contract[${key}]`);
             }
         }
-        catch {
-            logtools.logred("not file.");
+        catch(e) {
+            logtools.logred(`error:${e.message}, ${logtools.configfile}: not file.`);
         }
     }
     static async Deploy(hre: HardhatRuntimeEnvironment, name: string, option: DeployOptions): Promise<boolean>
