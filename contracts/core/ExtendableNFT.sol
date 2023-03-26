@@ -196,10 +196,10 @@ contract ExtendableNFT is ERC721PresetMinterPauserAutoId {
     * @dev emit when token data section changed
 
     * @param tokenId tokenid which data has been changed
-    * @param nameBytes data section name after keccak256
+    * @param extendName data section name
     * @param extendData data after change
     */
-    event NFTExtendModify(uint256 indexed tokenId, bytes32 nameBytes, bytes extendData);
+    event NFTExtendModify(uint256 indexed tokenId, string extendName, bytes extendData);
 
     // record of token already extended data section
     struct NFTExtendsNames{
@@ -343,7 +343,7 @@ contract ExtendableNFT is ERC721PresetMinterPauserAutoId {
         NFTExtendsNames storage nftData = _nftExtendNames[tokenId];
         nftData.NFTExtendDataNames.push(nameBytes);
 
-        emit NFTExtendModify(tokenId, nameBytes, extendData);
+        emit NFTExtendModify(tokenId, extendName, extendData);
     }
 
     /**
@@ -378,7 +378,7 @@ contract ExtendableNFT is ERC721PresetMinterPauserAutoId {
         NFTExtendData storage extendDatas = _nftExtendDataMap[nameBytes];
         extendDatas.ExtendDatas[tokenId] = extendData;
 
-        emit NFTExtendModify(tokenId, nameBytes, extendData);
+        emit NFTExtendModify(tokenId, extendName, extendData);
     }
 
     /**

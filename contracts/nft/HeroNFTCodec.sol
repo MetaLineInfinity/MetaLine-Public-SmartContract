@@ -21,8 +21,8 @@ struct HeroNFTFixedData_V1 {
     uint8 job;
     uint8 grade;
 
-    uint16 minerAttr;
-    uint16 battleAttr;
+    uint32 minerAttr;
+    uint32 battleAttr;
 }
 
 /**
@@ -34,8 +34,8 @@ struct HeroPetNFTFixedData_V1 {
     uint8 avatar_slot_3_4;
     uint8 avatar_slot_5_6;
 
-    uint16 minerAttr;
-    uint16 battleAttr;
+    uint32 minerAttr;
+    uint32 battleAttr;
 }
 
 /**
@@ -44,7 +44,13 @@ struct HeroPetNFTFixedData_V1 {
 struct HeroNFTWriteableData_V1 {
     uint8 starLevel;
     uint16 level;
-    uint64 exp;
+}
+
+/**
+ * @dev hero writeable nft data version 1
+ */
+struct HeroPetNFTWriteableData_V1 {
+    uint16 level;
 }
 
 
@@ -95,6 +101,13 @@ interface IHeroNFTCodec_V1 {
     * @return hndata output data of HeroNFTWriteableData_V1
     */
     function getHeroNftWriteableData(HeroNFTDataBase memory data) external pure returns(HeroNFTWriteableData_V1 memory hndata);
+    
+    /**
+    * @dev decode HeroPetNFTData from HeroNFTDataBase
+    * @param data input data of HeroNFTDataBase
+    * @return hndata output data of HeroPetNFTWriteableData_V1
+    */
+    function getHeroPetNftWriteableData(HeroNFTDataBase memory data) external pure returns(HeroPetNFTWriteableData_V1 memory hndata);
 
     /**
     * @dev get character id from HeroNFTDataBase
@@ -119,7 +132,7 @@ contract HeroNFTCodec_V1 is IHeroNFTCodec_V1 {
             uint232(data.job) |
             (uint232(data.grade) << 8) |
             (uint232(data.minerAttr) << (8 + 8)) |
-            (uint232(data.battleAttr) << (8 + 8 + 16));
+            (uint232(data.battleAttr) << (8 + 8 + 32));
 
         basedata.nftType = 1;
         //basedata.mintType = 0;
@@ -138,7 +151,7 @@ contract HeroNFTCodec_V1 is IHeroNFTCodec_V1 {
             (uint232(data.avatar_slot_3_4) << (8 + 8)) |
             (uint232(data.avatar_slot_5_6) << (8 + 8 + 8)) |
             (uint232(data.minerAttr) << (8 + 8 + 8 + 8)) |
-            (uint232(data.battleAttr) << (8 + 8 + 8 + 8 + 16));
+            (uint232(data.battleAttr) << (8 + 8 + 8 + 8 + 32));
 
         basedata.nftType = 2;
         //basedata.mintType = 0;
@@ -155,12 +168,11 @@ contract HeroNFTCodec_V1 is IHeroNFTCodec_V1 {
             uint232(fdata.job) |
             (uint232(fdata.grade) << 8) |
             (uint232(fdata.minerAttr) << (8 + 8)) |
-            (uint232(fdata.battleAttr) << (8 + 8 + 16));
+            (uint232(fdata.battleAttr) << (8 + 8 + 32));
 
         basedata.writeableData = 
             (uint232(wdata.starLevel)) |
-            (uint232(wdata.level << 8)) |
-            (uint232(wdata.exp << (8 + 16)));
+            (uint232(wdata.level << 8));
             
         //basedata.mintType = 0;
         basedata.nftType = 1;
@@ -174,8 +186,8 @@ contract HeroNFTCodec_V1 is IHeroNFTCodec_V1 {
     {
         hndata.job = uint8(data.fixedData & 0xff);
         hndata.grade = uint8((data.fixedData >> 8) & 0xff);
-        hndata.minerAttr = uint16((data.fixedData >> (8 + 8)) & 0xffff);
-        hndata.battleAttr = uint16((data.fixedData >> (8 + 8 + 16)) & 0xffff);
+        hndata.minerAttr = uint32((data.fixedData >> (8 + 8)) & 0xffffffff);
+        hndata.battleAttr = uint32((data.fixedData >> (8 + 8 + 32)) & 0xffffffff);
     }
 
     function getHeroPetNftFixedData(HeroNFTDataBase memory data)
@@ -188,8 +200,8 @@ contract HeroNFTCodec_V1 is IHeroNFTCodec_V1 {
         hndata.avatar_slot_1_2 = uint8((data.fixedData >> 8) & 0xff);
         hndata.avatar_slot_3_4 = uint8((data.fixedData >> (8 + 8)) & 0xff);
         hndata.avatar_slot_5_6 = uint8((data.fixedData >> (8 + 8 + 8)) & 0xff);
-        hndata.minerAttr = uint16((data.fixedData >> (8 + 8 + 8 + 8)) & 0xffff);
-        hndata.battleAttr = uint16((data.fixedData >> (8 + 8 + 8 + 8 + 16)) & 0xffff);
+        hndata.minerAttr = uint32((data.fixedData >> (8 + 8 + 8 + 8)) & 0xffffffff);
+        hndata.battleAttr = uint16((data.fixedData >> (8 + 8 + 8 + 8 + 32)) & 0xffffffff);
     }
 
     function getHeroNftWriteableData(HeroNFTDataBase memory data) 
@@ -200,7 +212,15 @@ contract HeroNFTCodec_V1 is IHeroNFTCodec_V1 {
     {
         hndata.starLevel = uint8(data.writeableData & 0xff);
         hndata.level = uint16((data.writeableData >> 8) & 0xffff);
-        hndata.exp = uint64((data.writeableData >> 8 + 16) & 0xffffffffffffffff);
+    }
+    
+    function getHeroPetNftWriteableData(HeroNFTDataBase memory data) 
+        external 
+        pure 
+        override 
+        returns(HeroPetNFTWriteableData_V1 memory hndata)
+    {
+        hndata.level = uint16(data.writeableData & 0xffff);
     }
 
     function getCharacterId(HeroNFTDataBase memory data) 
