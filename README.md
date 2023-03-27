@@ -17,6 +17,9 @@ npx hardhat --network localhost xgenconfigonly 2
 npx hardhat --network localhost xdeploy group mysteryboxShopV1
 npx hardhat --network localhost xgeninitonly 3
 npx hardhat --network localhost xgenconfigonly 3
+npx hardhat --network localhost xdeploy group mysteryboxShopV2
+npx hardhat --network localhost xgeninitonly 4
+npx hardhat --network localhost xgenconfigonly 4
 ```
 
 # 🛠️ Test
