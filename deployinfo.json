@@ -92,8 +92,15 @@
             ]
         },
         {
-            "group":"mysterybox",
+            "group":"mysteryboxShopV2",
             "gen":4,
+            "contracts":[
+                {"name":"MysteryBoxShopV2","deployer":"deployer","args":[]}
+            ]
+        },
+        {
+            "group":"mysterybox",
+            "gen":5,
             "contracts":[
                 {"name":"RandomPoolLib","deployer":"deployer","args":[]},
                 {"name":"Random","deployer":"deployer","args":[]},
@@ -107,7 +114,7 @@
         },
         {
             "group":"game1",
-            "gen":5,
+            "gen":6,
             "contracts":[
                 {"name":"ShipNFT","deployer":"deployer","args":[0, "Ship NFT","SHIP", "https://metadata.metaline.games/c/"]},
                 {"name":"WarrantNFT","deployer":"deployer","args":[0, "Warrant NFT","WRNT", "https://metadata.metaline.games/d/"]},

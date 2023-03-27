@@ -74,6 +74,14 @@ contract DirectMysteryBox is
     // extra fee charge by method call tx with `value` paramter, and send to target service wallet address
     GasFeeCharger.MethodExtraFees _methodExtraFees;
 
+    uint private unlocked = 1;
+    modifier lock() {
+        require(unlocked == 1, 'Metaline: LOCKED');
+        unlocked = 0;
+        _;
+        unlocked = 1;
+    }
+
     constructor() {
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
 
@@ -219,7 +227,7 @@ contract DirectMysteryBox is
 
     }
 
-    function openMB(uint32 directMBID) external payable whenNotPaused {
+    function openMB(uint32 directMBID) external payable lock whenNotPaused {
         require(tx.origin == _msgSender(), "DirectMysteryBox: only for outside account");
         require(_receiveIncomAddress != address(0), "DirectMysteryBox: receive income address not set");
         
@@ -247,7 +255,7 @@ contract DirectMysteryBox is
         emit DirectMBOpen(_msgSender(), directMBID);
     }
 
-    function batchOpenMB(uint32 directMBID, uint8 batchCount) external payable whenNotPaused {
+    function batchOpenMB(uint32 directMBID, uint8 batchCount) external payable lock whenNotPaused {
         require(tx.origin == _msgSender(), "DirectMysteryBox: only for outside account");
         require(_receiveIncomAddress != address(0), "DirectMysteryBox: receive income address not set");
         
