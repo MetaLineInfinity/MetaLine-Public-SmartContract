@@ -22,9 +22,17 @@ library OracleCharger {
     }
 
     struct OracleChargerStruct {
+        uint locked;
         address tokenPriceOracleAddr;
         address receiveIncomeAddr;
         mapping(string=>ChargeTokenSet) chargeTokens;
+    }
+    
+    modifier lock(OracleChargerStruct storage charger) {
+        require(charger.locked == 0, 'OracleCharger: LOCKED');
+        charger.locked = 1;
+        _;
+        charger.locked = 0;
     }
 
     function setTPOracleAddr(OracleChargerStruct storage charger, address tpOracleAddr) internal {
@@ -55,7 +63,7 @@ library OracleCharger {
         delete charger.chargeTokens[tokenName];
     }
 
-    function charge(OracleChargerStruct storage charger, string memory tokenName, uint256 usdValue)  internal {
+    function charge(OracleChargerStruct storage charger, string memory tokenName, uint256 usdValue) internal lock(charger) {
         require(charger.receiveIncomeAddr != address(0), "income addr not set");
 
         ChargeTokenSet storage tokenSet = charger.chargeTokens[tokenName];

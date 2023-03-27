@@ -183,7 +183,7 @@ contract DirectMysteryBox is
     }
 
     
-    function _chargeByDesiredCount(DirectOnSaleMB storage onSalePair, DirectOnSaleMBRunTime storage onSalePairData, uint256 count) 
+    function _chargeByDesiredCount(DirectOnSaleMB storage onSalePair, DirectOnSaleMBRunTime storage onSalePairData, uint256 count, uint256 gasfee) 
         internal returns (uint256 realCount)
     {
         realCount = count;
@@ -201,13 +201,14 @@ contract DirectMysteryBox is
 
             if(realPrice > 0){
                 if(onSalePair.tokenAddr == address(0)){
-                    require(msg.value >= realPrice, "DirectMysteryBox: insufficient value");
+                    uint256 valueLeft = msg.value - gasfee;
+                    require(valueLeft >= realPrice, "DirectMysteryBox: insufficient value");
 
                     // receive eth
                     (bool sent, ) = _receiveIncomAddress.call{value:realPrice}("");
                     require(sent, "DirectMysteryBox: transfer income error");
-                    if(msg.value > realPrice){
-                        (sent, ) = msg.sender.call{value:(msg.value - realPrice)}(""); // send back
+                    if(valueLeft > realPrice){
+                        (sent, ) = msg.sender.call{value:(valueLeft - realPrice)}(""); // send back
                         require(sent, "MysteryBoxShop: transfer income error");
                     }
                 }
@@ -238,10 +239,10 @@ contract DirectMysteryBox is
         address rndAddr = MBRandomSourceBase(onSalePair.randsource).getRandSource();
         require(rndAddr != address(0), "DirectMysteryBox: rand address wrong");
 
-        _methodExtraFees.chargeMethodExtraFee(1); // charge openMB extra fee
+        uint256 gasfee = _methodExtraFees.chargeMethodExtraFee(1); // charge openMB extra fee
         
         _checkSellCondition(onSalePair, onSalePairData);
-        _chargeByDesiredCount(onSalePair, onSalePairData, 1);
+        _chargeByDesiredCount(onSalePair, onSalePairData, 1, gasfee);
 
         // request random number
         uint256 reqid = Random(rndAddr).oracleRand();
@@ -268,10 +269,10 @@ contract DirectMysteryBox is
         address rndAddr = MBRandomSourceBase(onSalePair.randsource).getRandSource();
         require(rndAddr != address(0), "DirectMysteryBox: rand address wrong");
 
-        _methodExtraFees.chargeMethodExtraFee(2); // charge batchOpenMB extra fee
+        uint256 gasfee = _methodExtraFees.chargeMethodExtraFee(2); // charge batchOpenMB extra fee
 
         _checkSellCondition(onSalePair, onSalePairData);
-        _chargeByDesiredCount(onSalePair, onSalePairData, 1);
+        _chargeByDesiredCount(onSalePair, onSalePairData, batchCount, gasfee);
 
         // request random number
         uint256 reqid = Random(rndAddr).oracleRand();

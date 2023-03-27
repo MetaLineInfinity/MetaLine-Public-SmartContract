@@ -24,20 +24,20 @@ library GasFeeCharger {
         delete extraFees.extraFees[methodKey];
     }
 
-    function chargeMethodExtraFee(MethodExtraFees storage extraFees, uint8 methodKey)  internal returns(bool) {
+    function chargeMethodExtraFee(MethodExtraFees storage extraFees, uint8 methodKey)  internal returns(uint256) {
         MethodWithExrtraFee storage fee = extraFees.extraFees[methodKey];
         if(fee.target == address(0)){
-            return true; // no need charge fee
+            return 0; // no need charge fee
         }
 
         require(msg.value >= fee.value, "msg fee not enough");
 
         // Call returns a boolean value indicating success or failure.
         // This is the current recommended method to use.
-        (bool sent, ) = fee.target.call{value: msg.value}("");
+        (bool sent, ) = fee.target.call{value: fee.value}("");
         require(sent, "Trans fee err");
 
-        return sent;
+        return fee.value;
     }
     
 }
