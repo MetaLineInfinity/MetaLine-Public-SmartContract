@@ -162,6 +162,7 @@ contract HeroPetTrain is
         require(_upgradingHeroPets[heroNFTID].nextLevel == 0, "HeroPetTrain: hero or pet is upgrading");
         require(WarrantNFT(_warrantNFTAddr).ownerOf(warrantNFTID) == _msgSender(), "HeroPetTrain: warrant ownership error");
         require(HeroNFT(_heroNFTAddr).ownerOf(heroNFTID) == _msgSender(), "HeroPetTrain: not your hero or pet");
+        // TO DO : check freeze?
 
         HeroNFTDataBase memory hdb = HeroNFT(_heroNFTAddr).getNftData(heroNFTID);
         IHeroNFTCodec_V1 codec = IHeroNFTCodec_V1(HeroNFT(_heroNFTAddr).getCodec());
@@ -210,6 +211,7 @@ contract HeroPetTrain is
     ) external whenNotPaused {
         
         require(HeroNFT(_heroNFTAddr).ownerOf(heroNFTID) == _msgSender(), "HeroPetTrain: not your hero or pet");
+        // TO DO : check freeze?
 
         HeroPetUpgarding storage upd = _upgradingHeroPets[heroNFTID];
         require(upd.nextLevel > 0, "HeroPetTrain: hero or pet is not upgrading");
@@ -251,6 +253,7 @@ contract HeroPetTrain is
         require(_upingStarLvHeros[heroNFTID].nextStarLevel == 0, "HeroPetTrain: hero is upgrading");
         require(WarrantNFT(_warrantNFTAddr).ownerOf(warrantNFTID) == _msgSender(), "HeroPetTrain: warrant ownership error");
         require(HeroNFT(_heroNFTAddr).ownerOf(heroNFTID) == _msgSender(), "HeroPetTrain: not your hero");
+        // TO DO : check freeze?
 
         HeroNFTDataBase memory hdb = HeroNFT(_heroNFTAddr).getNftData(heroNFTID);
         IHeroNFTCodec_V1 codec = IHeroNFTCodec_V1(HeroNFT(_heroNFTAddr).getCodec());
@@ -288,6 +291,7 @@ contract HeroPetTrain is
     ) external whenNotPaused {
         
         require(HeroNFT(_heroNFTAddr).ownerOf(heroNFTID) == _msgSender(), "HeroPetTrain: not your hero");
+        // TO DO : check freeze?
 
         HeroStarLvUping storage upd = _upingStarLvHeros[heroNFTID];
         require(upd.nextStarLevel > 0, "HeroPetTrain: hero is not upgrading");

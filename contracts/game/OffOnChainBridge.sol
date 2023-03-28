@@ -122,6 +122,8 @@ contract OffOnChainBridge is
         require(WarrantNFT(_warrantNFTAddr).ownerOf(warrantNFTID) == userAddr, "OffOnChainBridge: warrant ownership error");
         require(goldValue > 0, "OffOnChainBridge: parameter error");
 
+        // TO DO : tax?
+
         // get warrant nft data
         WarrantNFTData memory wdata = WarrantNFT(_warrantNFTAddr).getNftData(warrantNFTID);
 
