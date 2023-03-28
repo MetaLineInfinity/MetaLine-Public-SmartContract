@@ -10,6 +10,7 @@ import "@openzeppelin/contracts/utils/Context.sol";
 import "../MTT.sol";
 import "../MTTGold.sol";
 import "../nft/HeroNFT.sol";
+import "../nft/ShipNFT.sol";
 import "../nft/WarrantNFT.sol";
 
 import "../utility/Crypto.sol";
@@ -27,15 +28,19 @@ contract GameService is
 
     event BindHeroNFTUsage(address indexed userAddr, uint256 indexed heroNFTID, string usage);
     event UnbindHeroNFTUsage(address indexed userAddr, uint256 indexed heroNFTID, string usage);
+    event BindShipNFT(address indexed userAddr, uint256 indexed shipNFTID);
+    event UnbindShipNFT(address indexed userAddr, uint256 indexed shipNFTID);
     event BindWarrant(address indexed userAddr, uint256 indexed warrantNFTID);
     event UnbindWarrant(address indexed userAddr, uint256 indexed warrantNFTID);
     
     address public _heroNFTAddr;
+    address public _shipNFTAddr;
     address public _warrantNFTAddr;
     address public _MTTAddr;
     address public _MTTGoldAddr;
 
     mapping(uint256=>bytes32) public _heroNFTUsage; // nftid => usage
+    mapping(uint256=>bool) public _shipNFTBind; // nftid => is bind
 
     mapping(address=>mapping(uint32=>uint256)) public _bindWarrant; // user address => port id => warrant id
 
@@ -70,6 +75,7 @@ contract GameService is
     function init(
 //        address serviceAddr,
         address heroNFTAddr,
+        address shipNFTAddr,
         address warrantNFTAddr,
         address MTTAddr,
         address MTTGoldAddr
@@ -78,6 +84,7 @@ contract GameService is
 
 //        _serviceAddr = serviceAddr;
         _heroNFTAddr = heroNFTAddr;
+        _shipNFTAddr = shipNFTAddr;
         _warrantNFTAddr = warrantNFTAddr;
         _MTTAddr = MTTAddr;
         _MTTGoldAddr = MTTGoldAddr;
@@ -85,6 +92,7 @@ contract GameService is
 
     function bindHeroNFTUsage(uint256 heroNFTID, string calldata usage) external whenNotPaused {
         require(HeroNFT(_heroNFTAddr).ownerOf(heroNFTID) == _msgSender(), "GameService: ownership error");
+        require(_heroNFTUsage[heroNFTID] == bytes32(0), "GameService: already binded");
 
         HeroNFT(_heroNFTAddr).freeze(heroNFTID);
 
@@ -114,6 +122,33 @@ contract GameService is
         delete _heroNFTUsage[heroNFTID];
 
         emit UnbindHeroNFTUsage(userAddr, heroNFTID, usage);
+    }
+    
+    function bindShipNFT(uint256 shipNFTID) external whenNotPaused {
+        require(HeroNFT(_shipNFTAddr).ownerOf(shipNFTID) == _msgSender(), "GameService: ownership error");
+        require(!_shipNFTBind[shipNFTID], "GameService: already binded");
+
+        ShipNFT(_shipNFTAddr).freeze(shipNFTID);
+
+        _shipNFTBind[shipNFTID] = true;
+
+        emit BindShipNFT(_msgSender(), shipNFTID);
+    }
+
+    function unbindShipNFT(
+        uint256 shipNFTID,
+        address userAddr
+    ) external whenNotPaused
+    {
+        require(hasRole(SERVICE_ROLE, _msgSender()), "GameService: must have service role");
+
+        require(ShipNFT(_shipNFTAddr).ownerOf(shipNFTID) == userAddr, "GameService: ownership error");
+        require(_shipNFTBind[shipNFTID], "GameService: nft not bind");
+
+        ShipNFT(_shipNFTAddr).unfreeze(shipNFTID);
+        delete _shipNFTBind[shipNFTID];
+
+        emit UnbindShipNFT(userAddr, shipNFTID);
     }
     
     function bindWarrant(uint256 warrantNFTID) external whenNotPaused {
