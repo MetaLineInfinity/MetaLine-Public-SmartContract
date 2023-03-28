@@ -141,6 +141,8 @@ contract GameService is
         WarrantNFTData memory wdata = WarrantNFT(_warrantNFTAddr).getNftData(warrantNFTID);
         require(_bindWarrant[userAddr][wdata.portID] == warrantNFTID, "GameService: warrant bind addr error");
 
+        // TO DO : charge unbind fee according to portID and facilities level
+
         // unbind
         WarrantNFT(_warrantNFTAddr).unfreeze(warrantNFTID);
         delete _bindWarrant[userAddr][wdata.portID];

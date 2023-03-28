@@ -137,9 +137,7 @@ contract ShipNFT is ExtendableNFT {
         require(hasRole(DATA_ROLE, _msgSender()), "R1");
 
         ShipNFTData storage wdata = _nftDatas[tokenId];
-        if(wdata.level != data.level){
-            wdata.level = data.level;
-        }
+        wdata.level = data.level;
 
         emit ShipNFTModified(tokenId, wdata);
     }

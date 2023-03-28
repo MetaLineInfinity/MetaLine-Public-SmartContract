@@ -82,6 +82,14 @@ interface IHeroNFTCodec_V1 {
     function fromHeroNftFixedAnWriteableData(HeroNFTFixedData_V1 memory fdata, HeroNFTWriteableData_V1 memory wdata) external pure returns (HeroNFTDataBase memory basedata);
 
     /**
+    * @dev encode HeroNFTFixedData to HeroNFTDataBase
+    * @param fdata input data of HeroPetNFTFixedData_V1
+    * @param wdata input data of HeroPetNFTWriteableData_V1
+    * @return basedata output data of HeroNFTDataBase
+    */
+    function fromHeroPetNftFixedAnWriteableData(HeroPetNFTFixedData_V1 memory fdata, HeroPetNFTWriteableData_V1 memory wdata) external pure returns (HeroNFTDataBase memory basedata);
+
+    /**
     * @dev decode HeroNFTData from HeroNFTDataBase
     * @param data input data of HeroNFTDataBase
     * @return hndata output data of HeroNFTFixedData_V1
@@ -94,6 +102,20 @@ interface IHeroNFTCodec_V1 {
     * @return hndata output data of HeroPetNFTFixedData_V1
     */
     function getHeroPetNftFixedData(HeroNFTDataBase memory data) external pure returns(HeroPetNFTFixedData_V1 memory hndata);
+
+    /**
+    * @dev encode HeroNFTData to HeroNFTDataBase writeable
+    * @param hndata input data of HeroNFTWriteableData_V1
+    * @return wdata output data of HeroNFTDataBase writeable
+    */
+    function toHeroNftWriteableData(HeroNFTWriteableData_V1 memory hndata) external pure returns(uint256 wdata);
+    
+    /**
+    * @dev encode HeroPetNFTData to HeroNFTDataBase writeable
+    * @param hndata input data of HeroPetNFTWriteableData_V1
+    * @return wdata output data of HeroNFTDataBase writeable
+    */
+    function toHeroPetNftWriteableData(HeroPetNFTWriteableData_V1 memory hndata) external pure returns(uint256 wdata);
 
     /**
     * @dev decode HeroNFTData from HeroNFTDataBase
@@ -171,11 +193,32 @@ contract HeroNFTCodec_V1 is IHeroNFTCodec_V1 {
             (uint232(fdata.battleAttr) << (8 + 8 + 32));
 
         basedata.writeableData = 
-            (uint232(wdata.starLevel)) |
-            (uint232(wdata.level << 8));
+            (uint256(wdata.starLevel)) |
+            (uint256(wdata.level << 8));
             
         //basedata.mintType = 0;
         basedata.nftType = 1;
+    }
+    
+    function fromHeroPetNftFixedAnWriteableData(HeroPetNFTFixedData_V1 memory fdata, HeroPetNFTWriteableData_V1 memory wdata) 
+        external 
+        pure
+        override 
+        returns (HeroNFTDataBase memory basedata) 
+    {
+        basedata.fixedData =
+            uint232(fdata.petId) |
+            (uint232(fdata.avatar_slot_1_2) << 8) |
+            (uint232(fdata.avatar_slot_3_4) << (8 + 8)) |
+            (uint232(fdata.avatar_slot_5_6) << (8 + 8 + 8)) |
+            (uint232(fdata.minerAttr) << (8 + 8 + 8 + 8)) |
+            (uint232(fdata.battleAttr) << (8 + 8 + 8 + 8 + 32));
+
+        basedata.writeableData = 
+            (uint256(wdata.level));
+            
+        //basedata.mintType = 0;
+        basedata.nftType = 2;
     }
 
     function getHeroNftFixedData(HeroNFTDataBase memory data)
@@ -202,6 +245,27 @@ contract HeroNFTCodec_V1 is IHeroNFTCodec_V1 {
         hndata.avatar_slot_5_6 = uint8((data.fixedData >> (8 + 8 + 8)) & 0xff);
         hndata.minerAttr = uint32((data.fixedData >> (8 + 8 + 8 + 8)) & 0xffffffff);
         hndata.battleAttr = uint16((data.fixedData >> (8 + 8 + 8 + 8 + 32)) & 0xffffffff);
+    }
+    
+    function toHeroNftWriteableData(HeroNFTWriteableData_V1 memory hndata) 
+        external 
+        pure 
+        override 
+        returns(uint256 wdata) 
+    {
+        return
+            (uint256(hndata.starLevel)) |
+            (uint256(hndata.level << 8));
+    }
+    
+    function toHeroPetNftWriteableData(HeroPetNFTWriteableData_V1 memory hndata) 
+        external 
+        pure 
+        override 
+        returns(uint256 wdata) 
+    {
+        return
+            (uint256(hndata.level));
     }
 
     function getHeroNftWriteableData(HeroNFTDataBase memory data) 
