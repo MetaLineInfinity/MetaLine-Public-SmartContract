@@ -66,7 +66,8 @@
             "contracts":[
                 {"name":"MockERC20","deployer":"deployer","args":[]},
                 {"name":"MockERC721_V1","deployer":"deployer","args":[]},
-                {"name":"MockERC1155_V1","deployer":"deployer","args":[]}
+                {"name":"MockERC1155_V1","deployer":"deployer","args":[]},
+                {"name":"MockTPO","deployer":"deployer","args":[]}
             ]
         },
         {
