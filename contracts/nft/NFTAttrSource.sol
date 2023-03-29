@@ -38,6 +38,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
  struct ShipNFTMinerAttr {
     // TO DO : add attr
     uint32 hashRate;
+    uint8 maxSailer;
  }
 
  /**
@@ -70,20 +71,22 @@ contract NFTAttrSource_V1 is
     }
 
     /**
-    * @dev get hero miner attribute by mineAttr
+    * @dev get hero or pet miner attribute by mineAttr
     * @param mineAttr miner attribtue id
+    * @param starLevel hero star level, if nft is pet, startLevel always = 1
     * @return data output data of HeroNFTMinerAttr
     */
-    function getHeroMinerAttr(uint32 mineAttr, uint16 level) external view returns (HeroNFTMinerAttr memory data)
+    function getHeroMinerAttr(uint32 mineAttr, uint16 starLevel) external view returns (HeroNFTMinerAttr memory data)
     {
         // TO DO : calc attr by level
-        level;
+        starLevel;
         return _heroMineAttrs[mineAttr];
     }
 
     /**
-    * @dev get hero battle attribute by battleAttr
+    * @dev get hero or pet battle attribute by battleAttr
     * @param battleAttr battle attribtue id
+    * @param level hero or pet nft level
     * @return data output data of HeroNFTBattleAttr
     */
     function getHeroBattleAttr(uint32 battleAttr, uint16 level) external view returns (HeroNFTBattleAttr memory data)
@@ -94,7 +97,7 @@ contract NFTAttrSource_V1 is
     }
 
     /**
-    * @dev set hero miner attributes
+    * @dev set hero or pet miner attributes
     * @param mineAttrs mine attribute ids
     * @param datas input data array of HeroNFTMinerAttr
     */
@@ -109,7 +112,7 @@ contract NFTAttrSource_V1 is
     }
 
     /**
-    * @dev set hero battle attributes
+    * @dev set hero or pet battle attributes
     * @param battleAttrs battle attribute ids
     * @param datas input data array of HeroNFTBattleAttr
     */
@@ -126,6 +129,7 @@ contract NFTAttrSource_V1 is
     /**
     * @dev get ship miner attribute by mineAttr
     * @param mineAttr miner attribtue id
+    * @param level ship nft level
     * @return data output data of ShipNFTMinerAttr
     */
     function getShipMinerAttr(uint32 mineAttr, uint16 level) external view returns (ShipNFTMinerAttr memory data)
@@ -138,6 +142,7 @@ contract NFTAttrSource_V1 is
     /**
     * @dev get ship battle attribute by battleAttr
     * @param battleAttr battle attribtue id
+    * @param level ship nft level
     * @return data output data of ShipNFTBattleAttr
     */
     function getShipBattleAttr(uint32 battleAttr, uint16 level) external view returns (ShipNFTBattleAttr memory data)

@@ -42,6 +42,8 @@ contract ShipNFT is ExtendableNFT {
 
     ResetableCounters.Counter internal _tokenIdTracker;
     
+    address public _attrSource;
+    
     mapping(uint256 => ShipNFTData) private _nftDatas; // token id => nft data stucture
 
     constructor(
@@ -55,6 +57,18 @@ contract ShipNFT is ExtendableNFT {
 
        _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
        _setupRole(DATA_ROLE, _msgSender());
+    }
+    
+    function setAttrSource(address a) external {
+        require(
+            hasRole(DATA_ROLE, _msgSender()),
+            "R1"
+        );
+
+        _attrSource = a;
+    }
+    function getAttrSource() external view returns(address a) {
+        return _attrSource;
     }
 
     /**
