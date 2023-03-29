@@ -125,7 +125,8 @@
                 {"name":"OffOnChainBridge","deployer":"deployer","args":[]},
                 {"name":"WarrantIssuer","deployer":"deployer","args":[]},
                 {"name":"Shipyard","deployer":"deployer","args":[]},
-                {"name":"HeroPetTrain","deployer":"deployer","args":[]}
+                {"name":"HeroPetTrain","deployer":"deployer","args":[]},
+                {"name":"Expedition","deployer":"deployer","args":[]}
             ]
         }
     ]
