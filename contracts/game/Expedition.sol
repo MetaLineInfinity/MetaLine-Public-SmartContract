@@ -435,6 +435,7 @@ contract Expedition is
     }
 
     function _fetchExpedMTT(
+        ExpeditionPoolConf storage conf,
         ExpeditionTeamData storage teamData, 
         ExpeditionPoolData storage poolData
     ) internal {
@@ -455,8 +456,11 @@ contract Expedition is
         require(poolData.currentInputGold >= goldCost, "Expedition: gold underflow");
 
         uint256 value = poolData.currentOutputMTT * goldCost / poolData.currentInputGold;
+        uint256 maxMTT = goldCost * conf.maxMTTPerGold;
+        if(value > maxMTT) {
+            value = maxMTT;
+        }
 
-        // TO DO : 
         MTTMinePool(_MTTMinePoolAddr).send(_msgSender(), value, "expedition");
 
         poolData.currentOutputMTT -= value;
@@ -494,7 +498,7 @@ contract Expedition is
         // output mtt
         _outputMTT(phep.poolData);
 
-        _fetchExpedMTT(team.teamData, phep.poolData);
+        _fetchExpedMTT(phep.poolConf, team.teamData, phep.poolData);
     }
     function fetchShipExpedMTT(uint16 portID) external {
         PortShipExpedPool storage psep = _shipExpeditions[portID];
@@ -506,7 +510,7 @@ contract Expedition is
         // output mtt
         _outputMTT(psep.poolData);
 
-        _fetchExpedMTT(team.teamData, psep.poolData);
+        _fetchExpedMTT(psep.poolConf, team.teamData, psep.poolData);
     }
 
     /**
