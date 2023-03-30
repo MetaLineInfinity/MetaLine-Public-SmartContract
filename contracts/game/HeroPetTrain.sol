@@ -249,7 +249,7 @@ contract HeroPetTrain is
         uint256 usdPrice,
         string memory tokenName,
         uint256 warrantNFTID
-    ) external whenNotPaused {
+    ) external payable whenNotPaused {
         require(_upingStarLvHeros[heroNFTID].nextStarLevel == 0, "HeroPetTrain: hero is upgrading");
         require(WarrantNFT(_warrantNFTAddr).ownerOf(warrantNFTID) == _msgSender(), "HeroPetTrain: warrant ownership error");
         require(HeroNFT(_heroNFTAddr).ownerOf(heroNFTID) == _msgSender(), "HeroPetTrain: not your hero");

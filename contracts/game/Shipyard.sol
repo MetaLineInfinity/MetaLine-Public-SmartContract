@@ -175,7 +175,7 @@ contract Shipyard is
         uint256 usdPrice,
         string memory tokenName,
         uint256 warrantNFTID
-    ) external whenNotPaused {
+    ) external payable whenNotPaused {
         require(_upgradingShips[shipNFTID].nextLevel == 0, "Shipyard: ship is upgrading");
         require(WarrantNFT(_warrantNFTAddr).ownerOf(warrantNFTID) == _msgSender(), "Shipyard: warrant ownership error");
         require(ShipNFT(_shipNFTAddr).ownerOf(shipNFTID) == _msgSender(), "Shipyard: not your ship");

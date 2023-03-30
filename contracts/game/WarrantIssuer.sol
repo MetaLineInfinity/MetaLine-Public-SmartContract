@@ -108,7 +108,7 @@ contract WarrantIssuer is
         delete _warrantUpgradePrice[portID][upgradeType][level];
     }
 
-    function mint_MTTWarrant(uint16 portID, uint256 usdPrice, string memory tokenName) external whenNotPaused {
+    function mint_MTTWarrant(uint16 portID, uint256 usdPrice, string memory tokenName) external payable whenNotPaused {
         uint256 _usdPrice = _warrantPrices[portID];
         require(_usdPrice > 0, "WarrantIssuer: port not exist");
         require(_usdPrice <= usdPrice, "WarrantIssuer: price parameter error");
@@ -130,7 +130,7 @@ contract WarrantIssuer is
         uint8 upgradeType,
         uint256 usdPrice,
         string memory tokenName
-    ) external whenNotPaused{
+    ) external payable whenNotPaused{
         require(WarrantNFT(_warrantNFTAddr).ownerOf(warrantNFTID) == _msgSender(), "WarrantIssuer: ownership error");
 
         // get warrant nft data
