@@ -107,7 +107,7 @@
                 {"name":"Random","deployer":"deployer","args":[]},
                 {"name":"HeroNFT","deployer":"deployer","args":[0, "Hero NFT","HERO", "https://metadata.metaline.games/b/"]},
                 {"name":"HeroNFTCodec_V1","deployer":"deployer","args":[]},
-                {"name":"HeroNFTAttrSource_V1","deployer":"deployer","args":[]},
+                {"name":"NFTAttrSource_V1","deployer":"deployer","args":[]},
                 {"name":"HeroNFTMysteryBox","deployer":"deployer","args":[]},
                 {"name":"HeroNFTMysteryBoxRandSource","deployer":"deployer","args":["addr:HeroNFT"],"libraries":{"RandomPoolLib":"addr:RandomPoolLib"}},
                 {"name":"HeroPetNFTMysteryBoxRandSource","deployer":"deployer","args":["addr:HeroNFT"],"libraries":{"RandomPoolLib":"addr:RandomPoolLib"}}
@@ -126,7 +126,8 @@
                 {"name":"WarrantIssuer","deployer":"deployer","args":[]},
                 {"name":"Shipyard","deployer":"deployer","args":[]},
                 {"name":"HeroPetTrain","deployer":"deployer","args":[]},
-                {"name":"Expedition","deployer":"deployer","args":[]}
+                {"name":"Expedition","deployer":"deployer","args":[]},
+                {"name":"MTTMinePool","deployer":"deployer","args":[]}
             ]
         }
     ]
