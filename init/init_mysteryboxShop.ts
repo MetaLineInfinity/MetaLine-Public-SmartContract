@@ -1,8 +1,9 @@
+import { BigNumber } from "ethers/lib";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { ContractInfo } from "../utils/util_contractinfo";
 import { ContractTool } from '../utils/util_contracttool';
 import { logtools } from "../utils/util_log";
-import { Contract, BigNumber } from "ethers";
+
 import * as InitConfig from "./init_config";
 
 export class Init_MysteryBoxShop
@@ -37,7 +38,7 @@ export class Init_MysteryBoxShop
         
         let MysteryBoxShop = ContractInfo.getContract("MysteryBoxShop");
 
-        let randomid = BigNumber.from(1);
+        let randomid =BigNumber.from(1);
         let mysterytype = 1;
     
         //tokenid = (uint64)(randomid)<<32 | (uint32)mysterytype
