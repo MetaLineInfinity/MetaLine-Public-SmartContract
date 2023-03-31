@@ -1,8 +1,9 @@
+import { BigNumber } from "ethers/lib";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { ContractInfo } from "../utils/util_contractinfo";
 import { ContractTool } from '../utils/util_contracttool';
 import { logtools } from "../utils/util_log";
-import { Contract, BigNumber } from "ethers";
+
 import * as InitConfig from "./init_config";
 
 export class Init_MTT
@@ -15,8 +16,14 @@ export class Init_MTT
 
         let signerAddr = await MTT.signer.getAddress();
 
-        logtools.loggreen("--mint all");
-        await ContractTool.CallState(MTT, "mint", [signerAddr, "300000000000000000000000000"]);
+        //already mint all to manger in constructor of CappedERC20
+
+        //logtools.loggreen("--mint all");
+        //await ContractTool.CallState(MTT, "mint", [signerAddr, "300000000000000000000000000"]);
+         
+        let mgrbalance = await ContractTool.CallView(MTT,"balanceOf",[signerAddr]);
+        let num = BigNumber.from(mgrbalance).toString();
+        logtools.loggreen("mgrBalance="+JSON.stringify( num));
 
         // // test address
         // let mine_pool_addr = "0x9812752121fb9eBEc49A4B8153240866156E87C5";
