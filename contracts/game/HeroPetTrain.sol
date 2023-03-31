@@ -263,7 +263,7 @@ contract HeroPetTrain is
         HeroNFTFixedData_V1 memory hndata = codec.getHeroNftFixedData(hdb);
         HeroNFTWriteableData_V1 memory wdata = codec.getHeroNftWriteableData(hdb);
 
-        HeroUpStarLevelConf memory upConf = _heroStarLvUpConfs[hndata.job][wdata.level];
+        HeroUpStarLevelConf memory upConf = _heroStarLvUpConfs[hndata.job][wdata.starLevel];
         
         require(wdata.level >= upConf.heroLevelRequire, "HeroPetTrain: hero level not enough");
 
