@@ -1,5 +1,5 @@
 
-import { Contract, BigNumber } from "ethers";
+import { Contract, BigNumber } from "ethers/lib";
 import { ContractInfo } from "../utils/util_contractinfo";
 import { ContractTool } from "../utils/util_contracttool";
 import { logtools } from "../utils/util_log";

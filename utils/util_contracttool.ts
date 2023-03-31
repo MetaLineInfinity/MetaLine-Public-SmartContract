@@ -1,4 +1,4 @@
-import { Contract, ContractReceipt, ethers, Signer } from "ethers";
+import { Contract, ContractReceipt, ethers, Signer } from "ethers/lib";
 
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import * as fs from "fs";
@@ -355,7 +355,7 @@ export class ContractTool
             if (contract != undefined)
                 return contract;
 
-            throw "get addr:" + name + "fail";
+            throw "get addr:" + name + " fail";
         }
         if (src.indexOf("namedaccount:") == 0)
         {
@@ -364,7 +364,7 @@ export class ContractTool
             let addr = this.namedaccounts[name];
             if (addr != null)
                 return addr;
-            throw "get namedaccount:" + name + "fail";
+            throw "get namedaccount:" + name + " fail";
         }
         return src;
     }

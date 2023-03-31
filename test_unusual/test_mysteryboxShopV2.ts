@@ -6,7 +6,7 @@ import { logtools } from "../utils/util_log";
 import { TestTool } from '../utils/util_testtool';
 
 
-describe("mystery box shop Test", function () {
+describe("mystery box shop v2 Test", function () {
     before(inittest);
     it("should buy mb succ", buymb);
     it("should buy mb batch succ", buymb_batch);
@@ -25,23 +25,22 @@ var HeroNFT: Contract;
 var HeroNFTCodec_V1: Contract;
 var MysteryBox1155: Contract;
 var HeroNFTMysteryBox: Contract;
-var MysteryBoxShop: Contract;
+var MysteryBoxShopV2: Contract;
 async function inittest() {
     testtool = await TestTool.Init();
     MockERC20 = await ContractTool.GetVistualContract(testtool.signer0, "MockERC20", "addr:MockERC20");
     MockERC721_V1 = ContractInfo.getContract("MockERC721_V1");
     MockERC1155_V1 = ContractInfo.getContract("MockERC1155_V1");
     MysteryBox1155 = ContractInfo.getContract("MysteryBox1155");
-    MysteryBoxShop = ContractInfo.getContract("MysteryBoxShop");
+    MysteryBoxShopV2 = ContractInfo.getContract("MysteryBoxShopV2");
 
     let randomid = BigNumber.from(1);
     let tokenId = randomid.shl(32).add(1);    
     let zeroadd = "0x0000000000000000000000000000000000000000";
     let isburn=0;
     let saleconfig=[ContractInfo.getContractAddress("MysteryBox1155"),tokenId,ContractInfo.getContractAddress("MockERC20"),0,100,
-    isburn,
-    0,0,100,100,0,zeroadd,0];
-    await ContractTool.CallState(MysteryBoxShop,"setOnSaleMysteryBox",["testpair",saleconfig,[100,10000]]);
+    0,0,100,100,0,zeroadd,0,0];
+    await ContractTool.CallState(MysteryBoxShopV2,"setOnSaleMysteryBox",["testpair",saleconfig,[100,10000]]);
 
     ContractTool.PassBlock(hre, 1000);
 }
@@ -49,10 +48,10 @@ async function inittest() {
 async function buymb() {
     await ContractTool.CallState(MockERC20, "mint", [testtool.addr0, 10000000000]);
     let v = await ContractTool.CallView(MockERC20, "balanceOf", [testtool.addr0]);
-    await ContractTool.CallState(MockERC20, "approve", [MysteryBoxShop.address, 10000]);
+    await ContractTool.CallState(MockERC20, "approve", [MysteryBoxShopV2.address, 10000]);
 
     logtools.loggreen("erc20=" + v);
-    await ContractTool.CallState(MysteryBoxShop, "buyMysteryBox", ["testpair"]);
+    await ContractTool.CallState(MysteryBoxShopV2, "buyMysteryBox", ["testpair"]);
 
     //openmb
     // var fee = {
@@ -82,10 +81,10 @@ async function buymb() {
 async function buymb_batch() {
     await ContractTool.CallState(MockERC20, "mint", [testtool.addr0, 10000000000]);
     let v = await ContractTool.CallView(MockERC20, "balanceOf", [testtool.addr0]);
-    await ContractTool.CallState(MockERC20, "approve", [MysteryBoxShop.address, 10000]);
+    await ContractTool.CallState(MockERC20, "approve", [MysteryBoxShopV2.address, 10000]);
 
     logtools.loggreen("erc20=" + v);
-    await ContractTool.CallState(MysteryBoxShop, "batchBuyMysterBox", ["testpair", 10]);
+    await ContractTool.CallState(MysteryBoxShopV2, "batchBuyMysterBox", ["testpair", 10]);
 
     // //openmb
     // let randomid = BigNumber.from(1);

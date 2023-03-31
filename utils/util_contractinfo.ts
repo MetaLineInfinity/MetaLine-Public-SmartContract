@@ -1,4 +1,4 @@
-import { BigNumber, Contract, ContractFactory, ethers, Signer } from "ethers";
+import { BigNumber, Contract, ContractFactory, ethers, Signer } from "ethers/lib";
 import { Interface } from "ethers/lib/utils";
 import { ABI, Address, DeployOptions, DeployResult } from "hardhat-deploy/types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
@@ -12,6 +12,10 @@ export class ContractInfo
     static getContract(name: string): Contract
     {
         let info = ContractInfo.contractinfos[name];
+        if(info==null)
+            {
+                logtools.logred("get contract fail:"+name);
+            }
         return ContractFactory.getContract(info.address, info.abi, info.deployer);
     }
     static getContractAbi(name: string): ethers.ContractInterface

@@ -52,6 +52,7 @@ export class logtools {
         }
         catch
         {
+            logtools.logred("--error read file:"+logtools.configfile);
             srcjson = {};
         }
 
@@ -74,7 +75,8 @@ export class logtools {
             srcjson = JSON.parse(buffer.toString());
         }
         catch
-        {
+        { 
+            logtools.logred("--error read file:"+logtools.configfile);
             srcjson = {};
         }
 
@@ -93,6 +95,7 @@ export class logtools {
         }
         catch
         {
+            logtools.logred("--error read file:"+logtools.configfile);
             srcjson = {};
         }
 
