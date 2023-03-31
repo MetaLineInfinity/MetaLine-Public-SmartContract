@@ -2,11 +2,12 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { ContractInfo } from "../utils/util_contractinfo";
 import { ContractTool } from '../utils/util_contracttool';
 import { logtools } from "../utils/util_log";
-import { Contract, BigNumber } from "ethers";
+import { Contract, BigNumber } from "ethers/lib";
 import * as InitConfig from "./init_config";
 
 export class Init_MysteryBox
 {
+    //gen5
     static async InitAll(hre: HardhatRuntimeEnvironment): Promise<boolean>
     {
         logtools.logblue("==Init_MysteryBox");
@@ -32,7 +33,7 @@ export class Init_MysteryBox
         await ContractTool.CallState(HeroNFT, "grantRole", [MINTER_ROLE, "addr:HeroNFTMysteryBoxRandSource"]);
         await ContractTool.CallState(HeroNFT, "grantRole", [MINTER_ROLE, "addr:HeroPetNFTMysteryBoxRandSource"]);
         await ContractTool.CallState(HeroNFT,"setCodec",["addr:HeroNFTCodec_V1"]);
-        await ContractTool.CallState(HeroNFT,"setAttrSource",["addr:HeroNFTAttrSource_V1"]);
+        await ContractTool.CallState(HeroNFT,"setAttrSource",["addr:NFTAttrSource_V1"]);
        
         logtools.loggreen("--init hero nft mystery box contract");
 
