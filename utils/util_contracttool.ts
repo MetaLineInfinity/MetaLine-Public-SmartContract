@@ -1,4 +1,4 @@
-import { Contract, ContractReceipt, ethers, Signer } from "ethers";
+import { Contract, ContractReceipt, ethers, Signer } from "ethers/lib";
 
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import * as fs from "fs";

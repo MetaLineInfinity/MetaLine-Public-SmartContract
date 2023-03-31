@@ -1,11 +1,11 @@
 
-import { Contract, BigNumber } from "ethers";
+import { Contract, BigNumber } from "ethers/lib";
 import { ContractInfo } from "../utils/util_contractinfo";
 import { ContractTool } from "../utils/util_contracttool";
 import { logtools } from "../utils/util_log";
 import { TestTool } from '../utils/util_testtool';
 
-
+//gen5
 describe("mystery box Test", function () {
     before(inittest);
     it("should openmb succ", openmb);

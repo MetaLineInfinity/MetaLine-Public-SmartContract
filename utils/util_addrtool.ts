@@ -1,4 +1,4 @@
-import { ethers, Signer } from "ethers";
+import { ethers, Signer } from "ethers/lib";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { ContractInfo } from "./util_contractinfo";
 import { ContractTool } from "./util_contracttool";
