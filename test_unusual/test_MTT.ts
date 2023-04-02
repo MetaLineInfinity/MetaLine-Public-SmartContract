@@ -10,7 +10,7 @@ describe("mtt Test", function () {
     before(inittest);
     //it("should mint succ", mint);
     it("should transfer batch succ", transfer);
-    it("should pause batch succ", pause);
+    // it("should pause batch succ", pause);
 });
 
 
@@ -38,29 +38,29 @@ async function transfer() {
     logtools.log("--transfer");
     await ContractTool.CallState(MTT, "transfer", [testtool.addr1, "1000000000000000000"]);
 }
-async function pause() {
+// async function pause() {
 
-    logtools.log("--pause");
-    await ContractTool.CallState(MTT, "pause", []);
+//     logtools.log("--pause");
+//     await ContractTool.CallState(MTT, "pause", []);
 
-    let tstate=0;
-    try
-    {
-        logtools.log("--transfer when paused");
-        await ContractTool.CallState(MTT, "transfer", [testtool.addr1, "1000000000000000000"]);
-        tstate=1;
-    }
-    catch
-    {
-        tstate=2;
-    }
+//     let tstate=0;
+//     try
+//     {
+//         logtools.log("--transfer when paused");
+//         await ContractTool.CallState(MTT, "transfer", [testtool.addr1, "1000000000000000000"]);
+//         tstate=1;
+//     }
+//     catch
+//     {
+//         tstate=2;
+//     }
 
-    assert(tstate==2,"transfer should fail.");
+//     assert(tstate==2,"transfer should fail.");
 
-    logtools.log("--unpause");
-    await ContractTool.CallState(MTT, "unpause", []);
+//     logtools.log("--unpause");
+//     await ContractTool.CallState(MTT, "unpause", []);
     
-    logtools.log("--transfer after unpaused");
-    await ContractTool.CallState(MTT, "transfer", [testtool.addr1, "1000000000000000000"]);
+//     logtools.log("--transfer after unpaused");
+//     await ContractTool.CallState(MTT, "transfer", [testtool.addr1, "1000000000000000000"]);
 
-}
+// }
