@@ -218,7 +218,7 @@ export class InitTool
         {
             for (var i = 0; i < files.length; i++)
             {
-                var file = files[0];
+                var file = files[i];
                 console.log("TestGroup call:" + file);
 
                 await hre.run("test",{"testFiles":[file]});

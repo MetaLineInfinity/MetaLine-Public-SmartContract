@@ -12,6 +12,7 @@ export class Init_Game1 {
     static async InitAll(hre: HardhatRuntimeEnvironment): Promise<boolean> {
         logtools.logblue("==Init_Game1");
         let addrtool = await AddrTool.Init(hre);
+//======init WarrantIssuer
         var WarrantIssuer = ContractInfo.getContract("WarrantIssuer");
         var WarrantNFT = ContractInfo.getContract("WarrantNFT");
         // //addChargeToken   string memory tokenName, 
@@ -27,11 +28,22 @@ export class Init_Game1 {
         await ContractTool.CallState(WarrantNFT, "grantRole", [MINTER_ROLE,"addr:WarrantIssuer"]);
         let DATA_ROLE = await ContractTool.CallView(WarrantNFT, "DATA_ROLE", []);
         await ContractTool.CallState(WarrantNFT, "grantRole", [DATA_ROLE,"addr:WarrantIssuer"]);
+
+//======init Shipyard
+        let Shipyard  = ContractInfo.getContract("Shipyard");
+        let ShipNFT =ContractInfo.getContract("ShipNFT");
+        await  ContractTool.CallState(Shipyard, "setTPOracleAddr", ["addr:MockTPO"]);
+
+        await ContractTool.CallState(Shipyard, "init", ["addr:WarrantNFT","addr:ShipNFT"]);
+        await ContractTool.CallState(ShipNFT, "grantRole", [MINTER_ROLE,"addr:Shipyard"]);
+        await ContractTool.CallState(ShipNFT, "grantRole", [DATA_ROLE,"addr:Shipyard"]);
         return true;
     }
     static async ConfigAll(hre: HardhatRuntimeEnvironment): Promise<boolean> {
         logtools.logblue("==Init_Game1");
         let addrtool = await AddrTool.Init(hre);
+    
+//======config WarrantIssuer
         var WarrantIssuer = ContractInfo.getContract("WarrantIssuer");
 
 
@@ -41,7 +53,18 @@ export class Init_Game1 {
         //upgrade storehouseLv in Warrant
         await ContractTool.CallState(WarrantIssuer, "setWarrantUpgradePrice", [1,1,1,"1000000000000000000"]);
 
-        //setWarrantUpgradePrice
+
+//======config Shipyard
+        let Shipyard  = ContractInfo.getContract("Shipyard");
+        await ContractTool.CallState(Shipyard, "setReceiveIncomeAddr", [addrtool.addr1]);
+        await ContractTool.CallState(Shipyard, "addChargeToken", ["MTT","addr:MTT","99000000000000000000","1000000000000000000"]);
+
+        //uint24 shipID = (uint24(shipType)<<16 | shipTypeID);
+        let shipid = 1<<16|1;
+        let shipid2 = 2<<16|2;
+        await ContractTool.CallState(Shipyard, "setBuildableShips", [1,0,[shipid,shipid2]]);
+        await ContractTool.CallState(Shipyard, "setUpgradeConf", [1,1,1,["1000000000000000000",5,1,1]]);
+        
         return true;
     }
 }     

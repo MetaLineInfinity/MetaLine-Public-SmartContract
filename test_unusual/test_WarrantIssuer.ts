@@ -27,12 +27,12 @@ async function inittest() {
     testtool = await TestTool.Init();
     MTT = ContractInfo.getContract("MTT");
     WarrantIssuer =ContractInfo.getContract("WarrantIssuer");
-     WarrantNFT =ContractInfo.getContract("WarrantNFT");
+    WarrantNFT =ContractInfo.getContract("WarrantNFT");
 }
 var warrid;
 async function test_mint_MTTWarrant() {
     
-    logtools.log("--transfer");
+    logtools.log("--test_mint_MTTWarrant");
 
     //apport mtt to WarrantIssuer
     await ContractTool.CallState(MTT,"approve",["addr:WarrantIssuer","1000000000000000000"]);
@@ -44,18 +44,18 @@ async function test_mint_MTTWarrant() {
 
     //mint //gen two events  ,can not get event direct.
   
-    warrid=0;
-    //WarrantNFT.removeAllListeners();
+    warrid=-1;
     WarrantNFT.once("WarrantNFTMint",(to,id,data)=>
     {
   
         warrid = id;
         logtools.loggreen("Warrant id = "+warrid);
+
     });
 
     let rc= await ContractTool.CallState(WarrantIssuer, "mint_MTTWarrant", [portID, usdPrice,tokenName]);
     await ContractTool.PassBlockOne(hre);
-    while(warrid==0)
+    while(warrid<0)
     {
         let delay = 1000;
         await new Promise(res => setTimeout(() => res(null), delay));
@@ -70,7 +70,7 @@ async function test_mint_MTTWarrant() {
 }
 async function test_upgrade_MTTWarrant() {
     
-    logtools.log("--transfer");
+    logtools.log("--test_upgrade_MTTWarrant");
 
     //apport mtt to WarrantIssuer
     await ContractTool.CallState(MTT,"approve",["addr:WarrantIssuer","1000000000000000000"]);
