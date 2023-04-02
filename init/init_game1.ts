@@ -25,7 +25,8 @@ export class Init_Game1 {
         //grant WarrantNFT's MINTER_ROLE => WarrantIssuer
         let MINTER_ROLE = await ContractTool.CallView(WarrantNFT, "MINTER_ROLE", []);
         await ContractTool.CallState(WarrantNFT, "grantRole", [MINTER_ROLE,"addr:WarrantIssuer"]);
-
+        let DATA_ROLE = await ContractTool.CallView(WarrantNFT, "DATA_ROLE", []);
+        await ContractTool.CallState(WarrantNFT, "grantRole", [DATA_ROLE,"addr:WarrantIssuer"]);
         return true;
     }
     static async ConfigAll(hre: HardhatRuntimeEnvironment): Promise<boolean> {
@@ -37,6 +38,8 @@ export class Init_Game1 {
         await ContractTool.CallState(WarrantIssuer, "setReceiveIncomeAddr", [addrtool.addr1]);
         await ContractTool.CallState(WarrantIssuer, "addChargeToken", ["MTT","addr:MTT","99000000000000000000","1000000000000000000"]);
         await ContractTool.CallState(WarrantIssuer, "setWarrantPrice", [1,"1000000000000000000"]);
+        //upgrade storehouseLv in Warrant
+        await ContractTool.CallState(WarrantIssuer, "setWarrantUpgradePrice", [1,1,1,"1000000000000000000"]);
 
         //setWarrantUpgradePrice
         return true;
