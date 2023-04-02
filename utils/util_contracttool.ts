@@ -34,6 +34,20 @@ export class ContractTool
             console.log("==done block " + name + "=" + await hre.ethers.provider.getBlockNumber());
         }
     }
+    static GetRawEvent(recipt:ContractReceipt,contract:Contract,eventname:string)
+    {
+        var topic= contract.interface.getEventTopic(eventname);
+        if(topic==null)
+            throw  "error get topic:" + eventname;
+        for(var i in recipt.events)
+        {
+            if(recipt.events[i].topics[0]==topic)
+            {
+                return recipt.events[i];
+            }
+        }
+        return null;
+    }
     static GetEvent(recipt: ContractReceipt, eventname: string): any[]
     {
         let event = recipt.events?.find((d: any) => d.event == eventname);

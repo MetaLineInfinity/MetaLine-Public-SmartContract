@@ -1,10 +1,11 @@
 
-import { Contract, BigNumber } from "ethers/lib";
+import { Contract, BigNumber, ethers } from "ethers/lib";
 import { ContractInfo } from "../utils/util_contractinfo";
 import { ContractTool } from "../utils/util_contracttool";
 import { logtools } from "../utils/util_log";
 import { TestTool } from '../utils/util_testtool';
 import * as hre from "hardhat";
+
 
 
 describe("Shipyard Test", function () {
@@ -55,19 +56,13 @@ async function test_mint_MTTWarrant() {
     //     warrid = id;
     //     logtools.loggreen("Warrant id = "+warrid);
     // });
+  
 
     let rc= await ContractTool.CallState(WarrantIssuer, "mint_MTTWarrant", [portID, usdPrice,tokenName]);
-    //force to get this, but i do not now how.
-    //transfer _mit mint,so 0 1 2=2, why id at index 3?
-    let ev =(rc.events as any)[2]["topics"][3];
-    warrid = BigNumber.from(ev);
-    logtools.loggreen("warrid="+warrid);
-    // await ContractTool.PassBlockOne(hre);
-    // while(warrid<0)
-    // {
-    //     let delay = 1000;
-    //     await new Promise(res => setTimeout(() => res(null), delay));
-    // }
+    //when a tran got many events, GetEvent cound not work.
+    let topic =ContractTool.GetRawEvent(rc,WarrantNFT,"WarrantNFTMint");
+    warrid =BigNumber.from(topic.topics[2]);
+    logtools.loggreen("Warrant id = "+warrid);
 
 }
 
@@ -87,36 +82,14 @@ async function test_mint_Ship() {
     //mint //gen two events  ,can not get event direct.
   
     shipid=-1;
-    // ShipNFT.removeAllListeners();
-    // ShipNFT.once("ShipNFTMint",(to,id,data)=>
-    // {
-  
-    //     shipid = id;
-    //     logtools.loggreen("Ship id = "+shipid);
-    // });
+
  
     let rc= await ContractTool.CallState(Shipyard, "mint_Ship", [testtool.addr0,1,1,1,1,1,warrid]);
-    //var ev =ContractTool.GetEvent(rc,"ShipNFTMint");
-     //force to get this, but i do not now how.
-     
-     let ev =(rc.events as any)[1]["topics"][2];
-     shipid = BigNumber.from(ev);
-     logtools.loggreen("shipid="+warrid);
+    //when a tran got many events, GetEvent cound not work.
+    let topic =ContractTool.GetRawEvent(rc,ShipNFT,"ShipNFTMint");
+    shipid =BigNumber.from(topic.topics[2]);
+    logtools.loggreen("shipid id = "+shipid);
 
-
-    // await ContractTool.PassBlockOne(hre);
-    // while(shipid<0)
-    //  {
-    //      let delay = 1000;
-    //      await new Promise(res => setTimeout(() => res(null), delay));
-    //  }
-    //logtools.log("rc="+JSON.stringify(rc));
-
-    // //let ev2=ContractTool.GetEvent(rc,"WarrantNFTMint");//two events  
-    // logtools.loggreen("Warrant id =  "+ JSON.stringify(ev));
-
-    // warrid = ev[1];
-    // logtools.loggreen("Warrant id = "+warrid);
 }
 // async function test_upgrade_MTTWarrant() {
     

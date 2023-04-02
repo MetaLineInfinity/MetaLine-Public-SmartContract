@@ -1,5 +1,5 @@
 
-import { Contract, BigNumber } from "ethers/lib";
+import { Contract, BigNumber,ethers } from "ethers/lib";
 import { ContractInfo } from "../utils/util_contractinfo";
 import { ContractTool } from "../utils/util_contracttool";
 import { logtools } from "../utils/util_log";
@@ -45,28 +45,16 @@ async function test_mint_MTTWarrant() {
     //mint //gen two events  ,can not get event direct.
   
     warrid=-1;
-    WarrantNFT.once("WarrantNFTMint",(to,id,data)=>
-    {
   
-        warrid = id;
-        logtools.loggreen("Warrant id = "+warrid);
 
-    });
 
     let rc= await ContractTool.CallState(WarrantIssuer, "mint_MTTWarrant", [portID, usdPrice,tokenName]);
-    await ContractTool.PassBlockOne(hre);
-    while(warrid<0)
-    {
-        let delay = 1000;
-        await new Promise(res => setTimeout(() => res(null), delay));
-    }
-    //logtools.log("rc="+JSON.stringify(rc));
+    //when a tran got many events, GetEvent cound not work.
+    let topic =ContractTool.GetRawEvent(rc,WarrantNFT,"WarrantNFTMint");
+    warrid =BigNumber.from(topic.topics[2]);
+    logtools.loggreen("Warrant id = "+warrid);
 
-    // //let ev2=ContractTool.GetEvent(rc,"WarrantNFTMint");//two events  
-    // logtools.loggreen("Warrant id =  "+ JSON.stringify(ev));
 
-    // warrid = ev[1];
-    // logtools.loggreen("Warrant id = "+warrid);
 }
 async function test_upgrade_MTTWarrant() {
     
