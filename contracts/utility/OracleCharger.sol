@@ -3,7 +3,7 @@
 
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 import "./TransferHelper.sol";
 
@@ -15,7 +15,7 @@ interface TokenPriceOracle {
 library OracleCharger {
 
     struct ChargeTokenSet {
-        bool exist;
+        uint8 decimals;
         address tokenAddr;
         uint256 maximumUSDPrice;
         uint256 minimumUSDPrice;
@@ -51,8 +51,10 @@ library OracleCharger {
         uint256 minimumUSDPrice
         ) internal 
     {
+        uint8 decimals = ERC20(tokenAddr).decimals();
+
         charger.chargeTokens[tokenName] = ChargeTokenSet({
-            exist:true,
+            decimals:decimals,
             tokenAddr:tokenAddr,
             maximumUSDPrice:maximumUSDPrice,
             minimumUSDPrice:minimumUSDPrice
@@ -67,7 +69,7 @@ library OracleCharger {
         require(charger.receiveIncomeAddr != address(0), "income addr not set");
 
         ChargeTokenSet storage tokenSet = charger.chargeTokens[tokenName];
-        require(tokenSet.exist, "token not set");
+        require(tokenSet.decimals > 0, "token not set");
 
         // get eth usd price
         uint256 tokenUSDPrice = TokenPriceOracle(charger.tokenPriceOracleAddr).getERC20TokenUSDPrice(tokenSet.tokenAddr);
@@ -77,7 +79,7 @@ library OracleCharger {
         if(tokenSet.maximumUSDPrice > 0 && tokenUSDPrice > tokenSet.maximumUSDPrice) {
             tokenUSDPrice = tokenSet.maximumUSDPrice;
         }
-        uint256 tokenCost = usdValue / tokenUSDPrice;
+        uint256 tokenCost = usdValue * 10**tokenSet.decimals / tokenUSDPrice;
 
         if(tokenSet.tokenAddr == address(0)){
             // charge eth
