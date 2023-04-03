@@ -105,7 +105,7 @@
             "contracts":[
                 {"name":"RandomPoolLib","deployer":"deployer","args":[]},
                 {"name":"Random","deployer":"deployer","args":[]},
-                {"name":"HeroNFT","deployer":"deployer","args":[0, "MetaLine Hero NFT","HERO", "https://metadata.metaline.games/b/"]},
+                {"name":"HeroNFT","deployer":"deployer","args":[1, "MetaLine Hero NFT","HERO", "https://metadata.metaline.games/b/"]},
                 {"name":"HeroNFTCodec_V1","deployer":"deployer","args":[]},
                 {"name":"NFTAttrSource_V1","deployer":"deployer","args":[]},
                 {"name":"HeroNFTMysteryBox","deployer":"deployer","args":[]},
@@ -117,8 +117,8 @@
             "group":"game1",
             "gen":6,
             "contracts":[
-                {"name":"ShipNFT","deployer":"deployer","args":[0, "MetaLine Ship NFT","SHIP", "https://metadata.metaline.games/c/"]},
-                {"name":"WarrantNFT","deployer":"deployer","args":[0, "MetaLine Warrant NFT","WRNT", "https://metadata.metaline.games/d/"]},
+                {"name":"ShipNFT","deployer":"deployer","args":[1, "MetaLine Ship NFT","SHIP", "https://metadata.metaline.games/c/"]},
+                {"name":"WarrantNFT","deployer":"deployer","args":[1, "MetaLine Warrant NFT","WRNT", "https://metadata.metaline.games/d/"]},
                 {"name":"DirectMysteryBox","deployer":"deployer","args":[]},
                 {"name":"MTTGold","deployer":"deployer","args":[]},
                 {"name":"GameService","deployer":"deployer","args":[]},
