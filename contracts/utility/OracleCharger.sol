@@ -51,7 +51,10 @@ library OracleCharger {
         uint256 minimumUSDPrice
         ) internal 
     {
-        uint8 decimals = ERC20(tokenAddr).decimals();
+        uint8 decimals = 18;
+        if(tokenAddr != address(0)){
+            decimals = ERC20(tokenAddr).decimals();
+        }
 
         charger.chargeTokens[tokenName] = ChargeTokenSet({
             decimals:decimals,

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // Metaline Contracts (Expedition.sol)
 
-pragma solidity ^0.8.0;
+pragma solidity >=0.8.0 <=0.8.17;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
@@ -20,14 +20,14 @@ contract MTTMinePool is
     
     event MTTMinePoolSend(address indexed userAddr, address indexed caller, uint256 value, bytes reason);
 
-    uint256 public immutable _MTT_PER_BLOCK; 
+    uint256 public immutable MTT_PER_BLOCK; 
 
-    MTT public _MTT;
+    MTT public MTTContract;
 
-    uint256 public _MTT_TOTAL_OUTPUT;
+    uint256 public MTT_TOTAL_OUTPUT;
 
-    uint256 public _MTT_LIQUIDITY;
-    uint256 public _MTT_LAST_OUTPUT_BLOCK;
+    uint256 public MTT_LIQUIDITY;
+    uint256 public MTT_LAST_OUTPUT_BLOCK;
 
     constructor(
         address _MTTAddr,
@@ -35,10 +35,10 @@ contract MTTMinePool is
     ) {
         require(_perblock > 0, "MTTMinePool: mtt per block must >0");
 
-        _MTT = MTT(_MTTAddr);
+        MTTContract = MTT(_MTTAddr);
 
-        _MTT_PER_BLOCK = _perblock;
-        _MTT_LAST_OUTPUT_BLOCK = block.number;
+        MTT_PER_BLOCK = _perblock;
+        MTT_LAST_OUTPUT_BLOCK = block.number;
         
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
 
@@ -47,14 +47,14 @@ contract MTTMinePool is
     }
 
     function _output() internal {
-        if(_MTT_LAST_OUTPUT_BLOCK >= block.number){
+        if(MTT_LAST_OUTPUT_BLOCK >= block.number){
             return;
         }
 
-        uint256 output = (block.number - _MTT_LAST_OUTPUT_BLOCK) * _MTT_PER_BLOCK;
-        _MTT_LAST_OUTPUT_BLOCK = block.number;
-        _MTT_LIQUIDITY += output;
-        _MTT_TOTAL_OUTPUT += output;
+        uint256 output = (block.number - MTT_LAST_OUTPUT_BLOCK) * MTT_PER_BLOCK;
+        MTT_LAST_OUTPUT_BLOCK = block.number;
+        MTT_LIQUIDITY += output;
+        MTT_TOTAL_OUTPUT += output;
     }
 
     function send(address userAddr, uint256 value, bytes memory reason) external {
@@ -62,11 +62,11 @@ contract MTTMinePool is
 
         _output();
 
-        require(_MTT_LIQUIDITY >= value, "MTTMinePool: short of liquidity");
-        require(_MTT.balanceOf(address(this)) >= value, "MTTMinePool: insufficient MTT");
+        require(MTT_LIQUIDITY >= value, "MTTMinePool: short of liquidity");
+        require(MTTContract.balanceOf(address(this)) >= value, "MTTMinePool: insufficient MTT");
 
-        _MTT_LIQUIDITY -= value;
-        TransferHelper.safeTransfer(address(_MTT), userAddr, value);
+        MTT_LIQUIDITY -= value;
+        TransferHelper.safeTransfer(address(MTTContract), userAddr, value);
 
         emit MTTMinePoolSend(userAddr, _msgSender(), value, reason);
     }
