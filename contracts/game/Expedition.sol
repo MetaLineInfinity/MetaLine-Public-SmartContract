@@ -170,11 +170,13 @@ contract Expedition is
 
         PortHeroExpedPool storage phep = _heroExpeditions[portID];
         require(phep.poolConf.minMTTPerBlock > 0, "Expedition: port expedition config not exist");
+        require(heroNftIDs.length > 0, "Expedition: team hero must >0");
 
         IHeroNFTCodec_V1 codec = IHeroNFTCodec_V1(HeroNFT(_heroNFTAddr).getCodec());
         NFTAttrSource_V1 attSrc = NFTAttrSource_V1(HeroNFT(_heroNFTAddr).getAttrSource());
 
         uint256 teamHashRate = 0;
+        uint8 leadGrade = 0;
         for(uint i=0; i<heroNftIDs.length; ++i){
             require(HeroNFT(_heroNFTAddr).ownerOf(heroNftIDs[i]) == _msgSender(), "Expedition: not your hero or pet");
 
@@ -188,6 +190,14 @@ contract Expedition is
             if(hdb.nftType == 1) { // hero 
                 HeroNFTFixedData_V1 memory hndata = codec.getHeroNftFixedData(hdb);
                 HeroNFTWriteableData_V1 memory wdata = codec.getHeroNftWriteableData(hdb);
+
+                if(i==0){
+                    leadGrade = hndata.grade;
+                    require(wdata.starLevel+1 >= heroNftIDs.length, "Expedition: team leader star level must >= team hero count"); 
+                }
+                else {
+                    require(hndata.grade <= leadGrade, "Expedition: team member grade must <= leader grade");
+                }
 
                 HeroNFTMinerAttr memory hmattr = attSrc.getHeroMinerAttr(hndata.minerAttr, wdata.starLevel);
                 teamHashRate += hmattr.hashRate;
@@ -271,6 +281,7 @@ contract Expedition is
         NFTAttrSource_V1 sattSrc = NFTAttrSource_V1(ShipNFT(_shipNFTAddr).getAttrSource());
 
         ShipExpeditionTeam storage shipet = psep.expedShips[_msgSender()];
+        uint8 flagShipGrade = 0;
         for(uint j=0; j< expedShips.length; ++j){
             require(ShipNFT(_shipNFTAddr).ownerOf(expedShips[j].shipNFTID) == _msgSender(), "Expedition: not your ship");
 
@@ -278,6 +289,16 @@ contract Expedition is
             ShipNFTMinerAttr memory smattr = sattSrc.getShipMinerAttr(sd.minerAttr, sd.level);
             require(smattr.maxSailer >= expedShips[j].heroNFTIDs.length);
             shipet.teamHashRate += smattr.hashRate;
+
+            require(sd.shipType == 1, "Expedition: not cargo ship");
+
+            if(j==0){
+                require((sd.level / 10)+1 >= expedShips.length, "Expedition: flag ship level/10 must >= team ships count");
+                flagShipGrade = sd.grade;
+            }
+            else {
+                require(sd.grade <= flagShipGrade, "Expedition: flag ship grade must >= team ship grade");
+            }
 
             // transfer ship into pool
             ShipNFT(_shipNFTAddr).safeTransferFrom(_msgSender(), address(this), expedShips[j].shipNFTID);

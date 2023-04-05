@@ -11,10 +11,10 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
   */
  struct HeroNFTMinerAttr {
      uint8 minerJob;
-     uint8 minerRate;
-     uint8 sailerSpeedPer;
-     uint8 sailerLoadPer;
-     uint8 sailerRangePer;
+     uint16 minerRate;
+     uint16 sailerSpeedPer;
+     uint16 sailerLoadPer;
+     uint16 sailerRangePer;
      uint32 hashRate;
  }
 
@@ -36,9 +36,14 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
   * @dev ship nft miner attribute
   */
  struct ShipNFTMinerAttr {
-    // TO DO : add attr
-    uint32 hashRate;
+    uint16 speed;
+    uint32 maxLoad;
+    uint32 maxRange;
+    uint32 foodPerMile;
     uint8 maxSailer;
+    uint32 hashRate;
+    
+    // TO DO : add attr
  }
 
  /**
@@ -46,6 +51,13 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
   */
  struct ShipNFTBattleAttr { 
      uint16 attackPer;
+     uint16 defensePer;
+     uint16 hitpointPer;
+     uint16 missPer;
+     uint16 dogePer;
+     uint16 criticalPer;
+     uint16 decriticalPer;
+     uint16 speedPer;
 
     // TO DO : add attr
  }
@@ -65,9 +77,30 @@ contract NFTAttrSource_V1 is
     mapping(uint32=>ShipNFTMinerAttr) public _shipMineAttrs;
     mapping(uint32=>ShipNFTBattleAttr) public _shipBattleAttrs;
 
+    uint16 public _heroMineFactor;
+    uint16 public _heroBattleFactor;
+    uint16 public _shipMineFactor;
+    uint16 public _shipBattleFactor;
+
     constructor() {
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
         _setupRole(MANAGER_ROLE, _msgSender());
+    }
+
+    // attr = attr * (1 + factor / 10000) 
+    function setLevelUpFactor(
+        uint16 heroMineFactor, 
+        uint16 heroBattleFactor, 
+        uint16 shipMineFactor, 
+        uint16 shipBattleFactor
+    ) external {
+        require(hasRole(MANAGER_ROLE, _msgSender()), "NFTAttrSource_V1: must have manager role to manage");
+
+        _heroMineFactor = heroMineFactor;
+        _heroBattleFactor = heroBattleFactor;
+        _shipMineFactor = shipMineFactor;
+        _shipBattleFactor = shipBattleFactor;
+
     }
 
     /**
@@ -78,9 +111,12 @@ contract NFTAttrSource_V1 is
     */
     function getHeroMinerAttr(uint32 mineAttr, uint16 starLevel) external view returns (HeroNFTMinerAttr memory data)
     {
-        // TO DO : calc attr by level
-        starLevel;
-        return _heroMineAttrs[mineAttr];
+        data = _heroMineAttrs[mineAttr];
+        data.minerRate = uint16(data.minerRate + uint64(data.minerRate) * starLevel * _heroMineFactor / 10000);
+        data.sailerSpeedPer = uint16(data.sailerSpeedPer + uint64(data.sailerSpeedPer) * starLevel * _heroMineFactor / 10000);
+        data.sailerLoadPer = uint16(data.sailerLoadPer + uint64(data.sailerLoadPer) * starLevel * _heroMineFactor / 10000);
+        data.sailerRangePer = uint16(data.sailerRangePer + uint64(data.sailerRangePer) * starLevel * _heroMineFactor / 10000);
+        data.hashRate = uint32(data.hashRate + uint64(data.hashRate) * starLevel * _heroMineFactor / 10000);
     }
 
     /**
@@ -91,9 +127,15 @@ contract NFTAttrSource_V1 is
     */
     function getHeroBattleAttr(uint32 battleAttr, uint16 level) external view returns (HeroNFTBattleAttr memory data)
     {
-        // TO DO : calc attr by level
-        level;
-        return _heroBattleAttrs[battleAttr];
+        data = _heroBattleAttrs[battleAttr];
+        data.attackPer = uint16(data.attackPer + uint64(data.attackPer) * level * _heroBattleFactor / 10000);
+        data.defensePer = uint16(data.defensePer + uint64(data.defensePer) * level * _heroBattleFactor / 10000);
+        data.hitpointPer = uint16(data.hitpointPer + uint64(data.hitpointPer) * level * _heroBattleFactor / 10000);
+        data.missPer = uint16(data.missPer + uint64(data.missPer * level) * _heroBattleFactor / 10000);
+        data.dogePer = uint16(data.dogePer + uint64(data.dogePer * level) * _heroBattleFactor / 10000);
+        data.criticalPer = uint16(data.criticalPer + uint64(data.criticalPer) * level * _heroBattleFactor / 10000);
+        data.decriticalPer = uint16(data.decriticalPer + uint64(data.decriticalPer) * level * _heroBattleFactor / 10000);
+        data.speedPer = uint16(data.speedPer + uint64(data.speedPer) * level * _heroBattleFactor / 10000);
     }
 
     /**
@@ -134,9 +176,14 @@ contract NFTAttrSource_V1 is
     */
     function getShipMinerAttr(uint32 mineAttr, uint16 level) external view returns (ShipNFTMinerAttr memory data)
     {
-        // TO DO : calc attr by level
-        level;
-        return _shipMineAttrs[mineAttr];
+        data = _shipMineAttrs[mineAttr];
+        
+        data.speed = uint16(data.speed + uint64(data.speed) * level * _shipMineFactor / 10000);
+        data.maxLoad = uint32(data.maxLoad + uint64(data.maxLoad) * level * _shipMineFactor / 10000);
+        data.maxRange = uint32(data.maxRange + uint64(data.maxRange) * level * _shipMineFactor / 10000);
+        data.foodPerMile = uint32(data.foodPerMile + uint64(data.foodPerMile) * level * _shipMineFactor / 10000);
+        data.maxSailer = uint8(data.maxSailer + uint64(data.maxSailer) * level * _shipMineFactor / 10000);
+        data.hashRate = uint32(data.hashRate + uint64(data.hashRate) * level * _shipMineFactor / 10000);
     }
 
     /**
@@ -147,9 +194,15 @@ contract NFTAttrSource_V1 is
     */
     function getShipBattleAttr(uint32 battleAttr, uint16 level) external view returns (ShipNFTBattleAttr memory data)
     {
-        // TO DO : calc attr by level
-        level;
-        return _shipBattleAttrs[battleAttr];
+        data = _shipBattleAttrs[battleAttr];
+        data.attackPer = uint16(data.attackPer + uint64(data.attackPer) * level * _shipBattleFactor / 10000);
+        data.defensePer = uint16(data.defensePer + uint64(data.defensePer) * level * _shipBattleFactor / 10000);
+        data.hitpointPer = uint16(data.hitpointPer + uint64(data.hitpointPer) * level * _shipBattleFactor / 10000);
+        data.missPer = uint16(data.missPer + uint64(data.missPer * level) * _shipBattleFactor / 10000);
+        data.dogePer = uint16(data.dogePer + uint64(data.dogePer * level) * _shipBattleFactor / 10000);
+        data.criticalPer = uint16(data.criticalPer + uint64(data.criticalPer) * level * _shipBattleFactor / 10000);
+        data.decriticalPer = uint16(data.decriticalPer + uint64(data.decriticalPer) * level * _shipBattleFactor / 10000);
+        data.speedPer = uint16(data.speedPer + uint64(data.speedPer) * level * _shipBattleFactor / 10000);
     }
 
     /**
