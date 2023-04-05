@@ -57,8 +57,8 @@ export class Init_MysteryBox
         await ContractTool.CallState(HeroNFTMysteryBoxRandSource, "setRandSource",["addr:Random"]);
         await ContractTool.CallState(HeroNFTMysteryBoxRandSource, "grantRole", [MINTER_ROLE, "addr:HeroNFTMysteryBox"]);
         
-        await ContractTool.CallState(HeroNFTMysteryBoxRandSource, "setRandSource",["addr:Random"]);
-        await ContractTool.CallState(HeroNFTMysteryBoxRandSource, "grantRole", [MINTER_ROLE, "addr:HeroNFTMysteryBox"]);
+        await ContractTool.CallState(HeroPetNFTMysteryBoxRandSource, "setRandSource",["addr:Random"]);
+        await ContractTool.CallState(HeroPetNFTMysteryBoxRandSource, "grantRole", [MINTER_ROLE, "addr:HeroNFTMysteryBox"]);
 
         return true;
     }

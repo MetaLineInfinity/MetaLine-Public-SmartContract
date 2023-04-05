@@ -412,6 +412,13 @@ export class ContractTool
             {
                 args[i] = this.GetString(args[i]);
             }
+            else if (typeof args[i] == "object") {
+                for (var x = 0; x < args[i].length; x++) {
+                    if (typeof args[i][x] == "string") {
+                        args[i][x] = this.GetString(args[i][x]);
+                    }
+                }
+            }
         }
         console.log("go<" + func + ">" + JSON.stringify(args));
         let funcabi: ethers.utils.FunctionFragment = c.interface.getFunction(func);
@@ -445,6 +452,13 @@ export class ContractTool
             if (typeof args[i] == "string")
             {
                 args[i] = this.GetString(args[i]);
+            }
+            else if (typeof args[i] == "object") {
+                for (var x = 0; x < args[i].length; x++) {
+                    if (typeof args[i][x] == "string") {
+                        args[i][x] = this.GetString(args[i][x]);
+                    }
+                }
             }
         }
         let funcabi: ethers.utils.FunctionFragment = c.interface.getFunction(func);
