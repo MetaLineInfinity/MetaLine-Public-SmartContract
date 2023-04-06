@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "./TransferHelper.sol";
 
 interface TokenPriceOracle {
-    // returns 18 decimal usd price, token usd value = token count * retvalue / 1000000000000000000;
+    // returns 8 decimal usd price, token usd value = token count * retvalue / 100000000;
     function getERC20TokenUSDPrice(address tokenAddr) external returns(uint256);
 }
 

@@ -4,7 +4,6 @@
 pragma solidity >=0.8.0 <=0.8.17;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 
 import "../MTT.sol";
