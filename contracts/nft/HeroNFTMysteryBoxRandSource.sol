@@ -54,26 +54,26 @@ contract HeroNFTMysteryBoxRandSource is
     {
         uint32 index = 0;
         
-        NFTRandPool storage pool = _randPools[poolIDArray[0]]; // index 0 : job rand (1-10)
+        NFTRandPool storage pool = _randPools[poolIDArray[0]]; // index 0 : job rand (1-15)
         require(pool.exist, "job pool not exist");
         uint8 job = uint8(pool.randPool.random(r));
 
         r = _rand.nextRand(++index, r);
-        pool = _randPools[poolIDArray[1]]; // index 1 : grade rand (1-5)
+        pool = _randPools[poolIDArray[1]]; // index 1 : grade rand (1-10)
         require(pool.exist, "grade pool not exist");
         uint8 grade = uint8(pool.randPool.random(r));
 
-        if(job <= 8){
-            pool = _randPools[poolIDArray[1 + grade]]; // index 2-6 : job(1-8) mineAttr rand by grade
+        if(job <= 2){
+            pool = _randPools[poolIDArray[1 + grade]]; // index 2-11 : job(1-2) mineAttr rand by grade 
         }
         else{
-            pool = _randPools[poolIDArray[6 + grade]]; // index 7-11 : job(9-10) mineAttr rand by grade
+            pool = _randPools[poolIDArray[11 + grade]]; // index 12-21 : job(3-15) mineAttr rand by grade
         }
         r = _rand.nextRand(++index, r);
         require(pool.exist, "mineAttr pool not exist");
         uint16 mineAttr = uint8(pool.randPool.random(r));
 
-        pool = _randPools[poolIDArray[11 + grade]]; // index 12-16 : battleAttr rand by grade
+        pool = _randPools[poolIDArray[21 + grade]]; // index 22-31 : battleAttr rand by grade
         r = _rand.nextRand(++index, r);
         require(pool.exist, "battleAttr pool not exist");
         uint16 battleAttr = uint8(pool.randPool.random(r));
