@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
   * @dev hero nft miner attribute
   */
  struct HeroNFTMinerAttr {
-     uint8 minerJob;
+     uint16 produceRate;
      uint16 minerRate;
      uint16 sailerSpeedPer;
      uint16 sailerLoadPer;
@@ -112,6 +112,7 @@ contract NFTAttrSource_V1 is
     function getHeroMinerAttr(uint32 mineAttr, uint16 starLevel) external view returns (HeroNFTMinerAttr memory data)
     {
         data = _heroMineAttrs[mineAttr];
+        data.produceRate = uint16(data.produceRate + uint64(data.produceRate) * starLevel * _heroMineFactor / 10000);
         data.minerRate = uint16(data.minerRate + uint64(data.minerRate) * starLevel * _heroMineFactor / 10000);
         data.sailerSpeedPer = uint16(data.sailerSpeedPer + uint64(data.sailerSpeedPer) * starLevel * _heroMineFactor / 10000);
         data.sailerLoadPer = uint16(data.sailerLoadPer + uint64(data.sailerLoadPer) * starLevel * _heroMineFactor / 10000);
