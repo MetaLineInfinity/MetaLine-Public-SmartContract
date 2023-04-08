@@ -50,14 +50,15 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
   * @dev ship nft battle attribute
   */
  struct ShipNFTBattleAttr { 
-     uint16 attack;
-     uint16 defense;
-     uint16 hitpoint;
-     uint16 miss;
-     uint16 doge;
-     uint16 critical;
-     uint16 decritical;
-     uint16 speed;
+    uint16 attack;
+    uint16 defense;
+    uint16 hitpoint;
+    uint16 miss;
+    uint16 doge;
+    uint16 critical;
+    uint16 decritical;
+    uint16 speed;
+    uint8 maxSailer;
 
     // TO DO : add attr
  }
@@ -196,14 +197,15 @@ contract NFTAttrSource_V1 is
     function getShipBattleAttr(uint32 battleAttr, uint16 level) external view returns (ShipNFTBattleAttr memory data)
     {
         data = _shipBattleAttrs[battleAttr];
-        data.attack = uint16(data.attack + uint64(data.attack) * level * _heroBattleFactor / 10000);
-        data.defense = uint16(data.defense + uint64(data.defense) * level * _heroBattleFactor / 10000);
-        data.hitpoint = uint16(data.hitpoint + uint64(data.hitpoint) * level * _heroBattleFactor / 10000);
-        data.miss = uint16(data.miss + uint64(data.miss * level) * _heroBattleFactor / 10000);
-        data.doge = uint16(data.doge + uint64(data.doge * level) * _heroBattleFactor / 10000);
-        data.critical = uint16(data.critical + uint64(data.critical) * level * _heroBattleFactor / 10000);
-        data.decritical = uint16(data.decritical + uint64(data.decritical) * level * _heroBattleFactor / 10000);
-        data.speed = uint16(data.speed + uint64(data.speed) * level * _heroBattleFactor / 10000);
+        data.attack = uint16(data.attack + uint64(data.attack) * level * _shipBattleFactor / 10000);
+        data.defense = uint16(data.defense + uint64(data.defense) * level * _shipBattleFactor / 10000);
+        data.hitpoint = uint16(data.hitpoint + uint64(data.hitpoint) * level * _shipBattleFactor / 10000);
+        data.miss = uint16(data.miss + uint64(data.miss * level) * _shipBattleFactor / 10000);
+        data.doge = uint16(data.doge + uint64(data.doge * level) * _shipBattleFactor / 10000);
+        data.critical = uint16(data.critical + uint64(data.critical) * level * _shipBattleFactor / 10000);
+        data.decritical = uint16(data.decritical + uint64(data.decritical) * level * _shipBattleFactor / 10000);
+        data.speed = uint16(data.speed + uint64(data.speed) * level * _shipBattleFactor / 10000);
+        data.maxSailer = uint8(data.maxSailer + uint64(data.maxSailer) * level * _shipBattleFactor / 10000);
     }
 
     /**
