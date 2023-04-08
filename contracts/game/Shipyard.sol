@@ -123,15 +123,20 @@ contract Shipyard is
 
         delete _buildabelShips[portID][shipyardLv];
     }
-    function setUpgradeConf(uint8 shipType, uint16 shipTypeID, uint16 shipLevel, ShipUpgradeConf memory conf) external {
+    function setUpgradeConf(uint8 shipType, uint16 shipTypeID, uint16[] memory shipLevels, ShipUpgradeConf[] memory confs) external {
         require(hasRole(MANAGER_ROLE, _msgSender()), "Shipyard: must have manager role");
+        require(shipLevels.length == confs.length, "Shipyard: input error");
 
-        _shipUpgradeConfs[(uint24(shipType)<<16 | shipTypeID)][shipLevel] = conf;
+        for(uint i=0; i< shipLevels.length; ++i){
+            _shipUpgradeConfs[(uint24(shipType)<<16 | shipTypeID)][shipLevels[i]] = confs[i];
+        }
     }
-    function clearUpgradeConf(uint8 shipType, uint16 shipTypeID, uint16 shipLevel) external {
+    function clearUpgradeConf(uint8 shipType, uint16 shipTypeID, uint16[] memory shipLevels) external {
         require(hasRole(MANAGER_ROLE, _msgSender()), "Shipyard: must have manager role");
 
-        delete _shipUpgradeConfs[(uint24(shipType)<<16 | shipTypeID)][shipLevel];
+        for(uint i = 0; i< shipLevels.length; ++i){
+            delete _shipUpgradeConfs[(uint24(shipType)<<16 | shipTypeID)][shipLevels[i]];
+        }
     }
 
     function mint_Ship(

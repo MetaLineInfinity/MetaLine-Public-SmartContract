@@ -132,15 +132,20 @@ contract HeroPetTrain is
         _MTTGoldAddr = MTTGoldAddr;
     }
     
-    function setUpgradeConf(uint16 nftType, uint8 joborpetid, uint16 level, HeroPetUpgradeConf memory conf) external {
+    function setUpgradeConf(uint16 nftType, uint8 joborpetid, uint16[] memory levels, HeroPetUpgradeConf[] memory confs) external {
         require(hasRole(MANAGER_ROLE, _msgSender()), "HeroPetTrain: must have manager role");
+        require(levels.length == confs.length, "HeroPetTrain: input error");
 
-        _heropetUpgradeConfs[nftType][joborpetid][level] = conf;
+        for(uint i= 0; i< levels.length; ++i){
+            _heropetUpgradeConfs[nftType][joborpetid][levels[i]] = confs[i];
+        }
     }
-    function clearUpgradeConf(uint16 nftType, uint8 joborpetid, uint16 level) external {
+    function clearUpgradeConf(uint16 nftType, uint8 joborpetid, uint16[] memory levels) external {
         require(hasRole(MANAGER_ROLE, _msgSender()), "HeroPetTrain: must have manager role");
 
-        delete _heropetUpgradeConfs[nftType][joborpetid][level];
+        for(uint i= 0; i< levels.length; ++i){
+            delete _heropetUpgradeConfs[nftType][joborpetid][levels[i]];
+        }
     }
     
     function setStarLvUpConf(uint8 job, uint16 level, HeroUpStarLevelConf memory conf) external {
