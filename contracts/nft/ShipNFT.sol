@@ -15,6 +15,7 @@ struct ShipNFTData {
     uint32 battleAttr;
 
     uint16 level;
+    uint16 portID;
 }
 
 /**
@@ -39,6 +40,8 @@ contract ShipNFT is ExtendableNFT {
     * @param data token data see {ShipNFTData}
     */
     event ShipNFTModified(uint256 indexed tokenId, ShipNFTData data);
+    
+    event ShipNFTPortModified(uint256 indexed tokenId, uint16 portID);
 
     ResetableCounters.Counter internal _tokenIdTracker;
     
@@ -152,9 +155,19 @@ contract ShipNFT is ExtendableNFT {
 
         ShipNFTData storage wdata = _nftDatas[tokenId];
         wdata.level = data.level;
+        wdata.portID = data.portID;
 
         emit ShipNFTModified(tokenId, wdata);
     }
+    function modNftPort(uint256 tokenId, uint16 portID) external {
+        require(hasRole(DATA_ROLE, _msgSender()), "R1");
+
+        ShipNFTData storage wdata = _nftDatas[tokenId];
+        wdata.portID = portID;
+
+        emit ShipNFTPortModified(tokenId, portID);
+    }
+
 
     /**
      * @dev get token data

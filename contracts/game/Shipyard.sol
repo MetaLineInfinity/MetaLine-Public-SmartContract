@@ -166,7 +166,8 @@ contract Shipyard is
             grade:grade,
             minerAttr:minerAttr,
             battleAttr:battleAttr,
-            level:0
+            level:0,
+            portID:wdata.portID
         }));
     }
 

@@ -137,6 +137,7 @@ contract GameService is
 
     function unbindShipNFT(
         uint256 shipNFTID,
+        uint16 portID,
         address userAddr
     ) external whenNotPaused
     {
@@ -145,6 +146,8 @@ contract GameService is
         require(ShipNFT(_shipNFTAddr).ownerOf(shipNFTID) == userAddr, "GameService: ownership error");
         require(_shipNFTBind[shipNFTID], "GameService: nft not bind");
 
+        ShipNFT(_shipNFTAddr).modNftPort(shipNFTID, portID);
+        
         ShipNFT(_shipNFTAddr).unfreeze(shipNFTID);
         delete _shipNFTBind[shipNFTID];
 
