@@ -107,8 +107,12 @@ contract HeroPetNFTMysteryBoxRandSource is
             battleAttr : battleAttr
         });
 
+        HeroPetNFTWriteableData_V1 memory wdata = HeroPetNFTWriteableData_V1({
+            level:1
+        });
+
         IHeroNFTCodec_V1 codec = IHeroNFTCodec_V1(_heroNFTContract.getCodec());
-        baseData = codec.fromHeroPetNftFixedData(fdata);
+        baseData = codec.fromHeroPetNftFixedAnWriteableData(fdata, wdata);
         baseData.mintType = 1;
     }
 
