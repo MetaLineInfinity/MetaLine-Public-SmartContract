@@ -43,7 +43,7 @@ contract Expedition is
         uint256 minBlockInterval; // each expedition spend bocklInterval time, 
         uint256 goldPerHashrate; // allow input gold by 1 hashrate when expedition blocks = minBlockInterval, 18 decimal
         
-        uint256 maxMTTPerGold; // limit max mtt output per gold,  18 decimal
+        uint256 maxMTTPerGold; // limit max mtt output per gold, 8 decimals, mtt = gold * mttpergold/100000000
 
         uint256 minMTTPerBlock; // min MTT output per block, no matter how many hashrate in this pool
         uint256 maxMTTPerBlock; // max MTT output per block, even more than maxOutputhashRate hashrate in this pool
@@ -477,7 +477,7 @@ contract Expedition is
         require(poolData.currentInputGold >= goldCost, "Expedition: gold underflow");
 
         uint256 value = poolData.currentOutputMTT * goldCost / poolData.currentInputGold;
-        uint256 maxMTT = goldCost * conf.maxMTTPerGold;
+        uint256 maxMTT = goldCost * conf.maxMTTPerGold / 10**8;
         if(value > maxMTT) {
             value = maxMTT;
         }
