@@ -3,8 +3,6 @@
 
 pragma solidity ^0.8.0;
 
-import "./Random.sol";
-
 /**
  * @dev Random pool that allow user random in different rate section
  */

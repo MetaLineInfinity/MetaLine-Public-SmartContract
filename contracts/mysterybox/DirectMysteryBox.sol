@@ -245,7 +245,7 @@ contract DirectMysteryBox is
         _chargeByDesiredCount(onSalePair, onSalePairData, 1, gasfee);
 
         // request random number
-        uint256 reqid = Random(rndAddr).oracleRand();
+        uint256 reqid = IRandom(rndAddr).oracleRand();
 
         DirectMBOpenRecord storage openRec = _openedRecord[reqid];
         openRec.directMBID = directMBID;
@@ -275,7 +275,7 @@ contract DirectMysteryBox is
         _chargeByDesiredCount(onSalePair, onSalePairData, batchCount, gasfee);
 
         // request random number
-        uint256 reqid = Random(rndAddr).oracleRand();
+        uint256 reqid = IRandom(rndAddr).oracleRand();
 
         DirectMBOpenRecord storage openRec = _openedRecord[reqid];
         openRec.directMBID = directMBID;

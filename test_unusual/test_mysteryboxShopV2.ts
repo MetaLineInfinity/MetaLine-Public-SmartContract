@@ -20,7 +20,7 @@ var MockERC20: Contract;
 
 var MockERC721_V1: Contract;
 var MockERC1155_V1: Contract;
-var Random: Contract;
+var RandomArb: Contract;
 var HeroNFT: Contract;
 var HeroNFTCodec_V1: Contract;
 var MysteryBox1155: Contract;
@@ -74,7 +74,7 @@ async function buymb() {
     //     gasLimit: 5000000,
     //     gasPrice: await testtool.provider.getGasPrice(),
     // };
-    // await ContractTool.CallState(Random, "fulfillOracleRand", [reqid, 0, pinfo]);
+    // await ContractTool.CallState(RandomArb, "fulfillOracleRand", [reqid, 0, pinfo]);
     // logtools.loggreen("test succ");
 }
 
@@ -107,7 +107,7 @@ async function buymb_batch() {
     //     gasPrice: await testtool.provider.getGasPrice(),
     // };
 
-    // await ContractTool.CallState(Random, "fulfillOracleRand", [reqid, 0, pinfo]);
+    // await ContractTool.CallState(RandomArb, "fulfillOracleRand", [reqid, 0, pinfo]);
     // logtools.loggreen("test succ");
 
 }

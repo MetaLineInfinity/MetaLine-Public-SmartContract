@@ -6,7 +6,7 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 
-import "../utility/Random.sol";
+import "../core/IRandom.sol";
 import "../utility/RandomPoolLib.sol";
 
 struct MBContentMinter1155Info {
@@ -34,7 +34,7 @@ abstract contract MBRandomSourceBase is
         RandomPoolLib.RandomPool randPool;
     }
 
-    Random _rand;
+    IRandom _rand;
     mapping(uint32 => NFTRandPool)    _randPools; // poolID => nft data random pools
     mapping(uint32 => uint32[])       _mbRandomSets; // mystery type => poolID array
 
@@ -48,7 +48,7 @@ abstract contract MBRandomSourceBase is
     function setRandSource(address randAddr) external {
         require(hasRole(MANAGER_ROLE, _msgSender()));
 
-        _rand = Random(randAddr);
+        _rand = IRandom(randAddr);
     }
 
     function getRandSource() external view returns(address) {

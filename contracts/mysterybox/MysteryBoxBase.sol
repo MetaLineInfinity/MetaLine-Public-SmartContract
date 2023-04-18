@@ -154,7 +154,7 @@ abstract contract MysteryBoxBase is
 
         _mb1155.burn(_msgSender(), tokenId, 1);
 
-        uint256 reqid = Random(rndAddr).oracleRand();
+        uint256 reqid = IRandom(rndAddr).oracleRand();
 
         UserData storage userData = _oracleUserData[reqid];
         userData.owner = _msgSender();
@@ -199,7 +199,7 @@ abstract contract MysteryBoxBase is
 
         _mb1155.burn(_msgSender(), tokenId, batchCount);
         
-        uint256 reqid = Random(rndAddr).oracleRand();
+        uint256 reqid = IRandom(rndAddr).oracleRand();
 
         UserData storage userData = _oracleUserData[reqid];
         userData.owner = _msgSender();

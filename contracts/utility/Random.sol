@@ -6,14 +6,12 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 
-interface IOracleRandComsumer {
-    function oracleRandResponse(uint256 reqid, uint256 randnum) external;
-}
+import "../core/IRandom.sol";
 
 /**
  * @dev A random source contract provids `seedRand`, `sealedRand` and `oracleRand` methods
  */
-contract Random is Context, AccessControl {
+contract Random is Context, AccessControl, IRandom {
     bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
     bytes32 public constant ORACLE_ROLE = keccak256("ORACLE_ROLE");
 
@@ -39,23 +37,6 @@ contract Random is Context, AccessControl {
 
     mapping(uint256 => RandomSeed) _sealedRandom; // _encodeSealedKey(addr) => sealed random seed data structure
     mapping(uint256 => address) _oracleRandRequests; // oracle rand request id => caller address
-
-    /**
-    * @dev emit when `oracleRand` called
-
-    * @param reqid oracle rand request id
-    * @param requestAddress caller address
-    */
-    event OracleRandRequest(uint256 reqid, address indexed requestAddress);
-
-    /**
-    * @dev emit when `fulfillOracleRand` called
-
-    * @param reqid oracle rand request id
-    * @param randnum random number feed to request caller
-    * @param requestAddress `oracleRand` requrest caller address
-    */
-    event OracleRandResponse(uint256 reqid, uint256 randnum, address indexed requestAddress);
 
     constructor() {
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
