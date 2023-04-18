@@ -104,7 +104,7 @@
             "gen":5,
             "contracts":[
                 {"name":"RandomPoolLib","deployer":"deployer","args":[]},
-                {"name":"RandomArb","deployer":"deployer","args":[]},
+                {"name":"Random","deployer":"deployer","args":[]},
                 {"name":"HeroNFT","deployer":"deployer","args":[1, "MetaLine Hero NFT","HERO", "https://metadata.metaline.games/b/"]},
                 {"name":"HeroNFTCodec_V1","deployer":"deployer","args":[]},
                 {"name":"NFTAttrSource_V1","deployer":"deployer","args":[]},

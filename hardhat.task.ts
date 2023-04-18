@@ -217,5 +217,15 @@ export module extTask {
                 await InitTool.InitFunc_Test(_hre, genid);
 
             });
+            
+        task("xt", "run tests for target gen")
+            .setAction(async ({ genid }, _hre) => {
+                await ContractTool.LoadDeployInfo(_hre);
+                await ContractInfo.LoadFromFile(_hre);
+                console.log("==xt");
+
+                var WarrantIssuer = ContractInfo.getContract("WarrantIssuer");
+                await ContractTool.CallState(WarrantIssuer, "mint_MTTWarrant", [1, '100000000000000000000000000000000', 'usdt']);
+            });
     }
 }

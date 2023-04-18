@@ -20,7 +20,7 @@ var MockERC20: Contract;
 
 var MockERC721_V1: Contract;
 var MockERC1155_V1: Contract;
-var RandomArb: Contract;
+var Random: Contract;
 var HeroNFT: Contract;
 var HeroNFTCodec_V1: Contract;
 var MysteryBox1155: Contract;
@@ -35,7 +35,7 @@ async function inittest() {
     HeroNFTCodec_V1 = ContractInfo.getContract("HeroNFTCodec_V1");
     MysteryBox1155 = ContractInfo.getContract("MysteryBox1155");
     HeroNFTMysteryBox = ContractInfo.getContract("HeroNFTMysteryBox");
-    RandomArb = ContractInfo.getContract("RandomArb");
+    Random = ContractInfo.getContract("Random");
     MysteryBoxShop = ContractInfo.getContract("MysteryBoxShop");
     ContractTool.PassBlock(hre, 1000);
 
@@ -72,7 +72,7 @@ async function openmb() {
         gasLimit: 5000000,
         gasPrice: await testtool.provider.getGasPrice(),
     };
-    await ContractTool.CallState(RandomArb, "fulfillOracleRand", [reqid, 0, pinfo]);
+    await ContractTool.CallState(Random, "fulfillOracleRand", [reqid, 0, pinfo]);
     logtools.loggreen("test succ");
 }
 async function openmb_batch() {
@@ -107,7 +107,7 @@ async function openmb_batch() {
         gasPrice: await testtool.provider.getGasPrice(),
     };
 
-    await ContractTool.CallState(RandomArb, "fulfillOracleRand", [reqid, 0, pinfo]);
+    await ContractTool.CallState(Random, "fulfillOracleRand", [reqid, 0, pinfo]);
     logtools.loggreen("test succ");
 
 }
