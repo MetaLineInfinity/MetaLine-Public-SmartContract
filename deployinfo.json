@@ -120,15 +120,15 @@
                 {"name":"ShipNFT","deployer":"deployer","args":[1, "MetaLine Ship NFT","SHIP", "https://metadata.metaline.games/c/"]},
                 {"name":"WarrantNFT","deployer":"deployer","args":[1, "MetaLine Warrant NFT","WRNT", "https://metadata.metaline.games/d/"]},
                 {"name":"DirectMysteryBox","deployer":"deployer","args":[]},
-                {"name":"MTTGold","deployer":"deployer","args":[]},
                 {"name":"GameService","deployer":"deployer","args":[]},
                 {"name":"OffOnChainBridge","deployer":"deployer","args":[]},
                 {"name":"WarrantIssuer","deployer":"deployer","args":[]},
                 {"name":"Shipyard","deployer":"deployer","args":[]},
                 {"name":"HeroPetTrain","deployer":"deployer","args":[]},
+                {"name":"MTTGold","deployer":"deployer","args":["addr:OffOnChainBridge"]},
+                {"name":"TokenPrices","deployer":"deployer","args":[]},
                 {"name":"Expedition","deployer":"deployer","args":[]},
-                {"name":"MTTMinePool","deployer":"deployer","args":["addr:MTT", "1900000000000000000"]},
-                {"name":"TokenPrices","deployer":"deployer","args":[]}
+                {"name":"MTTMinePool","deployer":"deployer","args":["addr:MTT", "1900000000000000000"]}
             ]
         }
     ]

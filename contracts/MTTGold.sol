@@ -9,20 +9,30 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 
 contract MTTGold is 
     Context, 
-    AccessControl,
     ERC20Burnable
 {
-    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-
-    constructor() 
+    bool public _sealed;
+    address public _bridgeAddr;
+    address public _owner;
+    
+    constructor(address bridgeAddr) 
         ERC20("MetaLine Gold", "MTG") 
     {
-        _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
-        _setupRole(MINTER_ROLE, _msgSender());
+        _bridgeAddr = bridgeAddr;
+        _owner = _msgSender();
+        _sealed = false;
+    }
+
+    // seal it when bridge contract is stable
+    function changeBridgeAddr(address bridgeAddr, bool isSealed) external {
+        require(!_sealed, "MTTGold: sealed");
+        require(_msgSender() == _owner, "MTTGold: must be owner");
+        _bridgeAddr = bridgeAddr;
+        _sealed = isSealed;
     }
 
     function mint(address toAddr, uint256 value) external {
-        require(hasRole(MINTER_ROLE, _msgSender()), "MTTGold: must have minter role");
+        require(_msgSender() == _bridgeAddr, "MTTGold: must have minter role");
         _mint(toAddr, value);
     }
 }
