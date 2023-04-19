@@ -12,6 +12,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
  struct HeroNFTMinerAttr {
      uint16 produceRate;
      uint16 minerRate;
+     uint16 shopRate;
      uint16 sailerSpeedPer;
      uint16 sailerLoadPer;
      uint16 sailerRangePer;
@@ -115,6 +116,7 @@ contract NFTAttrSource_V1 is
         data = _heroMineAttrs[mineAttr];
         data.produceRate = uint16(data.produceRate + uint64(data.produceRate) * starLevel * _heroMineFactor / 10000);
         data.minerRate = uint16(data.minerRate + uint64(data.minerRate) * starLevel * _heroMineFactor / 10000);
+        data.shopRate = uint16(data.shopRate + uint64(data.shopRate) * starLevel * _heroMineFactor / 10000);
         data.sailerSpeedPer = uint16(data.sailerSpeedPer + uint64(data.sailerSpeedPer) * starLevel * _heroMineFactor / 10000);
         data.sailerLoadPer = uint16(data.sailerLoadPer + uint64(data.sailerLoadPer) * starLevel * _heroMineFactor / 10000);
         data.sailerRangePer = uint16(data.sailerRangePer + uint64(data.sailerRangePer) * starLevel * _heroMineFactor / 10000);
