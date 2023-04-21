@@ -26,10 +26,11 @@ async function inittest() {
 async function testRandom() {
     
     logtools.log("--seed random");
-    for(let i=0; i< 10; ++i){
-        let reqrecp = await ContractTool.CallState(Random, "seedRand", [Date.now()]);
-    }
+    // for(let i=0; i< 10; ++i){
+    //     let reqrecp = await ContractTool.CallState(Random, "seedRand", [Date.now()]);
+    // }
 
+    logtools.log("--next random");
     let roundv = 0;
     let r = Date.now();
     for(let i=0; i< 1000; ++i){
@@ -37,11 +38,14 @@ async function testRandom() {
         let resulty = await ContractTool.CallView(Random, "nextRand", [i*2+1, resultx]);
         r = resulty;
 
-        resultx = (Number(resultx)%65536) / 65535.0 * 2.0 - 1.0;
-        resulty = (Number(resulty)%65536) / 65535.0 * 2.0 - 1.0;
-        if((resultx*resultx)+(resulty+resulty) < 1){
+        resultx = (Number(resultx.mod(BigNumber.from(65536)))) / 65535.0 * 2.0 - 1.0;
+        resulty = (Number(resulty.mod(BigNumber.from(65536)))) / 65535.0 * 2.0 - 1.0;
+        if((resultx*resultx)+(resulty*resulty) < 1){
             roundv++;
         }
+        console.log(resultx)
+        console.log(resulty)
+        console.log(roundv)
 
         if((i%100==0&&i>0)){
             let mathv = roundv / i*4.0;
