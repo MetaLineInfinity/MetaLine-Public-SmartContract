@@ -15,6 +15,13 @@ interface IUniswapV2Pair_Like {
     function getReserves() external view returns (uint112 reserve0, uint112 reserve1, uint32 blockTimestampLast);
 }
 
+interface IUniswapV3Pool_Like {
+    function token0() external view returns (address);
+    function token1() external view returns (address);
+    function liquidity() external view returns (uint128);
+    function slot0() external view returns (uint160 sqrtPriceX96, int24 tick, uint16 observationIndex, uint16 observationCardinality, uint16 observationCardinalityNext, uint8 feeProtocol, bool unlocked);
+}
+
 contract TokenPrices is 
     Context,
     AccessControl,
@@ -23,6 +30,9 @@ contract TokenPrices is
     bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
 
     uint8 public constant DefiPoolType_UniswapV2 = 1;
+    uint8 public constant DefiPoolType_UniswapV3 = 2;
+    
+    uint256 internal constant Q96 = 0x1000000000000000000000000;
 
     struct DefiPoolConf {
         uint8 poolType;
@@ -87,6 +97,14 @@ contract TokenPrices is
                     return _univ2_getTokenPrice_1(defiPool.poolAddr, 1*(10**ERC20(tokenAddr).decimals()));
                 }
             }
+            else if(defiPool.poolType == DefiPoolType_UniswapV3){
+                if(defiPool.tokenIndex == 0){
+                    return _univ3_getTokenPrice_0(defiPool.poolAddr, 1*(10**ERC20(tokenAddr).decimals()));
+                }
+                else {
+                    return _univ3_getTokenPrice_1(defiPool.poolAddr, 1*(10**ERC20(tokenAddr).decimals()));
+                }
+            }
             else {
                 revert("defiPool.poolType not exist"); 
             }
@@ -138,5 +156,30 @@ contract TokenPrices is
         uint256 ret = ((amount*Res1)/Res0); // return amount of token1 needed to buy token0
         
         return _sync_usdprice_decimals8(ret, ERC20(pair.token1()).decimals());
+    }
+
+    // uniswap v2 get token price ---------------------------------------------
+    // calculate price based on pair reserves
+    function _univ3_getTokenPrice_0(address pairAddress, uint amount) public view returns (uint256) {
+        IUniswapV3Pool_Like pool = IUniswapV3Pool_Like(pairAddress);
+        (uint160 sqrtPriceX96, , , , , , ) = pool.slot0();
+
+        uint256 Res0 = pool.liquidity() * Q96 / sqrtPriceX96;
+        uint256 Res1 = pool.liquidity() * sqrtPriceX96 / Q96;
+
+        uint256 ret = (amount*Res0) / Res1;
+        
+        return _sync_usdprice_decimals8(ret, ERC20(pool.token0()).decimals());
+    }
+    function _univ3_getTokenPrice_1(address pairAddress, uint amount) public view returns (uint256) {
+        IUniswapV3Pool_Like pool = IUniswapV3Pool_Like(pairAddress);
+        (uint160 sqrtPriceX96, , , , , , ) = pool.slot0();
+
+        uint256 Res0 = pool.liquidity() * Q96 / sqrtPriceX96;
+        uint256 Res1 = pool.liquidity() * sqrtPriceX96 / Q96;
+
+        uint256 ret = (amount*Res1) / Res0;
+        
+        return _sync_usdprice_decimals8(ret, ERC20(pool.token1()).decimals());
     }
 }
