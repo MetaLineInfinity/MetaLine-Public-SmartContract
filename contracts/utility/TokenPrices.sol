@@ -3,10 +3,17 @@ pragma solidity ^0.8.7;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 import "./OracleCharger.sol";
+
+interface IUniswapV2Pair_Like {
+    function token0() external view returns (address);
+    function token1() external view returns (address);
+    function getReserves() external view returns (uint112 reserve0, uint112 reserve1, uint32 blockTimestampLast);
+}
 
 contract TokenPrices is 
     Context,
@@ -15,8 +22,16 @@ contract TokenPrices is
 {
     bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
 
-    mapping(address=>AggregatorV3Interface) _chainLinkFeeds;
-    mapping(address=>address) _defiPools;
+    uint8 public constant DefiPoolType_UniswapV2 = 1;
+
+    struct DefiPoolConf {
+        uint8 poolType;
+        uint8 tokenIndex;
+        address poolAddr;
+    }
+
+    mapping(address=>AggregatorV3Interface) public _chainLinkFeeds;
+    mapping(address=>DefiPoolConf) public _defiPools;
 
     constructor() {
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
@@ -34,7 +49,7 @@ contract TokenPrices is
         _chainLinkFeeds[tokenAddr] = AggregatorV3Interface(feedAddr);
     }
     
-    function setDefiPoolSource(address tokenAddr, address defiPoolSource) external {
+    function setDefiPoolSource(address tokenAddr, DefiPoolConf memory defiPoolSource) external {
         require(hasRole(MANAGER_ROLE, _msgSender()), "MTTMinePool: must have manager role");
 
         _defiPools[tokenAddr] = defiPoolSource;
@@ -60,14 +75,49 @@ contract TokenPrices is
             return uint256(price);
         }
 
-        if(_defiPools[tokenAddr] != address(0)){
+        DefiPoolConf storage defiPool = _defiPools[tokenAddr];
+        if(defiPool.poolType != 0){
 
-            // TO DO : get price from defi pool
+            // get price from defi pool
+            if(defiPool.poolType == DefiPoolType_UniswapV2) {
+                if(defiPool.tokenIndex == 0){
+                    return _univ2_getTokenPrice_0(defiPool.poolAddr, 1*(10**ERC20(tokenAddr).decimals()));
+                }
+                else {
+                    return _univ2_getTokenPrice_1(defiPool.poolAddr, 1*(10**ERC20(tokenAddr).decimals()));
+                }
+            }
+            else {
+                revert("defiPool.poolType not exist"); 
+            }
 
-            // for Debug ...
-            return 9000000; // 0.09 u
+            // // for Debug ...
+            // return 9000000; // 0.09 u
         }
 
         revert("token price source not set");
+    }
+
+    // uniswap v2 get token price ---------------------------------------------
+    // calculate price based on pair reserves
+    function _univ2_getTokenPrice_0(address pairAddress, uint256 amount) internal view returns(uint)
+    {
+        IUniswapV2Pair_Like pair = IUniswapV2Pair_Like(pairAddress);
+        //ERC20 token1 = ERC20(pair.token1());
+        (uint Res0, uint Res1,) = pair.getReserves();
+
+        // decimals
+        //uint res0 = Res0*(10**token1.decimals());
+        return((amount*Res0)/Res1); // return amount of token0 needed to buy token1
+    }
+    function _univ2_getTokenPrice_1(address pairAddress, uint amount) internal view returns(uint)
+    {
+        IUniswapV2Pair_Like pair = IUniswapV2Pair_Like(pairAddress);
+        //ERC20 token0 = ERC20(pair.token0());
+        (uint Res0, uint Res1,) = pair.getReserves();
+
+        // decimals
+        //uint res1 = Res1*(10**token0.decimals());
+        return((amount*Res1)/Res0); // return amount of token1 needed to buy token0
     }
 }
