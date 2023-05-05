@@ -106,6 +106,9 @@ contract TokenPrices is
         else if(decimals > 8){
             ret = price / (10**(decimals - 8));
         }
+        else {
+            ret = price;
+        }
 
         return ret;
     }
