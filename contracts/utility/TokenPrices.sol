@@ -98,9 +98,21 @@ contract TokenPrices is
         revert("token price source not set");
     }
 
+    function _sync_usdprice_decimals8(uint256 price, uint8 decimals) internal pure returns(uint256 ret) {
+
+        if(decimals < 8){
+            ret = price * (10**(8 - decimals));
+        }
+        else if(decimals > 8){
+            ret = price / (10**(decimals - 8));
+        }
+
+        return ret;
+    }
+
     // uniswap v2 get token price ---------------------------------------------
     // calculate price based on pair reserves
-    function _univ2_getTokenPrice_0(address pairAddress, uint256 amount) internal view returns(uint)
+    function _univ2_getTokenPrice_0(address pairAddress, uint256 amount) internal view returns(uint256)
     {
         IUniswapV2Pair_Like pair = IUniswapV2Pair_Like(pairAddress);
         //ERC20 token1 = ERC20(pair.token1());
@@ -108,9 +120,11 @@ contract TokenPrices is
 
         // decimals
         //uint res0 = Res0*(10**token1.decimals());
-        return((amount*Res0)/Res1); // return amount of token0 needed to buy token1
+        uint256 ret = ((amount*Res0)/Res1); // return amount of token0 needed to buy token1
+
+        return _sync_usdprice_decimals8(ret, ERC20(pair.token0()).decimals());
     }
-    function _univ2_getTokenPrice_1(address pairAddress, uint amount) internal view returns(uint)
+    function _univ2_getTokenPrice_1(address pairAddress, uint amount) internal view returns(uint256)
     {
         IUniswapV2Pair_Like pair = IUniswapV2Pair_Like(pairAddress);
         //ERC20 token0 = ERC20(pair.token0());
@@ -118,6 +132,8 @@ contract TokenPrices is
 
         // decimals
         //uint res1 = Res1*(10**token0.decimals());
-        return((amount*Res1)/Res0); // return amount of token1 needed to buy token0
+        uint256 ret = ((amount*Res1)/Res0); // return amount of token1 needed to buy token0
+        
+        return _sync_usdprice_decimals8(ret, ERC20(pair.token1()).decimals());
     }
 }
