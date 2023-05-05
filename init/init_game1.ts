@@ -39,13 +39,13 @@ export class Init_Game1 {
         await ContractTool.CallState(ShipNFT, "grantRole", [DATA_ROLE,"addr:Shipyard"]);
         return true;
     }
+
     static async ConfigAll(hre: HardhatRuntimeEnvironment): Promise<boolean> {
         logtools.logblue("==Init_Game1");
         let addrtool = await AddrTool.Init(hre);
     
 //======config WarrantIssuer
         var WarrantIssuer = ContractInfo.getContract("WarrantIssuer");
-
 
         await ContractTool.CallState(WarrantIssuer, "setReceiveIncomeAddr", [addrtool.addr1]);
         await ContractTool.CallState(WarrantIssuer, "addChargeToken", ["MTT","addr:MTT","99000000000000000000","1000000000000000000"]);

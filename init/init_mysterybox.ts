@@ -78,15 +78,15 @@ export class Init_MysteryBox
     }
     static async  ConfigAll(hre:HardhatRuntimeEnvironment):Promise<boolean>
     {
-        logtools.logblue("==Config_MysteryBox");
+        // logtools.logblue("==Config_MysteryBox");
         
-        // config random source
-        let HeroNFTMysteryBoxRandSource = ContractInfo.getContract("HeroNFTMysteryBoxRandSource");
-        await ContractTool.CallState(HeroNFTMysteryBoxRandSource, "setRandomSet", [1, [1,1,1,1,1,1,1
-            ,1,1,1,1,1,1,1
-            ,1,1,1]]);
+        // // config random source
+        // let HeroNFTMysteryBoxRandSource = ContractInfo.getContract("HeroNFTMysteryBoxRandSource");
+        // await ContractTool.CallState(HeroNFTMysteryBoxRandSource, "setRandomSet", [1, [1,1,1,1,1,1,1
+        //     ,1,1,1,1,1,1,1
+        //     ,1,1,1]]);
     
-        await Init_MysteryBox.HeroNFTMysteryBoxRandSource_AddPool(1,[[1000,0,2]]);
+        // await Init_MysteryBox.HeroNFTMysteryBoxRandSource_AddPool(1,[[1000,0,2]]);
 
         return true;
     }

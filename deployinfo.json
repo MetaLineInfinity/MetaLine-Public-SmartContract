@@ -124,9 +124,15 @@
                 {"name":"OffOnChainBridge","deployer":"deployer","args":[]},
                 {"name":"WarrantIssuer","deployer":"deployer","args":[]},
                 {"name":"Shipyard","deployer":"deployer","args":[]},
-                {"name":"HeroPetTrain","deployer":"deployer","args":[]},
                 {"name":"MTTGold","deployer":"deployer","args":["addr:OffOnChainBridge"]},
-                {"name":"TokenPrices","deployer":"deployer","args":[]},
+                {"name":"TokenPrices","deployer":"deployer","args":[]}
+            ]
+        },
+        {
+            "group":"expedition",
+            "gen":7,
+            "contracts":[
+                {"name":"HeroPetTrain","deployer":"deployer","args":[]},
                 {"name":"Expedition","deployer":"deployer","args":[]},
                 {"name":"MTTMinePool","deployer":"deployer","args":["addr:MTT", "1900000000000000000"]}
             ]
