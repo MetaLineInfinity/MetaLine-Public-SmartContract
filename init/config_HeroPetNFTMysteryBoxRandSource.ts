@@ -17,9 +17,9 @@ export const HeroPetNFTMysteryBoxRandSource_config = {
         [
             "8",
             [
-                [1000, 6, 6],
-                [500, 7, 7],
-                [250, 8, 8],
+                [1000, 51, 60],
+                [500, 61, 70],
+                [250, 71, 80],
             ],
         ],
     ],

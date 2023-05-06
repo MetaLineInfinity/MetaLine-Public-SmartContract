@@ -7,7 +7,8 @@ import { ContractTool } from "../utils/util_contracttool";
 import { logtools } from "../utils/util_log";
 import { DirectMysteryBox_config } from "./config_DirectMysteryBox";
 import { Expedition_config } from "./config_Expedition";
-import { HeroPetNFTMysteryBoxRandSource_config } from "./config_HeroNFTMysteryBoxRandSource";
+import { HeroNFTMysteryBoxRandSource_config } from "./config_HeroNFTMysteryBoxRandSource";
+import { HeroPetNFTMysteryBoxRandSource_config } from "./config_HeroPetNFTMysteryBoxRandSource";
 import { HeroPetTrain_config } from "./config_HeroPetTrain";
 import { NFTAttrSource_V1_config } from "./config_NFTAttrSource_V1";
 import { OffOnChainBridge_config } from "./config_OffOnChainBridge";
@@ -186,7 +187,7 @@ export class Init_LglTest {
         const HeroNFTMysteryBoxRandSourceConfig = {
             contract: HeroNFTMysteryBoxRandSource,
             name: "HeroNFTMysteryBoxRandSource",
-            configs: HeroPetNFTMysteryBoxRandSource_config,
+            configs: HeroNFTMysteryBoxRandSource_config,
         };
         define_configs.push(HeroNFTMysteryBoxRandSourceConfig);
 
