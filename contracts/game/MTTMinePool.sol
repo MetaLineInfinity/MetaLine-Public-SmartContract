@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // Metaline Contracts (Expedition.sol)
 
-pragma solidity >=0.8.0 <=0.8.17;
+pragma solidity >=0.8.0 <=0.9.0;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
