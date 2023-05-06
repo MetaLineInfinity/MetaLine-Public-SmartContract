@@ -122,8 +122,6 @@ contract OffOnChainBridge is
         require(WarrantNFT(_warrantNFTAddr).ownerOf(warrantNFTID) == userAddr, "OffOnChainBridge: warrant ownership error");
         require(goldValue > 0, "OffOnChainBridge: parameter error");
 
-        // TO DO : tax?
-
         // get warrant nft data
         WarrantNFTData memory wdata = WarrantNFT(_warrantNFTAddr).getNftData(warrantNFTID);
 
@@ -147,8 +145,6 @@ contract OffOnChainBridge is
         require(hasRole(SERVICE_ROLE, _msgSender()), "OffOnChainBridge: must have service role");
         require(MTTGold(_MTTGoldAddr).balanceOf(address(this)) >= goldValue, "OffOnChainBridge: insufficient MTTGold");
 
-        // TO DO : check risk
-
         TransferHelper.safeTransferFrom(_MTTGoldAddr, address(this), userAddr, goldValue);
         
         emit Off2OnChain_MTTGold(userAddr, goldValue);
@@ -156,8 +152,6 @@ contract OffOnChainBridge is
 
     function on2offChain_MTTGold(uint256 goldValue) external whenNotPaused {
         require(MTTGold(_MTTGoldAddr).balanceOf(address(_msgSender())) >= goldValue, "OffOnChainBridge: insufficient MTTGold");
-
-        // TO DO : check risk
 
         TransferHelper.safeTransferFrom(_MTTGoldAddr, _msgSender(), address(this), goldValue);
 

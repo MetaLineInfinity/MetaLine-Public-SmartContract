@@ -30,7 +30,7 @@ contract HeroPetNFTMysteryBoxRandSource is
 
         uint32[] storage poolIDArray = _mbRandomSets[mysteryTp];
 
-        require(poolIDArray.length == 9, "mb type config wrong");
+        require(poolIDArray.length == 10, "mb type config wrong");
 
         HeroNFTDataBase memory baseData = _getSingleRandHero(r, poolIDArray);
 
@@ -113,7 +113,7 @@ contract HeroPetNFTMysteryBoxRandSource is
 
         IHeroNFTCodec_V1 codec = IHeroNFTCodec_V1(_heroNFTContract.getCodec());
         baseData = codec.fromHeroPetNftFixedAnWriteableData(fdata, wdata);
-        baseData.mintType = 1;
+        baseData.mintType = uint8(poolIDArray[9]); // index 9 : mint type
     }
 
     function batchRandomAndMint(uint256 r, uint32 mysteryTp, address to, uint8 batchCount) virtual override external 
@@ -123,7 +123,7 @@ contract HeroPetNFTMysteryBoxRandSource is
 
         uint32[] storage poolIDArray = _mbRandomSets[mysteryTp];
 
-        require(poolIDArray.length == 9, "mb type config wrong");
+        require(poolIDArray.length == 10, "mb type config wrong");
 
         nfts = new MBContentMinterNftInfo[](1); // 1 nft
         sfts = new MBContentMinter1155Info[](0); // no sft record
