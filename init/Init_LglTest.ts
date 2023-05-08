@@ -207,14 +207,6 @@ export class Init_LglTest {
         };
         define_configs.push(DirectMysteryBoxConfig);
 
-        // NFTAttrSource_V1
-        const NFTAttrSource_V1Config = {
-            contract: NFTAttrSource_V1,
-            name: "NFTAttrSource_V1",
-            configs: NFTAttrSource_V1_config,
-        };
-        define_configs.push(NFTAttrSource_V1Config);
-
         // HeroNFTMysteryBox
 
         // OffOnChainBridge
@@ -224,6 +216,14 @@ export class Init_LglTest {
             configs: OffOnChainBridge_config,
         };
         define_configs.push(OffOnChainBridgeConfig);
+
+        // // NFTAttrSource_V1
+        // const NFTAttrSource_V1Config = {
+        //     contract: NFTAttrSource_V1,
+        //     name: "NFTAttrSource_V1",
+        //     configs: NFTAttrSource_V1_config,
+        // };
+        // define_configs.push(NFTAttrSource_V1Config);
         
         // // HeroPetTrain
         // const HeroPetTrainConfig = {
