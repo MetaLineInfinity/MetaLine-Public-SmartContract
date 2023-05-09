@@ -205,7 +205,7 @@ contract Expedition is
             else if(hdb.nftType == 2) { // pet
                 HeroPetNFTFixedData_V1 memory hndata = codec.getHeroPetNftFixedData(hdb);
                 
-                HeroNFTMinerAttr memory hmattr = attSrc.getHeroMinerAttr(hndata.minerAttr, 1);
+                HeroNFTMinerAttr memory hmattr = attSrc.getHeroMinerAttr(hndata.minerAttr, 0);
                 teamHashRate += hmattr.hashRate;
             }
             else {
@@ -323,7 +323,7 @@ contract Expedition is
                 else if(hdb.nftType == 2) { // pet
                     HeroPetNFTFixedData_V1 memory hndata = codec.getHeroPetNftFixedData(hdb);
                     
-                    HeroNFTMinerAttr memory hmattr = attSrc.getHeroMinerAttr(hndata.minerAttr, 1);
+                    HeroNFTMinerAttr memory hmattr = attSrc.getHeroMinerAttr(hndata.minerAttr, 0);
                     shipet.teamHashRate += hmattr.hashRate;
                 }
                 else {

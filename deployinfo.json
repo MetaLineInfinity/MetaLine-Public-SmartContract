@@ -132,6 +132,7 @@
             "group":"expedition",
             "gen":7,
             "contracts":[
+                {"name":"NFTAttrSource_V2","deployer":"deployer","args":[]},
                 {"name":"HeroPetTrain","deployer":"deployer","args":[]},
                 {"name":"Expedition","deployer":"deployer","args":[]},
                 {"name":"MTTMinePool","deployer":"deployer","args":["addr:MTT", "1900000000000000000"]}
