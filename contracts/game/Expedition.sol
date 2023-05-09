@@ -172,6 +172,9 @@ contract Expedition is
         require(phep.poolConf.minMTTPerBlock > 0, "Expedition: port expedition config not exist");
         require(heroNftIDs.length > 0, "Expedition: team hero must >0");
 
+        HeroExpeditionTeam storage team = phep.expedHeros[_msgSender()];
+        require(team.teamHashRate <= 0, "Expedition: team already exist");
+
         IHeroNFTCodec_V1 codec = IHeroNFTCodec_V1(HeroNFT(_heroNFTAddr).getCodec());
         NFTAttrSource_V1 attSrc = NFTAttrSource_V1(HeroNFT(_heroNFTAddr).getAttrSource());
 
