@@ -49,8 +49,8 @@ export const HeroNFTMysteryBoxRandSource_config = {
             [
                 [317, 6, 6],
                 [403, 7, 7],
-                [16, 8, 8],
-                [12, 9, 9],
+                [167, 8, 8],
+                [125, 9, 9],
             ],
         ],
         [
