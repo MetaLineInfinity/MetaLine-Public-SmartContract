@@ -15,6 +15,7 @@ import "../nft/ShipNFT.sol";
 import "../nft/HeroNFTCodec.sol";
 import "../nft/NFTAttrSource.sol";
 
+import "./GameService.sol";
 import "./MTTMinePool.sol";
 
 contract Expedition is
@@ -103,6 +104,7 @@ contract Expedition is
     address public _MTTGoldAddr;
     address public _MTTAddr;
     address public _MTTMinePoolAddr;
+    address public _gameService;
 
     mapping(uint16=>PortHeroExpedPool) public _heroExpeditions;
     mapping(uint16=>PortShipExpedPool) public _shipExpeditions;
@@ -136,7 +138,8 @@ contract Expedition is
         address shipNFTAddr,
         address MTTAddr,
         address MTTGoldAddr,
-        address MTTMinePoolAddr
+        address MTTMinePoolAddr,
+        address gameService
     ) external {
         require(hasRole(MANAGER_ROLE, _msgSender()), "Expedition: must have manager role");
 
@@ -146,6 +149,7 @@ contract Expedition is
         _MTTAddr = MTTAddr;
         _MTTGoldAddr = MTTGoldAddr;
         _MTTMinePoolAddr = MTTMinePoolAddr;
+        _gameService = gameService;
     }
 
     function setPortHeroExpedConf(uint16 portID, ExpeditionPoolConf memory conf) external {
@@ -168,9 +172,14 @@ contract Expedition is
 
     function setHeroExpedTeam(uint16 portID, uint256[] memory heroNftIDs) external {
 
+        require(GameService(_gameService)._bindWarrant(_msgSender(), portID) != 0, "Expedition: must bind warrant");
+
         PortHeroExpedPool storage phep = _heroExpeditions[portID];
         require(phep.poolConf.minMTTPerBlock > 0, "Expedition: port expedition config not exist");
         require(heroNftIDs.length > 0, "Expedition: team hero must >0");
+
+        HeroExpeditionTeam storage team = phep.expedHeros[_msgSender()];
+        require(team.teamHashRate <= 0, "Expedition: team already exist");
 
         IHeroNFTCodec_V1 codec = IHeroNFTCodec_V1(HeroNFT(_heroNFTAddr).getCodec());
         NFTAttrSource_V1 attSrc = NFTAttrSource_V1(HeroNFT(_heroNFTAddr).getAttrSource());
@@ -205,7 +214,7 @@ contract Expedition is
             else if(hdb.nftType == 2) { // pet
                 HeroPetNFTFixedData_V1 memory hndata = codec.getHeroPetNftFixedData(hdb);
                 
-                HeroNFTMinerAttr memory hmattr = attSrc.getHeroMinerAttr(hndata.minerAttr, 1);
+                HeroNFTMinerAttr memory hmattr = attSrc.getHeroMinerAttr(hndata.minerAttr, 0);
                 teamHashRate += hmattr.hashRate;
             }
             else {
@@ -272,6 +281,8 @@ contract Expedition is
     }
 
     function setShipExpedTeam(uint16 portID, ExpeditionShip[] memory expedShips) external {
+        
+        require(GameService(_gameService)._bindWarrant(_msgSender(), portID) != 0, "Expedition: must bind warrant");
 
         PortShipExpedPool storage psep = _shipExpeditions[portID];
         require(psep.poolConf.minMTTPerBlock > 0, "Expedition: port expedition config not exist");
@@ -323,7 +334,7 @@ contract Expedition is
                 else if(hdb.nftType == 2) { // pet
                     HeroPetNFTFixedData_V1 memory hndata = codec.getHeroPetNftFixedData(hdb);
                     
-                    HeroNFTMinerAttr memory hmattr = attSrc.getHeroMinerAttr(hndata.minerAttr, 1);
+                    HeroNFTMinerAttr memory hmattr = attSrc.getHeroMinerAttr(hndata.minerAttr, 0);
                     shipet.teamHashRate += hmattr.hashRate;
                 }
                 else {
