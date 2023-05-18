@@ -42,8 +42,8 @@ contract PortMarket is ProxyImplInitializer,IPortMarket {
     
     function initialize() external initOnce {
         owner = msg.sender;
-        _feeTo = msg.sender; // for Test
-        _fee = 50;
+        _feeTo = msg.sender; 
+        _fee = 50; 
     }
 
     function initPortMarket(
@@ -107,7 +107,7 @@ contract PortMarket is ProxyImplInitializer,IPortMarket {
         _swapPairAddrToItemid[swapAddr] = itemid;
 
         PortMarketPair swapPair = PortMarketPair(swapAddr);
-        swapPair.initialize(token0, itemid);
+        swapPair.initialize(token0, itemid, _portID);
 
         emit Pair_Created(_portID, token0, itemid, swapAddr);
     }

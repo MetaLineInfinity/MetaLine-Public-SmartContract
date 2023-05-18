@@ -5,6 +5,7 @@ import { Init_MysteryBox } from "./init_mysterybox";
 import { Init_MysteryBoxShop, Init_MysteryBoxShopV1, Init_MysteryBoxShopV2 } from "./init_mysteryboxShop";
 import { Init_Game1 } from "./init_game1";
 import { Init_LglTest } from "./Init_LglTest";
+import { Init_Market } from "./init_market";
 
 export function RegAll() {
     InitTool.RegForGroup("mysteryboxShop", Init_MysteryBoxShop.InitAll, undefined, Init_MysteryBoxShop.ConfigAll, ["test_unusual/test_mysteryboxShop.ts"]);
@@ -13,4 +14,5 @@ export function RegAll() {
     InitTool.RegForGroup("mysteryboxShopV2", Init_MysteryBoxShopV2.InitAll, undefined, Init_MysteryBoxShopV2.ConfigAll, ["test_unusual/test_mysteryboxShopV2.ts"]);
     InitTool.RegForGroup("mysterybox", Init_MysteryBox.InitAll, undefined, Init_MysteryBox.ConfigAll, ["test_unusual/test_mysterybox.ts"]);
     InitTool.RegForGroup("game1", Init_LglTest.InitAll, undefined, Init_LglTest.ConfigAll, ["test_unusual/test_WarrantIssuer.ts", "test_unusual/test_Shipyard.ts"]);
+    InitTool.RegForGroup("market", Init_Market.InitAll, undefined, Init_Market.ConfigAll, ["test_unusual/test_market.ts"]);
 }

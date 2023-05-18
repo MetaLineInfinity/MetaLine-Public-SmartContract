@@ -16,7 +16,7 @@ import "./PortMarketPairERC20.sol";
 
 // 1155 swap pair base on uniswap v2 swap algorithm
 // see {UniswapV2Pair}
-abstract contract PortMarketPair is IPortMarketPair, PortMarketPairERC20 {
+contract PortMarketPair is IPortMarketPair, PortMarketPairERC20 {
     using LowGasSafeMath for uint;
     using UQ112x112 for uint224;
 
@@ -24,6 +24,7 @@ abstract contract PortMarketPair is IPortMarketPair, PortMarketPairERC20 {
     bytes4 private constant SELECTOR = bytes4(keccak256(bytes('transfer(address,uint256)')));
 
     address public override market;
+    uint16 public override portid;
     address public override token0;
     uint32 public override itemid;
 
@@ -42,7 +43,8 @@ abstract contract PortMarketPair is IPortMarketPair, PortMarketPairERC20 {
 
     function __chain_initialize_PortMarketPairBase (
         address t0,
-        uint32 t1
+        uint32 t1,
+        uint16 pid
     ) internal onlyInitializing {
 
         __chain_initialize_PortMarketERC20();
@@ -51,13 +53,15 @@ abstract contract PortMarketPair is IPortMarketPair, PortMarketPairERC20 {
         market = msg.sender;
         token0 = t0;
         itemid = t1;
+        portid = pid;
     }
     
     function initialize(
         address t0,
-        uint32 t1
+        uint32 t1,
+        uint16 pid
     ) external initOnce {
-        __chain_initialize_PortMarketPairBase(t0, t1);
+        __chain_initialize_PortMarketPairBase(t0, t1, pid);
     }
 
     modifier lock() {

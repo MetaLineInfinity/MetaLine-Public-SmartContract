@@ -40,11 +40,10 @@ contract PortMarketFactory {
             )
         );
 
-        PortMarket(pmAddr).initialize();
         PortMarket(pmAddr).initPortMarket(portid, portMarketPairImpl);
         
-        PortMarket(pmAddr).changeOwner(owner);
         PortMarket(pmAddr).setFeeTo(owner);
+        PortMarket(pmAddr).changeOwner(owner);
 
         emit PortMarketCreated(portid, pmAddr);
     }
