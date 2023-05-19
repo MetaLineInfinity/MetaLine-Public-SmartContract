@@ -146,7 +146,7 @@ contract PortMarket is ProxyImplInitializer,IPortMarket {
 
         address token0 = IPortMarketPair(swapPair).token0();
         TransferHelper.safeTransferFrom(token0, msg.sender, swapPair, amount0);
-        itemTransferFrom(IPortMarketPair(swapPair).itemid(), msg.sender, swapPair, amount1);
+        _transfer(IPortMarketPair(swapPair).itemid(), msg.sender, swapPair, amount1);
         liquidity = IPortMarketPair(swapPair).mint(to);
     }
 
@@ -199,7 +199,7 @@ contract PortMarket is ProxyImplInitializer,IPortMarket {
         amountOut = PortMarketLibrary.getAmountOut(amountIn, reserveIn, reserveOut, _fee);
         require(amountOut >= amountOutMin, 'PortMarket: INSUFFICIENT_OUTPUT_AMOUNT');
         if(buy) {
-            itemTransferFrom(IPortMarketPair(swapPair).itemid(), msg.sender, swapPair, amountIn);
+            _transfer(IPortMarketPair(swapPair).itemid(), msg.sender, swapPair, amountIn);
             IPortMarketPair(swapPair).swap(amountOut, 0, to, "");
         }
         else {
@@ -223,7 +223,7 @@ contract PortMarket is ProxyImplInitializer,IPortMarket {
         amountIn = PortMarketLibrary.getAmountIn(amountOut, reserveIn, reserveOut, _fee);
         require(amountIn <= amountInMax, 'PortMarket: EXCESSIVE_INPUT_AMOUNT');
         if(buy) {
-            itemTransferFrom(IPortMarketPair(swapPair).itemid(), msg.sender, swapPair, amountIn);
+            _transfer(IPortMarketPair(swapPair).itemid(), msg.sender, swapPair, amountIn);
             IPortMarketPair(swapPair).swap(amountOut, 0, to, "");
         }
         else {
@@ -271,17 +271,17 @@ contract PortMarket is ProxyImplInitializer,IPortMarket {
         return _itemBalances[addr][itemid];
     }
     
-    function _transfer(uint32 itemid, address from, address to, uint value) private {
+    function _transfer(uint32 itemid, address from, address to, uint value) internal {
         _itemBalances[from][itemid] = _itemBalances[from][itemid].sub(value);
         _itemBalances[to][itemid] = _itemBalances[to][itemid].add(value);
         emit ItemTransfer(_portID, itemid, from, to, value);
     }
     function itemTransfer(uint32 itemid, address to, uint256 value) public override {
-        require(msg.sender == address(this) || _swapPairAddrToItemid[msg.sender] != 0, "PortMarket: FORBIDDEN");
+        require(_swapPairAddrToItemid[msg.sender] != 0, "PortMarket: FORBIDDEN");
         _transfer(itemid, msg.sender, to, value);
     }
     function itemTransferFrom(uint32 itemid, address from, address to, uint256 value) public override {
-        require(msg.sender == address(this) || _swapPairAddrToItemid[msg.sender] != 0, "PortMarket: FORBIDDEN");
+        require(_swapPairAddrToItemid[msg.sender] != 0, "PortMarket: FORBIDDEN");
         _transfer(itemid, from, to, value);
     }
 }
