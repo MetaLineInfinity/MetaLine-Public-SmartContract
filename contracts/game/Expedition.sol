@@ -301,7 +301,7 @@ contract Expedition is
             require(smattr.maxSailer >= expedShips[j].heroNFTIDs.length);
             shipet.teamHashRate += smattr.hashRate;
 
-            require(sd.shipType == 1, "Expedition: not cargo ship");
+            require(sd.shipType == 2, "Expedition: not battle ship");
 
             if(j==0){
                 require((sd.level / 10)+1 >= expedShips.length, "Expedition: flag ship level/10 must >= team ships count");
