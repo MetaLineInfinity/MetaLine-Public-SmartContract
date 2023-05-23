@@ -9,6 +9,7 @@ import "@openzeppelin/contracts/utils/Context.sol";
 
 import "../nft/HeroNFT.sol";
 import "../nft/ShipNFT.sol";
+import "../nft/WarrantNFT.sol";
 
 contract AssetMinter is
     Context,
@@ -24,10 +25,12 @@ contract AssetMinter is
     struct PackageInfo {
         uint32 totalCount;
         uint32 mintedCount;
+        uint16[] portIDs;
         HeroNFTDataBase[] heros;
         ShipNFTData[] ships;
     }
     
+    address public _warrantNFTAddr;
     address public _heroNFTAddr;
     address public _shipNFTAddr;
 
@@ -59,28 +62,38 @@ contract AssetMinter is
 
     function init(
         address heroNFTAddr,
-        address shipNFTAddr
+        address shipNFTAddr,
+        address warrantNFTAddr
     ) external {
         require(hasRole(MANAGER_ROLE, _msgSender()), "AssetMinter: must have manager role");
 
         _heroNFTAddr = heroNFTAddr;
         _shipNFTAddr = shipNFTAddr;
+        _warrantNFTAddr = warrantNFTAddr;
     }
 
     function getPackage(uint32 packageId) external view returns (
         HeroNFTDataBase[] memory heros, 
         ShipNFTData[] memory ships,
+        uint16[] memory portIDs,
         uint32 totalCount,
         uint32 mintedCount
     ) {
         PackageInfo memory pi = _packages[packageId];
         heros = pi.heros;
         ships = pi.ships;
+        portIDs = pi.portIDs;
         totalCount = pi.totalCount;
         mintedCount = pi.mintedCount;
     }
 
-    function setPackage(uint32 packageId, uint32 totalCount, HeroNFTDataBase[] calldata heros, ShipNFTData[] calldata ships) external {
+    function setPackage(
+        uint32 packageId, 
+        uint32 totalCount, 
+        HeroNFTDataBase[] calldata heros, 
+        ShipNFTData[] calldata ships, 
+        uint16[] memory portIDs
+    ) external {
         require(hasRole(MANAGER_ROLE, _msgSender()), "AssetMinter: must have manager role");
         require(heros.length > 0 || ships.length > 0, "AssetMinter: input parameter error");
         require(heros.length < 10 && ships.length < 5, "AssetMinter: input parameter error");
@@ -91,6 +104,9 @@ contract AssetMinter is
         }
         for(uint i=0; i<ships.length; ++i){
             pi.ships.push(ships[i]);
+        }
+        for(uint i=0; i<portIDs.length; ++i){
+            pi.portIDs.push(portIDs[i]);
         }
         pi.totalCount = totalCount;
     }
@@ -122,6 +138,16 @@ contract AssetMinter is
         }
         for(uint i=0; i< pi.ships.length; ++i){
             ShipNFT(_shipNFTAddr).mint(userAddr, pi.ships[i]);
+        }
+        for(uint i=0; i< pi.portIDs.length; ++i){
+            WarrantNFT(_warrantNFTAddr).mint(userAddr, WarrantNFTData({
+                portID:pi.portIDs[i],
+                storehouseLv:1,
+                factoryLv:1,
+                shopLv:1,
+                shipyardLv:0,
+                createTm:uint32(block.timestamp)
+            }));
         }
 
         ++pi.mintedCount;
