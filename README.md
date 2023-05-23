@@ -26,9 +26,12 @@ npx hardhat --network localhost xgenconfigonly 5
 npx hardhat --network localhost xdeploy group game1
 npx hardhat --network localhost xgeninitonly 6
 npx hardhat --network localhost xgenconfigonly 6
-npx hardhat --network localhost xdeploy group market
+npx hardhat --network localhost xdeploy group assetminter
 npx hardhat --network localhost xgeninitonly 7
 npx hardhat --network localhost xgenconfigonly 7
+npx hardhat --network localhost xdeploy group market
+npx hardhat --network localhost xgeninitonly 8
+npx hardhat --network localhost xgenconfigonly 8
 ```
 
 # 🛠️ Test

@@ -129,8 +129,15 @@
             ]
         },
         {
-            "group":"market",
+            "group":"assetminter",
             "gen":7,
+            "contracts":[
+                {"name":"AssetMinter","deployer":"deployer","args":[]}
+            ]
+        },
+        {
+            "group":"market",
+            "gen":8,
             "contracts":[
                 {"name":"HeroPetTrain","deployer":"deployer","args":[]},
                 {"name":"NFTAttrSource_V2","deployer":"deployer","args":[]},
@@ -141,7 +148,7 @@
         },
         {
             "group":"expedition",
-            "gen":8,
+            "gen":9,
             "contracts":[
                 {"name":"Expedition","deployer":"deployer","args":[]},
                 {"name":"MTTMinePool","deployer":"deployer","args":["addr:MTT", "1900000000000000000"]}
