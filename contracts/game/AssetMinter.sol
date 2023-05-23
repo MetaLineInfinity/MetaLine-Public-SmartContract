@@ -128,7 +128,7 @@ contract AssetMinter is
     function mintPackage(uint32 packageId, address userAddr) external {
         require(hasRole(MINTER_ROLE, _msgSender()), "AssetMinter: must have minter role");
 
-        PackageInfo memory pi = _packages[packageId];
+        PackageInfo storage pi = _packages[packageId];
 
         require(pi.totalCount > 0, "AssetMinter: package not exist");
         require(pi.totalCount >= pi.mintedCount + 1, "AssetMinter: insufficient package");
