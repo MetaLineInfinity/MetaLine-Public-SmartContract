@@ -913,6 +913,41 @@
     "function setDefiPoolSource(address tokenAddr, tuple(uint8 poolType, uint8 tokenIndex, address poolAddr) defiPoolSource)",
     "function supportsInterface(bytes4 interfaceId) view returns (bool)"
    ]
+  },
+  "AssetMinter": {
+   "deployer": "0x9a9D8832534A9DC2efCf99B5f14C8C66F6317027",
+   "addr": "0x686a2D0c7DDbC8cdF1C204423F08212df0C8e11E",
+   "abi": [
+    "constructor()",
+    "event MintPackage(uint32 packageId, address indexed userAddr, uint32 totalCount, uint32 mintedCount)",
+    "event Paused(address account)",
+    "event RoleAdminChanged(bytes32 indexed role, bytes32 indexed previousAdminRole, bytes32 indexed newAdminRole)",
+    "event RoleGranted(bytes32 indexed role, address indexed account, address indexed sender)",
+    "event RoleRevoked(bytes32 indexed role, address indexed account, address indexed sender)",
+    "event Unpaused(address account)",
+    "function DEFAULT_ADMIN_ROLE() view returns (bytes32)",
+    "function MANAGER_ROLE() view returns (bytes32)",
+    "function MINTER_ROLE() view returns (bytes32)",
+    "function PAUSER_ROLE() view returns (bytes32)",
+    "function _heroNFTAddr() view returns (address)",
+    "function _shipNFTAddr() view returns (address)",
+    "function _warrantNFTAddr() view returns (address)",
+    "function getPackage(uint32 packageId) view returns (tuple(uint8 mintType, uint16 nftType, uint232 fixedData, uint256 writeableData)[] heros, tuple(uint8 shipType, uint16 shipTypeID, uint8 grade, uint32 minerAttr, uint32 battleAttr, uint16 level, uint16 portID)[] ships, uint16[] portIDs, uint32 totalCount, uint32 mintedCount)",
+    "function getRoleAdmin(bytes32 role) view returns (bytes32)",
+    "function grantRole(bytes32 role, address account)",
+    "function hasRole(bytes32 role, address account) view returns (bool)",
+    "function init(address heroNFTAddr, address shipNFTAddr, address warrantNFTAddr)",
+    "function mintPackage(uint32 packageId, address userAddr)",
+    "function pause()",
+    "function paused() view returns (bool)",
+    "function removePackage(uint32 packageId)",
+    "function renounceRole(bytes32 role, address account)",
+    "function revokeRole(bytes32 role, address account)",
+    "function setPackage(uint32 packageId, uint32 totalCount, tuple(uint8 mintType, uint16 nftType, uint232 fixedData, uint256 writeableData)[] heros, tuple(uint8 shipType, uint16 shipTypeID, uint8 grade, uint32 minerAttr, uint32 battleAttr, uint16 level, uint16 portID)[] ships, uint16[] portIDs)",
+    "function setPackageTotalCount(uint32 packageId, uint32 totalCount)",
+    "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+    "function unpause()"
+   ]
   }
  }
 }
