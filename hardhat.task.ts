@@ -6,6 +6,7 @@ import { ContractInfo } from "./utils/util_contractinfo";
 import { ContractTool } from "./utils/util_contracttool";
 import { InitTool } from "./utils/util_inittool";
 import { logtools } from "./utils/util_log";
+import { OP_Tools } from "./init/op_tool";
 
 export module extTask {
     export function RegTasks() {
@@ -229,5 +230,12 @@ export module extTask {
                 await _hre.run("test",{"testFiles":[testfile]});
             });
 
+        task("xoptool", "run optool")
+            .setAction(async ({  }, _hre) => {
+                await ContractTool.LoadDeployInfo(_hre);
+                await ContractInfo.LoadFromFile(_hre);
+
+                await OP_Tools.AirDropShip(_hre);
+            });
     }
 }
