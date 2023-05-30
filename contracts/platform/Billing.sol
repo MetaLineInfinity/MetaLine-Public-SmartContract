@@ -8,7 +8,7 @@ import "../interface/platform/IBilling.sol";
 contract Billing is IBilling {
 
     function setBillingApp(string calldata appid, address receiver) external override {
-
+        
     }
     function payBill(
         string calldata appid, 

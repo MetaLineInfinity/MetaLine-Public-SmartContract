@@ -13,6 +13,8 @@ contract PortMarketFactory {
     address public owner;
     address public portMarketPairImpl;
     address public portMarketImpl;
+
+    mapping(uint16=>address) public portMarkets;
     
     constructor(
         address pmp,
@@ -44,6 +46,8 @@ contract PortMarketFactory {
         
         PortMarket(pmAddr).setFeeTo(owner);
         PortMarket(pmAddr).changeOwner(owner);
+
+        portMarkets[portid] = pmAddr;
 
         emit PortMarketCreated(portid, pmAddr);
     }
