@@ -5,6 +5,12 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
+struct UniversalNFTData {
+    string appid; // application id
+    uint256[] fixdata; // token data that can't modify
+    uint256[] nftdata; // token data
+}
+
 interface IUniversalNFT is IERC721 {
 
     /**
@@ -12,10 +18,8 @@ interface IUniversalNFT is IERC721 {
     *
     * @param to owner of new token
     * @param tokenId new token id
-    * @param fixdata token data that can't modify
-    * @param nftdata token data
     */
-    event UniversalNFTMint(address indexed to, uint256 indexed tokenId, uint256[] fixdata, uint256[] nftdata);
+    event UniversalNFTMint(address indexed to, uint256 indexed tokenId, UniversalNFTData nftdata);
     
     /**
     * @dev emit when token data modified
@@ -24,6 +28,15 @@ interface IUniversalNFT is IERC721 {
     * @param nftdata token data
     */
     event UniversalNFTModified(uint256 indexed tokenId, uint256[] nftdata);
+    
+    /**
+    * @dev emit when token data modified
+    *
+    * @param tokenId token id
+    * @param index token data index
+    * @param nftdata token data
+    */
+    event UniversalNFTSingleModified(uint256 indexed tokenId, uint32 index, uint256 nftdata);
 
     
     /**
@@ -38,12 +51,11 @@ interface IUniversalNFT is IERC721 {
      * - the caller must have the `MINTER_ROLE`.
      *
      * @param to new token owner address
-     * @param fixdata token data that can't modify
-     * @param nftdata token data
+     * @param data token data
      * @return id new token id
      */
-    function mint(address to, uint256[] memory fixdata, uint256[] memory nftdata) external returns(uint256 id);
-    function mintFixedID(uint256 id, address to, uint256[] memory fixdata, uint256[] memory nftdata) external returns (uint256);
+    function mint(address to, UniversalNFTData memory data) external returns(uint256 id);
+    function mintFixedID(uint256 id, address to, UniversalNFTData memory data) external returns (uint256);
 
     /**
      * @dev modify token data
@@ -54,10 +66,19 @@ interface IUniversalNFT is IERC721 {
     function modNftData(uint256 tokenId, uint256[] memory nftdata) external;
 
     /**
+     * @dev modify token data
+     *
+     * @param tokenId token id
+     * @param index token data index
+     * @param nftdata token data
+     */
+    function modSingleNftData(uint256 tokenId, uint32 index, uint256 nftdata) external;
+
+    /**
      * @dev get token data
      *
      * @param tokenId token id
-     * @param nftdata token data
+     * @param data token data
      */
-    function getNftData(uint256 tokenId) external view returns(uint256[] memory fixdata, uint256[] memory nftdata);
+    function getNftData(uint256 tokenId) external view returns(UniversalNFTData memory data);
 }

@@ -147,8 +147,17 @@
             ]
         },
         {
-            "group":"expedition",
+            "group":"platform",
             "gen":9,
+            "contracts":[
+                {"name":"Billing","deployer":"deployer","args":[]},
+                {"name":"UniversalNFT","deployer":"deployer","args":[1, "MetaLine Universal NFT","MTUN", "https://metadata.metaline.games/e/"]},
+                {"name":"UniNFTOnOffChainBridge","deployer":"deployer","args":[]}
+            ]
+        },
+        {
+            "group":"expedition",
+            "gen":10,
             "contracts":[
                 {"name":"Expedition","deployer":"deployer","args":[]},
                 {"name":"MTTMinePool","deployer":"deployer","args":["addr:MTT", "1900000000000000000"]}
