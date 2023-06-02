@@ -59,10 +59,10 @@ contract HeroPetTrain is
     address public _heroNFTAddr;
     address public _MTTGoldAddr;
     
-    mapping(uint16=>mapping(uint8=>mapping(uint16=>HeroPetUpgradeConf))) public _heropetUpgradeConfs; // nfttype => job/petId => level => upgrade config
+    mapping(uint16=>mapping(uint8=>mapping(uint16=>HeroPetUpgradeConf))) public _heropetUpgradeConfs; // nfttype => grade => level => upgrade config
     mapping(uint256=>HeroPetUpgarding) public _upgradingHeroPets; // hero/pet nft id => upgrading data
     
-    mapping(uint8=>mapping(uint16=>HeroUpStarLevelConf)) public _heroStarLvUpConfs; // job => level => star level up config
+    mapping(uint8=>mapping(uint16=>HeroUpStarLevelConf)) public _heroStarLvUpConfs; // grade => level => star level up config
     mapping(uint256=>HeroStarLvUping) public _upingStarLvHeros; // hero nft id => star level uping data
 
     constructor() {
@@ -132,31 +132,31 @@ contract HeroPetTrain is
         _MTTGoldAddr = MTTGoldAddr;
     }
     
-    function setUpgradeConf(uint16 nftType, uint8 joborpetid, uint16[] memory levels, HeroPetUpgradeConf[] memory confs) external {
+    function setUpgradeConf(uint16 nftType, uint8 grade, uint16[] memory levels, HeroPetUpgradeConf[] memory confs) external {
         require(hasRole(MANAGER_ROLE, _msgSender()), "HeroPetTrain: must have manager role");
         require(levels.length == confs.length, "HeroPetTrain: input error");
 
         for(uint i= 0; i< levels.length; ++i){
-            _heropetUpgradeConfs[nftType][joborpetid][levels[i]] = confs[i];
+            _heropetUpgradeConfs[nftType][grade][levels[i]] = confs[i];
         }
     }
-    function clearUpgradeConf(uint16 nftType, uint8 joborpetid, uint16[] memory levels) external {
+    function clearUpgradeConf(uint16 nftType, uint8 grade, uint16[] memory levels) external {
         require(hasRole(MANAGER_ROLE, _msgSender()), "HeroPetTrain: must have manager role");
 
         for(uint i= 0; i< levels.length; ++i){
-            delete _heropetUpgradeConfs[nftType][joborpetid][levels[i]];
+            delete _heropetUpgradeConfs[nftType][grade][levels[i]];
         }
     }
     
-    function setStarLvUpConf(uint8 job, uint16 level, HeroUpStarLevelConf memory conf) external {
+    function setStarLvUpConf(uint8 grade, uint16 level, HeroUpStarLevelConf memory conf) external {
         require(hasRole(MANAGER_ROLE, _msgSender()), "HeroPetTrain: must have manager role");
 
-        _heroStarLvUpConfs[job][level] = conf;
+        _heroStarLvUpConfs[grade][level] = conf;
     }
-    function clearStarLvUpConf(uint8 job, uint16 level) external {
+    function clearStarLvUpConf(uint8 grade, uint16 level) external {
         require(hasRole(MANAGER_ROLE, _msgSender()), "HeroPetTrain: must have manager role");
 
-        delete _heroStarLvUpConfs[job][level];
+        delete _heroStarLvUpConfs[grade][level];
     }
     
     function startUpgrade_HeroOrPet(
@@ -179,14 +179,14 @@ contract HeroPetTrain is
             HeroNFTWriteableData_V1 memory wdata = codec.getHeroNftWriteableData(hdb);
 
             level = wdata.level;
-            upConf = _heropetUpgradeConfs[hdb.nftType][hndata.job][level];
+            upConf = _heropetUpgradeConfs[hdb.nftType][hndata.grade][level];
         } 
         else if(hdb.nftType == 2) { // pet
-            HeroPetNFTFixedData_V1 memory hndata = codec.getHeroPetNftFixedData(hdb);
+            //HeroPetNFTFixedData_V1 memory hndata = codec.getHeroPetNftFixedData(hdb);
             HeroPetNFTWriteableData_V1 memory wdata = codec.getHeroPetNftWriteableData(hdb);
             
             level = wdata.level;
-            upConf = _heropetUpgradeConfs[hdb.nftType][hndata.petId][level];
+            upConf = _heropetUpgradeConfs[hdb.nftType][7][level]; // pet grade default = 7
         }
         else {
             revert("HeroPetTrain: nft type error");
@@ -268,7 +268,7 @@ contract HeroPetTrain is
         HeroNFTFixedData_V1 memory hndata = codec.getHeroNftFixedData(hdb);
         HeroNFTWriteableData_V1 memory wdata = codec.getHeroNftWriteableData(hdb);
 
-        HeroUpStarLevelConf memory upConf = _heroStarLvUpConfs[hndata.job][wdata.starLevel];
+        HeroUpStarLevelConf memory upConf = _heroStarLvUpConfs[hndata.grade][wdata.starLevel];
         
         require(wdata.level >= upConf.heroLevelRequire, "HeroPetTrain: hero level not enough");
 
