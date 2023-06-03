@@ -10,8 +10,8 @@ abstract contract PortMarketPairERC20 is ProxyImplInitializer {
     using LowGasSafeMath for uint;
 
     string public constant name = 'MetaLine PortMarket LP Token';
-    string public constant symbol = 'MTLP';
-    uint8 public constant decimals = 18;
+    string public constant symbol = 'MPLP';
+    uint8 public constant decimals = 8;
     uint  public totalSupply;
 
     mapping(address => uint) public balanceOf;
