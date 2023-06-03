@@ -147,7 +147,7 @@ contract HeroNFTMSCombiner is
     }
 
     function combineShards(uint256 shardId, uint256 value) external {
-        require(_mb1155.balanceOf(_msgSender(), shardId)>=value, "HeroNFTMSCombiner: card shard not enough");
+        require(_mb1155.balanceOf(_msgSender(), shardId)>=value, "HeroNFTMSCombiner: shard not enough");
 
         (uint8 tokenType, ShardAttr memory attr) = _decodeShardId(shardId);
         require(tokenType == 1, "HeroNFTMSCombiner: not shard token");
@@ -166,7 +166,7 @@ contract HeroNFTMSCombiner is
 
         //console.log("[sol]id=",id);
 
-        require(attr.grade < 10, "can not combine grade 10 card shard"); // max grade = 10
+        require(attr.grade < 10, "can not combine grade 10 shard"); // max grade = 10
 
         _mb1155.burn(_msgSender(), shardId, value);
 
