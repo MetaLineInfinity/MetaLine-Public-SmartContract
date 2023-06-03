@@ -7,6 +7,8 @@ import { Init_Game1 } from "./init_game1";
 import { Init_LglTest } from "./Init_LglTest";
 import { Init_Market } from "./init_market";
 import { Init_AssetMinter } from "./init_assetminter";
+import { Init_Platform } from "./init_platform";
+import { Init_Shards } from "./init_shards";
 
 export function RegAll() {
     InitTool.RegForGroup("mysteryboxShop", Init_MysteryBoxShop.InitAll, undefined, Init_MysteryBoxShop.ConfigAll, ["test_unusual/test_mysteryboxShop.ts"]);
@@ -17,4 +19,6 @@ export function RegAll() {
     InitTool.RegForGroup("game1", Init_LglTest.InitAll, undefined, Init_LglTest.ConfigAll, ["test_unusual/test_WarrantIssuer.ts", "test_unusual/test_Shipyard.ts"]);
     InitTool.RegForGroup("assetminter", Init_AssetMinter.InitAll, undefined, Init_AssetMinter.ConfigAll, ["test_unusual/test_assetminter.ts"]);
     InitTool.RegForGroup("market", Init_Market.InitAll, undefined, Init_Market.ConfigAll, ["test_unusual/test_market.ts"]);
+    InitTool.RegForGroup("platform", Init_Platform.InitAll, undefined, Init_Platform.ConfigAll, ["test_unusual/test_platform.ts"]);
+    InitTool.RegForGroup("shards", Init_Shards.InitAll, undefined, Init_Shards.ConfigAll, ["test_unusual/test_shards.ts"]);
 }

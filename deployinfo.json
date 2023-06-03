@@ -156,8 +156,18 @@
             ]
         },
         {
-            "group":"expedition",
+            "group":"shards",
             "gen":10,
+            "contracts":[
+                {"name":"HeroNFTMysteryShard","deployer":"deployer","args":[]},
+                {"name":"HeroNFTMSCombiner","deployer":"deployer","args":[]},
+                {"name":"HeroNFTMysteryShardRandSource","deployer":"deployer","args":["addr:HeroNFT"],"libraries":{"RandomPoolLib":"addr:RandomPoolLib"}},
+                {"name":"HeroPetNFTMysteryShardRandSource","deployer":"deployer","args":["addr:HeroNFT"],"libraries":{"RandomPoolLib":"addr:RandomPoolLib"}}
+            ]
+        },
+        {
+            "group":"expedition",
+            "gen":11,
             "contracts":[
                 {"name":"Expedition","deployer":"deployer","args":[]},
                 {"name":"MTTMinePool","deployer":"deployer","args":["addr:MTT", "1900000000000000000"]}
