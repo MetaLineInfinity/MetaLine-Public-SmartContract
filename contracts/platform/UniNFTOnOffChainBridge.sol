@@ -38,7 +38,7 @@ contract UniNFTOnOffChainBridge is
     function pause() public {
         require(
             hasRole(PAUSER_ROLE, _msgSender()),
-            "PlatOnOffChainBridge: must have pauser role to pause"
+            "UniNFTOnOffChainBridge: must have pauser role to pause"
         );
         _pause();
     }
@@ -46,7 +46,7 @@ contract UniNFTOnOffChainBridge is
     function unpause() public {
         require(
             hasRole(PAUSER_ROLE, _msgSender()),
-            "PlatOnOffChainBridge: must have pauser role to unpause"
+            "UniNFTOnOffChainBridge: must have pauser role to unpause"
         );
         _unpause();
     }
@@ -54,20 +54,20 @@ contract UniNFTOnOffChainBridge is
     function init(
         address uniNFTAddr
     ) external {
-        require(hasRole(MANAGER_ROLE, _msgSender()), "PlatOnOffChainBridge: must have manager role");
+        require(hasRole(MANAGER_ROLE, _msgSender()), "UniNFTOnOffChainBridge: must have manager role");
 
         _uniNFTAddr = uniNFTAddr;
     }
 
     function setAppUniNFTMintCount(string memory appid, uint32 count) external {
-        require(hasRole(MANAGER_ROLE, _msgSender()), "PlatOnOffChainBridge: must have manager role");
+        require(hasRole(MANAGER_ROLE, _msgSender()), "UniNFTOnOffChainBridge: must have manager role");
 
         _appUniNFTMintCount[appid] = count;
     }
 
     function mintUniNFT(address userAddr, UniversalNFTData memory data) external whenNotPaused {
-        require(hasRole(MINTER_ROLE, _msgSender()), "PlatOnOffChainBridge: must have minter role");
-        require(_appUniNFTMintCount[data.appid] > 0, "PlatOnOffChainBridge: app insufficient nft");
+        require(hasRole(MINTER_ROLE, _msgSender()), "UniNFTOnOffChainBridge: must have minter role");
+        require(_appUniNFTMintCount[data.appid] > 0, "UniNFTOnOffChainBridge: app insufficient nft");
 
         // limit per app uninft mint count
         --_appUniNFTMintCount[data.appid];
@@ -76,8 +76,8 @@ contract UniNFTOnOffChainBridge is
     }
 
     function off2onChain_UniNFT(string memory appid, address userAddr, uint256 tokenId) external whenNotPaused {
-        require(hasRole(SERVICE_ROLE, _msgSender()), "PlatOnOffChainBridge: must have service role");
-        require(IERC721(_uniNFTAddr).ownerOf(tokenId) == address(this), "PlatOnOffChainBridge: ownership error");
+        require(hasRole(SERVICE_ROLE, _msgSender()), "UniNFTOnOffChainBridge: must have service role");
+        require(IERC721(_uniNFTAddr).ownerOf(tokenId) == address(this), "UniNFTOnOffChainBridge: ownership error");
 
         IERC721(_uniNFTAddr).transferFrom(address(this), userAddr, tokenId);
         
@@ -85,7 +85,7 @@ contract UniNFTOnOffChainBridge is
     }
 
     function on2offChain_UniNFT(string memory appid, uint256 tokenId) external whenNotPaused {
-        require(IERC721(_uniNFTAddr).ownerOf(tokenId) == address(_msgSender()), "PlatOnOffChainBridge: ownership error");
+        require(IERC721(_uniNFTAddr).ownerOf(tokenId) == address(_msgSender()), "UniNFTOnOffChainBridge: ownership error");
 
         IERC721(_uniNFTAddr).transferFrom(_msgSender(), address(this), tokenId);
 

@@ -62,7 +62,7 @@ contract Billing is
     }
     
     function setTPOracleAddr(address tpOracleAddr) external {
-        require(hasRole(MANAGER_ROLE, _msgSender()), "OffOnChainBridge: must have manager role");
+        require(hasRole(MANAGER_ROLE, _msgSender()), "Billing: must have manager role");
 
         _oracleCharger.setTPOracleAddr(tpOracleAddr);
     }
@@ -75,13 +75,13 @@ contract Billing is
         uint256 maximumUSDPrice, 
         uint256 minimumUSDPrice
     ) external {
-        require(hasRole(MANAGER_ROLE, _msgSender()), "OffOnChainBridge: must have manager role");
+        require(hasRole(MANAGER_ROLE, _msgSender()), "Billing: must have manager role");
 
         _oracleCharger.addChargeToken(tokenName, tokenAddr, maximumUSDPrice, minimumUSDPrice);
     }
 
     function removeChargeToken(string memory tokenName) external {
-        require(hasRole(MANAGER_ROLE, _msgSender()), "OffOnChainBridge: must have manager role");
+        require(hasRole(MANAGER_ROLE, _msgSender()), "Billing: must have manager role");
 
         _oracleCharger.removeChargeToken(tokenName);
     }
