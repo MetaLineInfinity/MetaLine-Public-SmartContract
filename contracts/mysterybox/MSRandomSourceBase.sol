@@ -6,9 +6,9 @@ pragma solidity ^0.8.0;
 import "./MBRandomSourceBase.sol";
 
 struct ShardAttr {
-    uint16 shardID;
-    uint8 grade;
-    uint8 shardType;
+    uint16 shardID; // hero job or petId
+    uint8 grade; // 
+    uint8 shardType; // shard type = nft type : =1 hero, =2 pet
     uint16 randomType;
     uint16 mysteryType;
 }
