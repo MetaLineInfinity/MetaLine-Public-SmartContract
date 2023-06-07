@@ -152,7 +152,7 @@
             "contracts":[
                 {"name":"Billing","deployer":"deployer","args":[]},
                 {"name":"UniversalNFT","deployer":"deployer","args":[1, "MetaLine Universal NFT","MTUN", "https://metadata.metaline.games/e/"]},
-                {"name":"UniNFTOnOffChainBridge","deployer":"deployer","args":[]}
+                {"name":"PlatOnOffChainBridge","deployer":"deployer","args":[]}
             ]
         },
         {
