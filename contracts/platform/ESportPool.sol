@@ -22,8 +22,8 @@ contract ESportPool is
     bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
     bytes32 public constant SERVICE_ROLE = keccak256("SERVICE_ROLE");
 
-    event OnBuyTicket(uint32 poolId, uint256 usdPrice, uint256 tokenValue, uint64 totalTickets, uint64 currentRoundTickets);
-    event DispatchAward(uint32 poolId, RoundInfos rinfo);
+    event OnBuyTicket(uint32 poolId, uint256 usdPrice, uint256 poolValue, uint256 tokenValue, uint64 totalTickets, uint64 currentRoundTickets);
+    event DispatchAward(uint32 poolId, uint256 poolValue, RoundInfos rinfo);
     
     struct PoolConfig {
         uint256 ticketUsdPrice;
@@ -32,6 +32,7 @@ contract ESportPool is
         address tokenAddr;
     }
     struct PoolInfo {
+        uint256 poolValue;
         uint64 currentRound;
         uint64 totalTickets;
         uint64 currentRoundTickets;
@@ -131,8 +132,9 @@ contract ESportPool is
         uint256 tokenValue = _oracleCharger.charge(conf.tokenName, conf.ticketUsdPrice, address(this));
         ++info.totalTickets;
         ++info.currentRoundTickets;
+        info.poolValue += tokenValue;
 
-        emit OnBuyTicket(poolId, usdPrice, tokenValue, info.totalTickets, info.currentRoundTickets);
+        emit OnBuyTicket(poolId, usdPrice, tokenValue, info.poolValue, info.totalTickets, info.currentRoundTickets);
     }
 
     function dispatchAward(uint32 poolId, address[] calldata winners) external {
@@ -152,11 +154,12 @@ contract ESportPool is
         info.currentRoundTickets = 0; // clear current round ticket
 
         uint256 balance = IERC20(conf.tokenAddr).balanceOf(address(this));
-        require(balance > 0, "ESportPool: insufficient token");
+        require(info.poolValue <= balance, "ESportPool: insufficient token");
 
         for(uint i=0; i< winners.length; ++i){
-            uint256 awardV = balance * conf.winnerShares[i] / 10000;
+            uint256 awardV = info.poolValue * conf.winnerShares[i] / 10000;
             TransferHelper.safeTransfer(conf.tokenAddr, winners[i], awardV);
+            info.poolValue -= awardV;
 
             rinfo.winnerInfos.push(WinnerInfo({
                 winnerAwardValue:awardV,
@@ -164,6 +167,6 @@ contract ESportPool is
             }));
         }
 
-        emit DispatchAward(poolId, rinfo);
+        emit DispatchAward(poolId, info.poolValue, rinfo);
     }
 }
