@@ -151,6 +151,7 @@ contract HeroNFTMSCombiner is
 
         (uint8 tokenType, ShardAttr memory attr) = _decodeShardId(shardId);
         require(tokenType == 1, "HeroNFTMSCombiner: not shard token");
+        require(attr.shardType == 1, "HeroNFTMSCombiner: not hero shard token");
         
         uint256 costv = _shardCombineCount[attr.grade];
         uint32 combineCount = uint32(costv >> 32 & 0xffffffff);
