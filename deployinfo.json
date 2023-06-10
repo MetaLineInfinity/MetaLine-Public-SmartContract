@@ -140,7 +140,6 @@
             "gen":8,
             "contracts":[
                 {"name":"HeroPetTrain","deployer":"deployer","args":[]},
-                {"name":"NFTAttrSource_V2","deployer":"deployer","args":[]},
                 {"name":"PortMarket","deployer":"deployer","args":[]},
                 {"name":"PortMarketPair","deployer":"deployer","args":[]},
                 {"name":"PortMarketFactory","deployer":"deployer","args":["addr:PortMarketPair", "addr:PortMarket"]}
@@ -170,6 +169,7 @@
             "gen":11,
             "contracts":[
                 {"name":"Expedition","deployer":"deployer","args":[]},
+                {"name":"NFTAttrSource_V2","deployer":"deployer","args":[]},
                 {"name":"MTTMinePool","deployer":"deployer","args":["addr:MTT", "1900000000000000000"]}
             ]
         }

@@ -8,8 +8,7 @@ import * as InitConfig from "./init_config";
 
 export class OP_Tools
 {
-    static airdrop_address = [
-
+    static airdrop_address = [ 
     ]
 
     static async AirDropShip(hre: HardhatRuntimeEnvironment): Promise<boolean>
@@ -22,7 +21,7 @@ export class OP_Tools
             let rc= await ContractTool.CallState(ShipNFT, 
                 "mint", 
                 [this.airdrop_address[i], 
-                [1,2,3,3,0,1,1]]
+                [1,1001,2,1001,0,1,1]]
                 );
             //when a tran got many events, GetEvent cound not work.
             let topic =ContractTool.GetRawEvent(rc,ShipNFT,"ShipNFTMint");
