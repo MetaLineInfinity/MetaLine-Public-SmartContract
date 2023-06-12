@@ -62,13 +62,13 @@ export class Init_Market {
 
         let define_configs: any = [];
 
-        // Shipyard
-        const ShipyardConfig = {
-            contract: Shipyard,
-            name: "Shipyard",
-            configs: Shipyard_config_v2,
-        };
-        define_configs.push(ShipyardConfig);
+        // // Shipyard
+        // const ShipyardConfig = {
+        //     contract: Shipyard,
+        //     name: "Shipyard",
+        //     configs: Shipyard_config_v2,
+        // };
+        // define_configs.push(ShipyardConfig);
         
         // HeroPetTrain
         const HeroPetTrainConfig = {
@@ -86,18 +86,18 @@ export class Init_Market {
         // };
         // define_configs.push(NFTAttrSource_V2Config);
 
-        // set config
-        for (let i = 0; i < define_configs.length; i++) {
-            const contract = define_configs[i].contract;
-            const name = define_configs[i].name;
-            for (var func in define_configs[i].configs) {
-                const configs = define_configs[i].configs[func];
-                for (let j = 0; j < configs.length; j++) {
-                    await ContractTool.CallState(contract, func, configs[j]);
-                    logtools.logblue("SET Contract:" + name + ", func:" + func + ", args:" + configs[j].toString());
-                }
-            }
-        }
+        // // set config
+        // for (let i = 0; i < define_configs.length; i++) {
+        //     const contract = define_configs[i].contract;
+        //     const name = define_configs[i].name;
+        //     for (var func in define_configs[i].configs) {
+        //         const configs = define_configs[i].configs[func];
+        //         for (let j = 0; j < configs.length; j++) {
+        //             await ContractTool.CallState(contract, func, configs[j]);
+        //             logtools.logblue("SET Contract:" + name + ", func:" + func + ", args:" + configs[j].toString());
+        //         }
+        //     }
+        // }
 
         // // PortMarket NEXT2
         // for (let portid=1; portid<=2; portid++) {
@@ -115,13 +115,12 @@ export class Init_Market {
         //     // create succ
         //     logtools.logcyan(`port ${portid} market addr=` + pmAddr);
 
-
         //     // setServiceOp
         //     let portMarketPorxy = await ContractTool.GetVistualContract(PortMarketFactory.signer, "PortMarket", pmAddr);
         //     await ContractTool.CallState(portMarketPorxy, "setServiceOp", ["addr:operater_address"]);
 
         //     // create pair: createSwapPair(address token0, uint32 itemid) returns (address swapAddr)
-        //     let itemids = [1000001, 1000002, 1000003, 1000004, 1000005, 1000006, 1000007, 1000008, 1000009, 1000010, 2000001, 2000002, 2000003, 2000004, 2000005, 2000006, 2000007, 2000008, 2000009, 2000010, 1200001, 1200002, 1200003, 1200004, 1200005, 1200006, 1200007, 1200008, 1200009, 1200010, 2200001, 2200002, 2200003, 2200004, 2200005, 2200006, 2200007, 2200009, 2200011 ];
+        //     let itemids = [1000001, 1000002, 1000003, 1000004, 1000005, 1000006, 1000007, 1000008, 1000009, 1000010, 2000001, 2000002, 2000003, 2000004, 2000005, 2000006, 2000007, 2000008, 2000009, 2000010, 1200001, 1200002, 1200003, 1200004, 1200005, 1200006, 1200007, 1200008, 1200009, 1200010, 2200001, 2200002, 2200003, 2200004, 2200005, 2000011 ];
         //     for (let j = 0; j < itemids.length; j++) {
         //         let itemid = itemids[j];
 
@@ -137,6 +136,22 @@ export class Init_Market {
         //         }
         //     }
         // }
+
+        // let pm1Addr = await ContractTool.CallView(PortMarketFactory, "portMarkets", [1]);
+        // let portMarket1Porxy = await ContractTool.GetVistualContract(PortMarketFactory.signer, "PortMarket", pm1Addr);
+        // await ContractTool.CallState(portMarket1Porxy, "setServiceOp", [PortMarketFactory.signer.getAddress()]);
+        // for(const key in items_p1){
+        //     await ContractTool.CallState(portMarket1Porxy, "off2onChain_item", [key, "0xB70FEaA31d51e5873653f58f92070273f98934d9", items_p1[key]]);
+        // }
+        // await ContractTool.CallState(portMarket1Porxy, "setServiceOp", ["addr:operater_address"]);
+
+        // let pm2Addr = await ContractTool.CallView(PortMarketFactory, "portMarkets", [2]);
+        // let portMarket2Porxy = await ContractTool.GetVistualContract(PortMarketFactory.signer, "PortMarket", pm2Addr);
+        // await ContractTool.CallState(portMarket2Porxy, "setServiceOp", [PortMarketFactory.signer.getAddress()]);
+        // for(const key in items_p2){
+        //     await ContractTool.CallState(portMarket2Porxy, "off2onChain_item", [key, "0xB70FEaA31d51e5873653f58f92070273f98934d9", items_p2[key]]);
+        // }
+        // await ContractTool.CallState(portMarket2Porxy, "setServiceOp", ["addr:operater_address"]);
 
         return true;
     }
