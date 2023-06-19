@@ -23,7 +23,7 @@ contract ESportPool is
     bytes32 public constant SERVICE_ROLE = keccak256("SERVICE_ROLE");
 
     event OnBuyTicket(uint32 poolId, uint256 usdPrice, uint256 poolValue, uint256 tokenValue, uint64 totalTickets, uint64 currentRoundTickets);
-    event DispatchAward(uint32 poolId, uint256 poolValue, RoundInfos rinfo);
+    event DispatchAward(uint32 poolId, uint256 poolValue, uint64 currentRound, RoundInfos rinfo);
     
     struct PoolConfig {
         uint256 ticketUsdPrice;
@@ -167,6 +167,8 @@ contract ESportPool is
             }));
         }
 
-        emit DispatchAward(poolId, info.poolValue, rinfo);
+        emit DispatchAward(poolId, info.poolValue, info.currentRound, rinfo);
+
+        ++info.currentRound;
     }
 }
