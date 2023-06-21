@@ -236,6 +236,7 @@ export module extTask {
                 await ContractInfo.LoadFromFile(_hre);
 
                 await OP_Tools.AirDropShip(_hre);
+                //await OP_Tools.AddAssetMinterTotalCount(_hre);
             });
     }
 }

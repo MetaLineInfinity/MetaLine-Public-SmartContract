@@ -21,7 +21,7 @@ export class OP_Tools
             let rc= await ContractTool.CallState(ShipNFT, 
                 "mint", 
                 [this.airdrop_address[i], 
-                [1,1001,2,1001,0,1,1]]
+                [1,10,4,44,0,1,2]]
                 );
             //when a tran got many events, GetEvent cound not work.
             let topic =ContractTool.GetRawEvent(rc,ShipNFT,"ShipNFTMint");
@@ -29,6 +29,34 @@ export class OP_Tools
             logtools.loggreen(`mint ship id[${shipnftid}] to addr[${this.airdrop_address[i]}]`);
         }
 
+        return true;
+    }
+
+    static async AddAssetMinterTotalCount(hre: HardhatRuntimeEnvironment): Promise<boolean>
+    {
+        logtools.logblue("==AddAssetMinterTotalCount");
+
+        const AssetMinter = ContractInfo.getContract("AssetMinter");
+        let rc= await ContractTool.CallState(AssetMinter, 
+            "setPackageTotalCount", 
+            [1, 200]
+            );
+        rc= await ContractTool.CallState(AssetMinter, 
+            "setPackageTotalCount", 
+            [2, 200]
+            );
+        rc= await ContractTool.CallState(AssetMinter, 
+            "setPackageTotalCount", 
+            [3, 200]
+            );
+        rc= await ContractTool.CallState(AssetMinter, 
+            "setPackageTotalCount", 
+            [4, 200]
+            );
+        rc= await ContractTool.CallState(AssetMinter, 
+            "setPackageTotalCount", 
+            [5, 200]
+            );
         return true;
     }
 }     
