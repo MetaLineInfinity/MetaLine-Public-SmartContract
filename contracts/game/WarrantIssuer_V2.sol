@@ -28,6 +28,7 @@ contract WarrantIssuer_V2 is
 
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
+    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
     struct expireTimeConfig {
         uint32 time; // time in second
@@ -50,6 +51,7 @@ contract WarrantIssuer_V2 is
 
         _setupRole(PAUSER_ROLE, _msgSender());
         _setupRole(MANAGER_ROLE, _msgSender());
+        _setupRole(MINTER_ROLE, _msgSender());
     }
 
     function pause() public {
@@ -139,7 +141,20 @@ contract WarrantIssuer_V2 is
 
         _oracleCharger.charge(tokenName, _usdPrice);
 
-        uint256 tokenId = WarrantNFT(_warrantNFTAddr).mint(_msgSender(), WarrantNFTData({
+        _mint_MTTWarrant(portID, _msgSender(), _usdPrice);
+    }
+
+    function mint_MTTWarrantByService(uint16 portID, address toAddr) external whenNotPaused {
+        require(hasRole(MINTER_ROLE, _msgSender()), "WarrantIssuer: must have minter role");
+
+        uint256 usdPrice = _warrantPrices[portID];
+        require(usdPrice > 0, "WarrantIssuer: port not exist");
+
+        _mint_MTTWarrant(portID, toAddr, usdPrice);
+    }
+
+    function _mint_MTTWarrant(uint16 portID, address toAddr, uint256 usdPrice) internal {
+        uint256 tokenId = WarrantNFT(_warrantNFTAddr).mint(toAddr, WarrantNFTData({
             portID:portID,
             storehouseLv:1,
             factoryLv:1,
@@ -151,7 +166,7 @@ contract WarrantIssuer_V2 is
         WarrantExt1Data memory ext1Data = WarrantExt1Data({
             version:1,
             expiredTime:uint32(block.timestamp + 2592000), // 30 days
-            valueLevel:uint32(_usdPrice / 10**15) // = usd price * 1000
+            valueLevel:uint32(usdPrice / 10**15) // = usd price * 1000
         });
         bytes memory ext1DataBytes = _encodeExt1Data(ext1Data);
         WarrantNFT(_warrantNFTAddr).addTokenExtendNftData(tokenId, "ext1", ext1DataBytes);

@@ -152,7 +152,9 @@
                 {"name":"Billing","deployer":"deployer","args":[]},
                 {"name":"UniversalNFT","deployer":"deployer","args":[1, "MetaLine Universal NFT","MTUN", "https://metadata.metaline.games/e/"]},
                 {"name":"PlatOnOffChainBridge","deployer":"deployer","args":[]},
-                {"name":"ESportPool","deployer":"deployer","args":[]}
+                {"name":"ESportPool","deployer":"deployer","args":[]},
+                {"name":"AssetMinter_V2","deployer":"deployer","args":[]},
+                {"name":"WarrantIssuer_V2","deployer":"deployer","args":[]}
             ]
         },
         {
