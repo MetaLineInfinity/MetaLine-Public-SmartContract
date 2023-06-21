@@ -35,6 +35,8 @@ contract HeroNFTMSCombiner is
     mapping(uint16=>uint32) public _heroJobgrade2MB; // job<<8 | grade => randomType << 16 | mysteryType
     mapping(uint8=>uint32) public _petId2MB; // petId => randomType << 16 | mysteryType
 
+    mapping(uint8=>uint8) public _heroJobMaxGrade; // job => max grade;
+
     constructor() {
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
 
@@ -96,6 +98,12 @@ contract HeroNFTMSCombiner is
         require(hasRole(MANAGER_ROLE, _msgSender()), "HeroNFTMSCombiner: must have manager role to manage");
 
         _petId2MB[petId] = (uint32(randomType) << 16) | uint32(mysteryType);
+    }
+
+    function setHeroJobMaxGrade(uint8 job, uint8 maxGrade) external {
+        require(hasRole(MANAGER_ROLE, _msgSender()), "HeroNFTMSCombiner: must have manager role to manage");
+
+        _heroJobMaxGrade[job] = maxGrade;
     }
 
     function spliteToShards(uint256 tokenId) external {
@@ -163,11 +171,15 @@ contract HeroNFTMSCombiner is
             ERC20Burnable(_fuelTokenAddr).burnFrom(_msgSender(), fuelCost);
         }
 
-        require(value > combineCount && value == combineCount * (value/combineCount),  "HeroNFTMSCombiner: wrong shard combine value");
+        require(value >= combineCount && value == combineCount * (value/combineCount),  "HeroNFTMSCombiner: wrong shard combine value");
 
         //console.log("[sol]id=",id);
+        uint8 maxGrade = _heroJobMaxGrade[uint8(attr.shardID)];
+        if(maxGrade == 0){
+            maxGrade = 10; // default max grade = 10
+        }
 
-        require(attr.grade < 10, "can not combine grade 10 shard"); // max grade = 10
+        require(attr.grade < maxGrade, "can not combine max grade shard"); 
 
         _mb1155.burn(_msgSender(), shardId, value);
 
