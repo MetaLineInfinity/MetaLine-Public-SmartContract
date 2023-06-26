@@ -140,7 +140,7 @@ contract HeroNFTMSCombiner is
         uint32 spliteCount = uint32(costv >> 32 & 0xffffffff);
         require(spliteCount > 0, "HeroNFTMSCombiner: wrong shard splite count");
 
-        uint32 fuelCost = uint32(costv & 0xffffffff);
+        uint256 fuelCost = uint32(costv & 0xffffffff) * 10**18;
         if(fuelCost > 0){
             require(ERC20Burnable(_fuelTokenAddr).balanceOf(_msgSender()) >= fuelCost, "MysteryShard: insufficient fuel");
             ERC20Burnable(_fuelTokenAddr).burnFrom(_msgSender(), fuelCost);
@@ -165,7 +165,7 @@ contract HeroNFTMSCombiner is
         uint32 combineCount = uint32(costv >> 32 & 0xffffffff);
         require(combineCount > 0, "HeroNFTMSCombiner: wrong shard combine count");
 
-        uint32 fuelCost = uint32(costv & 0xffffffff);
+        uint256 fuelCost = uint32(costv & 0xffffffff) * 10**18;
         if(fuelCost > 0){
             require(ERC20Burnable(_fuelTokenAddr).balanceOf(_msgSender()) >= fuelCost, "MysteryShard: insufficient fuel");
             ERC20Burnable(_fuelTokenAddr).burnFrom(_msgSender(), fuelCost);

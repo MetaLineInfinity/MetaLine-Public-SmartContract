@@ -194,6 +194,7 @@ contract WarrantIssuer_V2 is
         uint256 _usdPrice  = conf.usdPrice * ext1Data.valueLevel / (mintUsdPrice/10**15);
         
         require(_usdPrice > 0 && _usdPrice <= usdPrice, "WarrantIssuer: price error");
+        require(block.timestamp > (ext1Data.expiredTime - 3600*72), "WarrantIssuer: don't need extend yet");
 
         _oracleCharger.charge(tokenName, _usdPrice);
 
