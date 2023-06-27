@@ -166,7 +166,7 @@ contract WarrantIssuer_V2 is
         WarrantExt1Data memory ext1Data = WarrantExt1Data({
             version:1,
             expiredTime:uint32(block.timestamp + 2592000), // 30 days
-            valueLevel:uint32(usdPrice / 10**15) // = usd price * 1000
+            valueLevel:uint32(usdPrice / 10**5) // = usd price * 1000
         });
         bytes memory ext1DataBytes = _encodeExt1Data(ext1Data);
         WarrantNFT(_warrantNFTAddr).addTokenExtendNftData(tokenId, "ext1", ext1DataBytes);
@@ -191,7 +191,7 @@ contract WarrantIssuer_V2 is
         bytes memory ext1Bytes = WarrantNFT(_warrantNFTAddr).getTokenExtendNftData(tokenId, "ext1");
         WarrantExt1Data memory ext1Data = _decodeExt1Data(ext1Bytes);
         
-        uint256 _usdPrice  = conf.usdPrice * ext1Data.valueLevel / (mintUsdPrice/10**15);
+        uint256 _usdPrice  = conf.usdPrice * ext1Data.valueLevel / (mintUsdPrice/10**5);
         
         require(_usdPrice > 0 && _usdPrice <= usdPrice, "WarrantIssuer: price error");
         require(block.timestamp > (ext1Data.expiredTime - 3600*72), "WarrantIssuer: don't need extend yet");
@@ -258,7 +258,7 @@ contract WarrantIssuer_V2 is
 
         bytes memory ext1Bytes = WarrantNFT(_warrantNFTAddr).getTokenExtendNftData(warrantNFTID, "ext1");
         WarrantExt1Data memory ext1Data = _decodeExt1Data(ext1Bytes);
-        ext1Data.valueLevel += uint32(_usdPrice / 10**15); // = usd price * 1000;
+        ext1Data.valueLevel += uint32(_usdPrice / 10**5); // = usd price * 1000;
 
         ext1Bytes = _encodeExt1Data(ext1Data);
 
