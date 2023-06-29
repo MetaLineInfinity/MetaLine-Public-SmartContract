@@ -22,11 +22,13 @@ contract ESportPool is
     bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
     bytes32 public constant SERVICE_ROLE = keccak256("SERVICE_ROLE");
 
-    event OnBuyTicket(uint32 poolId, uint256 usdPrice, uint256 poolValue, uint256 tokenValue, uint64 totalTickets, uint64 currentRoundTickets);
+    event OnBuyTicket(uint32 poolId, uint256 usdPrice, uint256 tokenValue, uint256 poolValue, uint64 totalTickets, uint64 currentRoundTickets);
     event DispatchAward(uint32 poolId, uint256 poolValue, uint64 currentRound, RoundInfos rinfo);
     
     struct PoolConfig {
         uint256 ticketUsdPrice;
+        uint32 priceGrowPer; // per = priceGrowPer / 10000
+        uint32 priceGrowCount;
         uint16[] winnerShares;
         string tokenName;
         address tokenAddr;
@@ -128,13 +130,21 @@ contract ESportPool is
         if(info.currentRound == 0){
             info.currentRound = 1;
         }
+        
+        // calc price
+        uint256 _usdPrice = conf.ticketUsdPrice;
+        if(conf.priceGrowCount > 0) {
+            uint count = info.currentRoundTickets / conf.priceGrowCount;
+            _usdPrice +=  _usdPrice * count * conf.priceGrowPer / 10000;
+        }
+        require(usdPrice >= _usdPrice, "ESportPool: price error");
 
-        uint256 tokenValue = _oracleCharger.charge(conf.tokenName, conf.ticketUsdPrice, address(this));
+        uint256 tokenValue = _oracleCharger.charge(conf.tokenName, _usdPrice, address(this));
         ++info.totalTickets;
         ++info.currentRoundTickets;
         info.poolValue += tokenValue;
 
-        emit OnBuyTicket(poolId, usdPrice, tokenValue, info.poolValue, info.totalTickets, info.currentRoundTickets);
+        emit OnBuyTicket(poolId, _usdPrice, tokenValue, info.poolValue, info.totalTickets, info.currentRoundTickets);
     }
 
     function dispatchAward(uint32 poolId, address[] calldata winners) external {
@@ -156,8 +166,9 @@ contract ESportPool is
         uint256 balance = IERC20(conf.tokenAddr).balanceOf(address(this));
         require(info.poolValue <= balance, "ESportPool: insufficient token");
 
+        uint256 poolValue = info.poolValue;
         for(uint i=0; i< winners.length; ++i){
-            uint256 awardV = info.poolValue * conf.winnerShares[i] / 10000;
+            uint256 awardV = poolValue * conf.winnerShares[i] / 10000;
             TransferHelper.safeTransfer(conf.tokenAddr, winners[i], awardV);
             info.poolValue -= awardV;
 
