@@ -164,14 +164,16 @@ contract HeroNFTMSCombiner is
         uint256 costv = _shardCombineCount[attr.grade];
         uint32 combineCount = uint32(costv >> 32 & 0xffffffff);
         require(combineCount > 0, "HeroNFTMSCombiner: wrong shard combine count");
+        
+        uint256 newCount = value/combineCount;
 
-        uint256 fuelCost = uint256(costv & 0xffffffff) * 10**18;
+        uint256 fuelCost = newCount * uint256(costv & 0xffffffff) * 10**18;
         if(fuelCost > 0){
             require(ERC20Burnable(_fuelTokenAddr).balanceOf(_msgSender()) >= fuelCost, "MysteryShard: insufficient fuel");
             ERC20Burnable(_fuelTokenAddr).burnFrom(_msgSender(), fuelCost);
         }
 
-        require(value >= combineCount && value == combineCount * (value/combineCount),  "HeroNFTMSCombiner: wrong shard combine value");
+        require(value >= combineCount && value == combineCount * newCount,  "HeroNFTMSCombiner: wrong shard combine value");
 
         //console.log("[sol]id=",id);
         uint8 maxGrade = _heroJobMaxGrade[uint8(attr.shardID)];
@@ -185,8 +187,6 @@ contract HeroNFTMSCombiner is
 
         attr.grade = attr.grade + 1;
         uint256 newShardId = _encodeShardId(attr);
-        
-        uint256 newCount = value/combineCount;
         //console.log("[sol]newid=",newId,newCount);
 
         _mb1155.mint(_msgSender(), newShardId, newCount, "combine");

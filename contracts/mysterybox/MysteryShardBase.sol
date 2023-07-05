@@ -174,7 +174,7 @@ abstract contract MysteryShardBase is
         require(costv > 0, "MysteryShard: shard grade not exist");
 
         uint32 shardCost = uint32(costv >> 32 & 0xffffffff);
-        uint32 fuelCost = uint32(costv & 0xffffffff);
+        uint256 fuelCost = uint256(costv & 0xffffffff) * 10**18;
 
         if(shardCost == 0){
             shardCost = 1; // at least cost 1
@@ -238,7 +238,7 @@ abstract contract MysteryShardBase is
         require(costv > 0, "MysteryShard: shard grade not exist");
 
         uint32 shardCost = uint32(costv >> 32 & 0xffffffff);
-        uint32 fuelCost = uint32(costv & 0xffffffff);
+        uint256 fuelCost = uint256(costv & 0xffffffff) * 10**18;
 
         if(shardCost == 0){
             shardCost = 1; // at least cost 1
