@@ -146,20 +146,26 @@
             ]
         },
         {
-            "group":"platform",
+            "group":"warrant_v2",
             "gen":9,
             "contracts":[
-                {"name":"Billing","deployer":"deployer","args":[]},
-                {"name":"UniversalNFT","deployer":"deployer","args":[1, "MetaLine Universal NFT","MTUN", "https://metadata.metaline.games/e/"]},
-                {"name":"PlatOnOffChainBridge","deployer":"deployer","args":[]},
-                {"name":"ESportPool","deployer":"deployer","args":[]},
                 {"name":"AssetMinter_V2","deployer":"deployer","args":[]},
                 {"name":"WarrantIssuer_V2","deployer":"deployer","args":[]}
             ]
         },
         {
-            "group":"shards",
+            "group":"platform",
             "gen":10,
+            "contracts":[
+                {"name":"Billing","deployer":"deployer","args":[]},
+                {"name":"UniversalNFT","deployer":"deployer","args":[1, "MetaLine Universal NFT","MTUN", "https://metadata.metaline.games/e/"]},
+                {"name":"PlatOnOffChainBridge","deployer":"deployer","args":[]},
+                {"name":"ESportPool","deployer":"deployer","args":[]}
+            ]
+        },
+        {
+            "group":"shards",
+            "gen":11,
             "contracts":[
                 {"name":"HeroNFTMysteryShard","deployer":"deployer","args":[]},
                 {"name":"HeroNFTMSCombiner","deployer":"deployer","args":[]},
@@ -169,7 +175,7 @@
         },
         {
             "group":"expedition",
-            "gen":11,
+            "gen":12,
             "contracts":[
                 {"name":"Expedition","deployer":"deployer","args":[]},
                 {"name":"NFTAttrSource_V2","deployer":"deployer","args":[]},
