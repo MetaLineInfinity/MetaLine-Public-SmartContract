@@ -7,6 +7,11 @@ import { logtools } from "./util_log";
 import * as fs from "fs";
 import { ContractTool } from "./util_contracttool";
 
+import { Wallet, utils } from "zksync-web3";
+import { Deployer } from "@matterlabs/hardhat-zksync-deploy";
+
+import * as prikeys from "../testprikeys.json";
+
 export class ContractInfo
 {
     static getContract(name: string): Contract
@@ -131,6 +136,21 @@ export class ContractInfo
             address = c.address;
             abi = factory.interface;
             bytecode = factory.bytecode;
+        }
+        else if(hre.network.zksync) {
+            const wallet = new Wallet(prikeys.prikeys[0]);
+
+            // Create deployer object and load the artifact of the contract you want to deploy.
+            const deployer = new Deployer(hre, wallet);
+            
+            console.log(`deploy zksync name:${name} load artifact`);
+            const artifact = await deployer.loadArtifact(name);
+
+            let args = option.args?option.args:[];
+            const greeterContract = await deployer.deploy(artifact, args);
+
+            address = greeterContract.address;
+            abi = greeterContract.interface;
         }
         else
         {
