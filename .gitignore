@@ -1,6 +1,8 @@
 abi/
 artifacts/
+artifacts-zk/
 cache/
+cache-zk/
 coverage/
 exports/
 node_modules/

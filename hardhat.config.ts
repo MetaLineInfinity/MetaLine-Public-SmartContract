@@ -4,6 +4,8 @@
 import "@nomiclabs/hardhat-waffle";
 import "@nomiclabs/hardhat-ethers";
 import "@nomiclabs/hardhat-etherscan";
+import "@matterlabs/hardhat-zksync-deploy";
+import "@matterlabs/hardhat-zksync-solc";
 import "hardhat-abi-exporter";
 import "hardhat-deploy";
 import "hardhat-contract-sizer";
@@ -41,6 +43,10 @@ const config: HardhatUserConfig = {
       }
     }
   },
+  zksolc: {
+    version: "latest", // Uses latest available in https://github.com/matter-labs/zksolc-bin/
+    settings: {},
+  },
   contractSizer:
   {
       alphaSort:true,
@@ -55,7 +61,7 @@ const config: HardhatUserConfig = {
     tests: "test",
   },
 
-  defaultNetwork: "hardhat",
+  defaultNetwork: "zkSyncTestnet",
   networks: {
     hardhat: {
       accounts: hardhat_prikeys
@@ -97,6 +103,16 @@ const config: HardhatUserConfig = {
       url: "https://goerli-rollup.arbitrum.io/rpc",
       accounts: onlykeys,
       chainId: 421613,
+      live: true,
+      saveDeployments: true,
+      tags: ["staging"],
+    },
+    zkSyncTestnet: {
+      url: "https://testnet.era.zksync.dev",
+      ethNetwork: "goerli", // RPC URL of the network (e.g. `https://goerli.infura.io/v3/<API_KEY>`)
+      zksync: true,
+      accounts: onlykeys,
+      chainId: 280,
       live: true,
       saveDeployments: true,
       tags: ["staging"],

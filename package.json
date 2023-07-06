@@ -5,7 +5,10 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "hardhat-contract-sizer": "^2.6.1"
+    "@matterlabs/hardhat-zksync-deploy": "^0.6.3",
+    "@matterlabs/hardhat-zksync-solc": "^0.4.1",
+    "hardhat-contract-sizer": "^2.6.1",
+    "zksync-web3": "^0.14.3"
   },
   "dependencies": {
     "@chainlink/contracts": "^0.6.1",
