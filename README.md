@@ -32,6 +32,9 @@ npx hardhat --network localhost xgenconfigonly 7
 npx hardhat --network localhost xdeploy group market
 npx hardhat --network localhost xgeninitonly 8
 npx hardhat --network localhost xgenconfigonly 8
+npx hardhat --network localhost xdeploy group warrant_v2
+npx hardhat --network localhost xgeninitonly 9
+npx hardhat --network localhost xgenconfigonly 9
 ```
 
 # 🛠️ Test
