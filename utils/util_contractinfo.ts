@@ -110,10 +110,11 @@ export class ContractInfo
     }
     static async Deploy(hre: HardhatRuntimeEnvironment, name: string, option: DeployOptions): Promise<boolean>
     {
-        if (undefined != ContractInfo.contractinfos[name])
+        if (undefined != ContractInfo.contractinfos[name]) {
             console.log("==skip deploy:" + name);
+            return true;
+        }
         console.log("--deploy");
-
 
         let address: string = "";
         let abi: Interface;
@@ -142,7 +143,7 @@ export class ContractInfo
 
             // Create deployer object and load the artifact of the contract you want to deploy.
             const deployer = new Deployer(hre, wallet);
-            
+
             console.log(`deploy zksync name:${name} load artifact`);
             const artifact = await deployer.loadArtifact(name);
 
