@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Metaline Contracts (WarrantIssuer_V2.sol)
+// Metaline Contracts (WarrantIssuer_V3.sol)
 
 pragma solidity ^0.8.0;
 
@@ -18,7 +18,7 @@ struct WarrantExt1Data {
     uint32 valueLevel; // total upgrade usd price * 1000;
 }
 
-contract WarrantIssuer_V2 is
+contract WarrantIssuer_V3 is
     Context,
     Pausable,
     AccessControl 
