@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Metaline Contracts (Expedition.sol)
+// Metaline Contracts (MTTMinePool.sol)
 
 pragma solidity >=0.8.0 <=0.9.0;
 

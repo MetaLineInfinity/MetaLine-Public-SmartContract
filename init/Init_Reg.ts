@@ -11,6 +11,7 @@ import { Init_Platform } from "./init_platform";
 import { Init_Shards } from "./init_shards";
 import { Init_WarrantV2 } from "./init_warrant_v2";
 import { Init_WarrantV3 } from "./init_warrant_v3";
+import { Init_Expedition } from "./init_expedition";
 
 export function RegAll() {
     InitTool.RegForGroup("mysteryboxShop", Init_MysteryBoxShop.InitAll, undefined, Init_MysteryBoxShop.ConfigAll, ["test_unusual/test_mysteryboxShop.ts"]);
@@ -22,7 +23,8 @@ export function RegAll() {
     InitTool.RegForGroup("assetminter", Init_AssetMinter.InitAll, undefined, Init_AssetMinter.ConfigAll, ["test_unusual/test_assetminter.ts"]);
     InitTool.RegForGroup("market", Init_Market.InitAll, undefined, Init_Market.ConfigAll, ["test_unusual/test_market.ts"]);
     InitTool.RegForGroup("warrant_v2", Init_WarrantV2.InitAll, undefined, Init_WarrantV2.ConfigAll, ["test_unusual/test_warrant_v2.ts"]);
-    InitTool.RegForGroup("warrant_v3", Init_WarrantV3.InitAll, undefined, Init_WarrantV3.ConfigAll, ["test_unusual/test_warrant_v2.ts"]);
+    InitTool.RegForGroup("warrant_v3", Init_WarrantV3.InitAll, undefined, Init_WarrantV3.ConfigAll, ["test_unusual/test_warrant_v3.ts"]);
     InitTool.RegForGroup("platform", Init_Platform.InitAll, undefined, Init_Platform.ConfigAll, ["test_unusual/test_platform.ts"]);
     InitTool.RegForGroup("shards", Init_Shards.InitAll, undefined, Init_Shards.ConfigAll, ["test_unusual/test_shards.ts"]);
+    InitTool.RegForGroup("expedition", Init_Expedition.InitAll, undefined, Init_Expedition.ConfigAll, ["test_unusual/test_expedition.ts"]);
 }

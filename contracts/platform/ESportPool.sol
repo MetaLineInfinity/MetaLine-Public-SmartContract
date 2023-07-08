@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Metaline Contracts (Billing.sol)
+// Metaline Contracts (ESportPool.sol)
 
 pragma solidity ^0.8.0;
 

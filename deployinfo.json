@@ -184,9 +184,11 @@
             "group":"expedition",
             "gen":13,
             "contracts":[
+                {"name":"VMTT","deployer":"deployer","args":["20000000000000000000000000"]},
+                {"name":"VMTTMinePool","deployer":"deployer","args":["addr:MTT", "1900000000000000000"]},
                 {"name":"Expedition","deployer":"deployer","args":[]},
-                {"name":"NFTAttrSource_V2","deployer":"deployer","args":[]},
-                {"name":"MTTMinePool","deployer":"deployer","args":["addr:MTT", "1900000000000000000"]}
+                {"name":"VeTokenPool","deployer":"deployer","args":[]},
+                {"name":"NFTAttrSource_V2","deployer":"deployer","args":[]}
             ]
         }
     ]
