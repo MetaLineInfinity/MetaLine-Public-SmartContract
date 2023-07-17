@@ -35,7 +35,7 @@ contract Expedition is
 
     event OutputMTT(uint256 value, ExpeditionPoolData poolData);
     event StartExpedition(address indexed userAddr, ExpeditionTeamData teamData, ExpeditionPoolData poolData);
-    event FetchExpeditionMTT(address indexed userAddr, uint256 value, ExpeditionTeamData teamData, ExpeditionPoolData poolData);
+    event FetchExpeditionMTT(address indexed userAddr, uint256 value, ExpeditionTeamData teamData, ExpeditionPoolData poolData, uint16 portID, uint8 fetchType);
 
     struct ExpeditionPoolConf {
         uint256 minHashRate; // expedition team minimum hashrate require
@@ -469,7 +469,9 @@ contract Expedition is
     function _fetchExpedMTT(
         ExpeditionPoolConf storage conf,
         ExpeditionTeamData storage teamData, 
-        ExpeditionPoolData storage poolData
+        ExpeditionPoolData storage poolData,
+        uint16 portID,
+        uint8 fetchType
     ) internal {
         require(teamData.inputGoldLeft > 0, "Expedition: insufficient input gold");
         require(teamData.expedLastFetchBlock < block.number, "Expedition: wait some blocks");
@@ -498,7 +500,7 @@ contract Expedition is
         poolData.currentOutputMTT -= value;
         poolData.currentInputGold -= goldCost;
 
-        emit FetchExpeditionMTT(_msgSender(), value, teamData, poolData);
+        emit FetchExpeditionMTT(_msgSender(), value, teamData, poolData, portID, fetchType);
     }
 
     function startHeroExped(uint16 portID, uint256 inputGold, uint256 blockInterval) external {
@@ -530,7 +532,7 @@ contract Expedition is
         // output mtt
         _outputMTT(phep.poolData);
 
-        _fetchExpedMTT(phep.poolConf, team.teamData, phep.poolData);
+        _fetchExpedMTT(phep.poolConf, team.teamData, phep.poolData, portID, 1);
     }
     function fetchShipExpedMTT(uint16 portID) external {
         PortShipExpedPool storage psep = _shipExpeditions[portID];
@@ -542,7 +544,7 @@ contract Expedition is
         // output mtt
         _outputMTT(psep.poolData);
 
-        _fetchExpedMTT(psep.poolConf, team.teamData, psep.poolData);
+        _fetchExpedMTT(psep.poolConf, team.teamData, psep.poolData, portID, 2);
     }
 
     /**

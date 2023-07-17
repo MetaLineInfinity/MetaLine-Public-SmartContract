@@ -18,6 +18,8 @@ contract VeTokenPool is
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
 
+    event WithdrawRevenue(address indexed userAddr, address indexed PoolToken, uint256 withdrawValue);
+
     struct stakeInfo{
         uint256 stakeValue; // stake VeToken value
         uint256 lastWithdrawBlock; // last widthdraw block height
@@ -66,12 +68,12 @@ contract VeTokenPool is
         );
 
         VeToken = VeToken_;
-        PoolToken_ = PoolToken_;
+        PoolToken = PoolToken_;
         withdrawBlockInterval = withdrawBlockInterval_;
         revenueBlocks = revenueBlocks_;
     }
 
-    function fillPool(uint256 value) external {
+    function fillPool(uint256 value) external payable {
         if(PoolToken != address(0)){
             require(IERC20(PoolToken).balanceOf(_msgSender()) >= value, "VeTokenPool: insufficient token");
 
@@ -96,7 +98,7 @@ contract VeTokenPool is
         });
     }
 
-    function unstakeVeToken(uint256 value) external whenNotPaused {
+    function unstakeVeToken() external whenNotPaused {
         stakeInfo storage si = _stakes[_msgSender()];
         uint256 stakeValue = si.stakeValue;
         require(stakeValue > 0, "VeTokenPool: not staked");
@@ -104,12 +106,14 @@ contract VeTokenPool is
         
         require(IERC20(VeToken).balanceOf(address(this)) >= stakeValue, "VeTokenPool: insufficient token");
 
-        TransferHelper.safeTransferFrom(VeToken, address(this), _msgSender(), stakeValue);
+        TransferHelper.safeTransfer(VeToken, _msgSender(), stakeValue);
         totalStakeValue -= stakeValue;
 
         if(si.lastWithdrawBlock + withdrawBlockInterval < block.number) {
             _withdrawRevenue(si);
         }
+
+        delete _stakes[_msgSender()];
     }
 
     function withdrawRevenue() external whenNotPaused {
@@ -129,19 +133,20 @@ contract VeTokenPool is
     }
 
     function _withdrawRevenue(stakeInfo storage si) internal lock {
+        uint256 withdrawValue;
         if(PoolToken != address(0)){
             uint256 poolValue = IERC20(PoolToken).balanceOf(address(this));
             if(poolValue == 0){
                 return;
             }
 
-            uint256 withdrawValue = poolValue * si.stakeValue * (block.number - si.lastWithdrawBlock) / (totalStakeValue * revenueBlocks);
+            withdrawValue = poolValue * si.stakeValue * (block.number - si.lastWithdrawBlock) / (totalStakeValue * revenueBlocks);
             if(withdrawValue > poolValue)
             {
                 withdrawValue = poolValue;
             }
 
-            TransferHelper.safeTransferFrom(PoolToken, address(this), _msgSender(),  withdrawValue);
+            TransferHelper.safeTransfer(PoolToken, _msgSender(), withdrawValue);
         }
         else {
             // eth
@@ -150,7 +155,7 @@ contract VeTokenPool is
                 return;
             }
 
-            uint256 withdrawValue = poolValue * si.stakeValue * (block.number - si.lastWithdrawBlock) / (totalStakeValue * revenueBlocks);
+            withdrawValue = poolValue * si.stakeValue * (block.number - si.lastWithdrawBlock) / (totalStakeValue * revenueBlocks);
             if(withdrawValue > poolValue)
             {
                 withdrawValue = poolValue;
@@ -160,5 +165,7 @@ contract VeTokenPool is
         }
         
         si.lastWithdrawBlock = block.number;
+
+        emit WithdrawRevenue(_msgSender(), PoolToken, withdrawValue);
     }
 }

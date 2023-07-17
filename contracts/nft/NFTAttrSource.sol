@@ -26,11 +26,11 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
      uint32 attack;
      uint32 defense;
      uint32 hitpoint;
-     uint16 miss;
-     uint16 doge;
-     uint16 critical;
-     uint16 decritical;
-     uint16 speed;
+     uint32 miss;
+     uint32 doge;
+     uint32 critical;
+     uint32 decritical;
+     uint32 speed;
  }
  
  /**
@@ -54,11 +54,11 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
     uint32 attack;
     uint32 defense;
     uint32 hitpoint;
-    uint16 miss;
-    uint16 doge;
-    uint16 critical;
-    uint16 decritical;
-    uint16 speed;
+    uint32 miss;
+    uint32 doge;
+    uint32 critical;
+    uint32 decritical;
+    uint32 speed;
     uint8 maxSailer;
 
     // TO DO : add attr
