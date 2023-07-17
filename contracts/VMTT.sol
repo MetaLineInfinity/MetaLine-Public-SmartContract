@@ -23,18 +23,18 @@ contract VMTT is CappedERC20, AccessControl {
     }
 
     function setAllowTransfer(bool allow) external {
-        require(hasRole(MANAGER_ROLE, _msgSender()), "VMTTMinePool: must have manager role");
+        require(hasRole(MANAGER_ROLE, _msgSender()), "VMTT: must have manager role");
 
         _allowTransfer = allow;
     }
 
     function addPoolAddr(address poolAddr) external {
-        require(hasRole(MANAGER_ROLE, _msgSender()), "VMTTMinePool: must have manager role");
+        require(hasRole(MANAGER_ROLE, _msgSender()), "VMTT: must have manager role");
 
         _poolAddrs[poolAddr] = true;
     }
     function rmvPoolAddr(address poolAddr) external {
-        require(hasRole(MANAGER_ROLE, _msgSender()), "VMTTMinePool: must have manager role");
+        require(hasRole(MANAGER_ROLE, _msgSender()), "VMTT: must have manager role");
 
         delete _poolAddrs[poolAddr];
     }
