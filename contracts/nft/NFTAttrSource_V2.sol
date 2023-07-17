@@ -134,7 +134,7 @@ contract NFTAttrSource_V2 is
         data.maxLoad = uint32(data.maxLoad + uint64(data.maxLoad) * (level-1) * _shipMineFactor / 10000);
         data.maxRange = uint32(data.maxRange + uint64(data.maxRange) * (level-1) * _shipMineFactor / 10000);
         data.foodPerMile = uint32(data.foodPerMile + uint64(data.foodPerMile) * (level-1) * _shipMineFactor / 10000);
-        data.maxSailer = uint8(data.maxSailer + uint64(data.maxSailer) * (level-1) * _shipMineFactor / 10000);
+        //data.maxSailer = uint8(data.maxSailer + uint64(data.maxSailer) * (level-1) * _shipMineFactor / 10000);
         data.hashRate = uint32(data.hashRate + uint64(data.hashRate) * (level-1) * _shipMineFactor / 10000);
     }
 
@@ -157,7 +157,7 @@ contract NFTAttrSource_V2 is
         data.critical = uint32(data.critical + uint64(data.critical) * (level-1) * _shipBattleFactor / 10000);
         data.decritical = uint32(data.decritical + uint64(data.decritical) * (level-1) * _shipBattleFactor / 10000);
         data.speed = uint32(data.speed + uint64(data.speed) * (level-1) * _shipBattleFactor / 10000);
-        data.maxSailer = uint8(data.maxSailer + uint64(data.maxSailer) * (level-1) * _shipBattleFactor / 10000);
+        //data.maxSailer = uint8(data.maxSailer + uint64(data.maxSailer) * (level-1) * _shipBattleFactor / 10000);
     }
 
     /**
