@@ -12,7 +12,7 @@ contract VMTT is CappedERC20, AccessControl {
     bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
 
     mapping(address=>bool) public _poolAddrs;
-    bool public _allowTransfer;
+    bool public _allowTransfer = true;
 
     constructor(uint256 v)
         CappedERC20("MetaLine VeToken", "VMTT", v)
@@ -20,6 +20,8 @@ contract VMTT is CappedERC20, AccessControl {
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
 
         _setupRole(MANAGER_ROLE, _msgSender());
+        
+        _allowTransfer = false;
     }
 
     function setAllowTransfer(bool allow) external {
