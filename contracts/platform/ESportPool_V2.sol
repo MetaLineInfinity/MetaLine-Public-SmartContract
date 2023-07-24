@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Metaline Contracts (ESportPool.sol)
+// Metaline Contracts (ESportPool_V2.sol)
 
 pragma solidity ^0.8.0;
 
@@ -11,7 +11,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "../utility/TransferHelper.sol";
 import "../utility/OracleCharger_V1.sol";
 
-contract ESportPool is 
+contract ESportPool_V2 is 
     Context,
     Pausable,
     AccessControl

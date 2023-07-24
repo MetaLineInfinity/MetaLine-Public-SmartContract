@@ -190,6 +190,13 @@
                 {"name":"VeTokenPool","deployer":"deployer","args":[]},
                 {"name":"NFTAttrSource_V2","deployer":"deployer","args":[]}
             ]
+        },
+        {
+            "group":"espool_v2",
+            "gen":14,
+            "contracts":[
+                {"name":"ESportPool_V2","deployer":"deployer","args":[]}
+            ]
         }
     ]
 }
