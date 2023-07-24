@@ -47,6 +47,9 @@ npx hardhat --network localhost xgenconfigonly 12
 npx hardhat --network localhost xdeploy group expedition
 npx hardhat --network localhost xgeninitonly 13
 npx hardhat --network localhost xgenconfigonly 13
+npx hardhat --network localhost xdeploy group espool_v2
+npx hardhat --network localhost xgeninitonly 14
+npx hardhat --network localhost xgenconfigonly 14
 ```
 
 # 🛠️ Test
