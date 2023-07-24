@@ -10,5 +10,5 @@ export const addChargeToken = [
 ];
 
 export const addChargeToken_ESportPool_Billing = [
-    ["gold", "addr:MTTGold", "1000000000", "1000000"],
+    ["gold", "addr:MTTGold", "1000000000", "1000"],
 ]

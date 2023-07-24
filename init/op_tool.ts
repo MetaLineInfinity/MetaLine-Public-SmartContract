@@ -3,6 +3,7 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { ContractInfo } from "../utils/util_contractinfo";
 import { ContractTool } from '../utils/util_contracttool';
 import { logtools } from "../utils/util_log";
+import { addChargeToken_ESportPool_Billing } from "./init_config";
 
 import * as InitConfig from "./init_config";
 
@@ -29,6 +30,17 @@ export class OP_Tools
             logtools.loggreen(`mint ship id[${shipnftid}] to addr[${this.airdrop_address[i]}]`);
         }
 
+        return true;
+    }
+    
+    static async AddChargeToken(hre: HardhatRuntimeEnvironment): Promise<boolean>
+    {
+        const ESportPool_V2 = ContractInfo.getContract("ESportPool_V2");
+        const Billing = ContractInfo.getContract("Billing");
+
+        await ContractTool.CallState(ESportPool_V2, "addChargeToken", addChargeToken_ESportPool_Billing[0]);
+        await ContractTool.CallState(Billing, "addChargeToken", addChargeToken_ESportPool_Billing[0]);
+        
         return true;
     }
 
