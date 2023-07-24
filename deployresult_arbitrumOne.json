@@ -1755,6 +1755,45 @@
     "function setShipMinerAttr(uint32[] mineAttrs, tuple(uint16 speed, uint32 maxLoad, uint32 maxRange, uint32 foodPerMile, uint8 maxSailer, uint32 hashRate)[] datas)",
     "function supportsInterface(bytes4 interfaceId) view returns (bool)"
    ]
+  },
+  "ESportPool_V2": {
+   "deployer": "0x9a9D8832534A9DC2efCf99B5f14C8C66F6317027",
+   "addr": "0xD2e3C8138a30bc0DfA38411622d499a038F96CB1",
+   "abi": [
+    "constructor()",
+    "event DispatchAward(uint32 poolId, uint256 poolValue, uint64 currentRound, tuple(uint64 tickets, tuple(address winnerAddr, uint256 winnerAwardValue)[] winnerInfos) rinfo)",
+    "event FillPool(uint32 poolId, uint256 poolValue, uint256 value)",
+    "event OnBuyTicket(uint32 poolId, uint256 usdPrice, uint32 buyCount, uint256 tokenValue, uint256 poolValue, uint64 totalTickets, uint64 currentRoundTickets)",
+    "event Paused(address account)",
+    "event RoleAdminChanged(bytes32 indexed role, bytes32 indexed previousAdminRole, bytes32 indexed newAdminRole)",
+    "event RoleGranted(bytes32 indexed role, address indexed account, address indexed sender)",
+    "event RoleRevoked(bytes32 indexed role, address indexed account, address indexed sender)",
+    "event Unpaused(address account)",
+    "function DEFAULT_ADMIN_ROLE() view returns (bytes32)",
+    "function MANAGER_ROLE() view returns (bytes32)",
+    "function PAUSER_ROLE() view returns (bytes32)",
+    "function SERVICE_ROLE() view returns (bytes32)",
+    "function _oracleCharger() view returns (uint256 locked, address tokenPriceOracleAddr)",
+    "function _poolConfig(uint32) view returns (uint256 ticketUsdPrice, uint32 priceGrowPer, uint32 priceGrowCount, string tokenName, address tokenAddr)",
+    "function _poolInfo(uint32) view returns (uint256 poolValue, uint64 currentRound, uint64 totalTickets, uint64 currentRoundTickets)",
+    "function addChargeToken(string tokenName, address tokenAddr, uint256 maximumUSDPrice, uint256 minimumUSDPrice)",
+    "function buyTicket(uint32 poolId, uint256 usdPrice, uint32 buyCount)",
+    "function dispatchAward(uint32 poolId, address[] winners)",
+    "function fillPool(uint32 poolId, uint256 value)",
+    "function getPoolWinnerInfos(uint32 poolId, uint64 round) view returns (tuple(uint64 tickets, tuple(address winnerAddr, uint256 winnerAwardValue)[] winnerInfos) ret)",
+    "function getRoleAdmin(bytes32 role) view returns (bytes32)",
+    "function grantRole(bytes32 role, address account)",
+    "function hasRole(bytes32 role, address account) view returns (bool)",
+    "function pause()",
+    "function paused() view returns (bool)",
+    "function removeChargeToken(string tokenName)",
+    "function renounceRole(bytes32 role, address account)",
+    "function revokeRole(bytes32 role, address account)",
+    "function setPoolConfig(uint32 poolId, tuple(uint256 ticketUsdPrice, uint32 priceGrowPer, uint32 priceGrowCount, uint16[] winnerShares, string tokenName, address tokenAddr) conf)",
+    "function setTPOracleAddr(address tpOracleAddr)",
+    "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+    "function unpause()"
+   ]
   }
  }
 }
