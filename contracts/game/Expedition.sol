@@ -258,6 +258,7 @@ contract Expedition is
         
         HeroExpeditionTeam storage team = phep.expedHeros[_msgSender()];
         require(team.teamHashRate > 0, "Expedition: team not exist");
+        require(team.teamData.inputGoldLeft == 0, "Expedition: team inputGoldLeft must =0");
 
         for(uint i=0; i<team.heroNFTIDs.length; ++i){
             // send back hero
@@ -375,6 +376,7 @@ contract Expedition is
         
         ShipExpeditionTeam storage team = psep.expedShips[_msgSender()];
         require(team.teamHashRate > 0, "Expedition: team not exist");
+        require(team.teamData.inputGoldLeft == 0, "Expedition: team inputGoldLeft must =0");
 
         for(uint j=0; j<team.ships.length; ++j){
             // send back ship

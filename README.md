@@ -35,6 +35,18 @@ npx hardhat --network localhost xgenconfigonly 8
 npx hardhat --network localhost xdeploy group warrant_v2
 npx hardhat --network localhost xgeninitonly 9
 npx hardhat --network localhost xgenconfigonly 9
+npx hardhat --network localhost xdeploy group warrant_v3
+npx hardhat --network localhost xgeninitonly 10
+npx hardhat --network localhost xgenconfigonly 10
+npx hardhat --network localhost xdeploy group platform
+npx hardhat --network localhost xgeninitonly 11
+npx hardhat --network localhost xgenconfigonly 11
+npx hardhat --network localhost xdeploy group shards
+npx hardhat --network localhost xgeninitonly 12
+npx hardhat --network localhost xgenconfigonly 12
+npx hardhat --network localhost xdeploy group expedition
+npx hardhat --network localhost xgeninitonly 13
+npx hardhat --network localhost xgenconfigonly 13
 ```
 
 # 🛠️ Test
