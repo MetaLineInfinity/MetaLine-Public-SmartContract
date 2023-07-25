@@ -235,7 +235,8 @@ export module extTask {
                 await ContractTool.LoadDeployInfo(_hre);
                 await ContractInfo.LoadFromFile(_hre);
 
-                await OP_Tools.UniversalNFTDataRole_VeTokenPool(_hre);
+                await OP_Tools.PlatOnOffChainBridgeServiceRole(_hre);
+                //await OP_Tools.UniversalNFTDataRole_VeTokenPool(_hre);
                 //await OP_Tools.PlatOnOffChainBridgeMintRole(_hre);
                 //await OP_Tools.AddChargeToken(_hre);
                 //await OP_Tools.AirDropShip(_hre);

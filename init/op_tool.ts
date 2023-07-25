@@ -65,6 +65,15 @@ export class OP_Tools
         return true;
     }
 
+    static async PlatOnOffChainBridgeServiceRole(hre: HardhatRuntimeEnvironment): Promise<boolean>
+    {
+        const PlatOnOffChainBridge = ContractInfo.getContract("PlatOnOffChainBridge");
+        await ContractTool.CallState(PlatOnOffChainBridge, "grantRole", ["0xd8a7a79547af723ee3e12b59a480111268d8969c634e1a34a144d2c8b91d635b", "0xE7EFAcb6F9A8C85bea83455eD6AA8822e34F8e2B"]);
+        return true;
+    }
+
+    
+
     static async AddAssetMinterTotalCount(hre: HardhatRuntimeEnvironment): Promise<boolean>
     {
         logtools.logblue("==AddAssetMinterTotalCount");
