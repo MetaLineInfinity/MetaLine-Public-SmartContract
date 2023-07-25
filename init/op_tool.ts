@@ -3,7 +3,7 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { ContractInfo } from "../utils/util_contractinfo";
 import { ContractTool } from '../utils/util_contracttool';
 import { logtools } from "../utils/util_log";
-import { addChargeToken_ESportPool_Billing } from "./init_config";
+import { addChargeToken_ESportPool_Billing, eth_addr } from "./init_config";
 
 import * as InitConfig from "./init_config";
 
@@ -49,6 +49,18 @@ export class OP_Tools
         const PlatOnOffChainBridge = ContractInfo.getContract("PlatOnOffChainBridge");
 
         await ContractTool.CallState(PlatOnOffChainBridge, "grantRole", ["0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6", "0xE7EFAcb6F9A8C85bea83455eD6AA8822e34F8e2B"]);
+        
+        return true;
+    }
+
+    static async UniversalNFTDataRole_VeTokenPool(hre: HardhatRuntimeEnvironment): Promise<boolean>
+    {
+        const UniversalNFT = ContractInfo.getContract("UniversalNFT");
+        const VeTokenPool = ContractInfo.getContract("VeTokenPool");
+
+        await ContractTool.CallState(UniversalNFT, "grantRole", ["0xa5b103c755210dd1215ce1308341380ccede082cd9202427c960290e230cba78", "0xE7EFAcb6F9A8C85bea83455eD6AA8822e34F8e2B"]);
+
+        await ContractTool.CallState(VeTokenPool, "Init", ["addr:VMTT", eth_addr, 7200, 216000]);
         
         return true;
     }
