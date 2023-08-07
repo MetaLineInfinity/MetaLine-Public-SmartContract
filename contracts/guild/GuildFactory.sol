@@ -99,18 +99,18 @@ contract GuildFactory {
     
     // fetch royalty income
     function fetchIncome(address erc20) external {
-        require(hasRole(MINTER_ROLE, _msgSender()), "M1");
+        require(msg.sender == owner, "GuildFactory: FORBIDDEN");
 
         uint256 amount = IERC20(erc20).balanceOf(address(this));
         if(amount > 0) {
-            TransferHelper.safeTransfer(erc20, _msgSender(), amount);
+            TransferHelper.safeTransfer(erc20, msg.sender, amount);
         }
     }
     function fetchIncomeEth() external {
-        require(hasRole(MINTER_ROLE, _msgSender()), "ERC1155PresetMinterPauser: must have minter role");
+        require(msg.sender == owner, "GuildFactory: FORBIDDEN");
 
         // send eth
-        (bool sent, ) = _msgSender().call{value:address(this).balance}("");
-        require(sent, "ERC1155PresetMinterPauser: transfer error");
+        (bool sent, ) = msg.sender.call{value:address(this).balance}("");
+        require(sent, "GuildFactory: transfer error");
     }
 }
