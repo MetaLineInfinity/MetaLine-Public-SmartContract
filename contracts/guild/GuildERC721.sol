@@ -368,6 +368,24 @@ contract GuildERC721 is
 
         _afterTokenTransfer(from, to, tokenId);
     }
+    
+    function _transferInternal(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal virtual {
+        require(GuildERC721.ownerOf(tokenId) == from, "GuildERC721: transfer from incorrect owner");
+        require(to != address(0), "GuildERC721: transfer to the zero address");
+
+        // Clear approvals from the previous owner
+        _approve(address(0), tokenId);
+
+        _balances[from] -= 1;
+        _balances[to] += 1;
+        _owners[tokenId] = to;
+
+        emit Transfer(from, to, tokenId);
+    }
 
     /**
      * @dev Approve `to` to operate on `tokenId`
