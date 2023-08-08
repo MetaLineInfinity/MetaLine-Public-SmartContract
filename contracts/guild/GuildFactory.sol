@@ -17,6 +17,7 @@ contract GuildFactory {
     OracleCharger_V2.OracleChargerStruct public _oracleCharger;
 
     address public owner;
+    address public operator;
     address public GuildImpl;
     address public GuildConfigAddr;
 
@@ -33,6 +34,11 @@ contract GuildFactory {
     function changeOwner(address newOwner) external {
         require(msg.sender == owner, 'GuildFactory: FORBIDDEN');
         owner = newOwner;
+    }
+    
+    function setOp(address operator_) external {
+        require(msg.sender == owner, 'GuildFactory: FORBIDDEN');
+        operator = operator_;
     }
 
     function setGuildConfig(address confAddr) external {
@@ -100,6 +106,23 @@ contract GuildFactory {
         guildCont.setGuildConfig(GuildConfigAddr);
 
         emit GuildCreated(guildName, guildAddr);
+    }
+
+    function modGuildMemberNFTData(string memory guildName, uint256 tokenId, bytes memory writeabelData) external {
+        require(msg.sender == operator, 'GuildFactory: FORBIDDEN');
+
+        address guildAddr = guilds[guildName];
+        require(guildAddr != address(0), "GuildFactory: Guild not exist");
+
+        Guild(guildAddr).modMemberNFTData(tokenId, writeabelData);
+    }
+    function ModifyGuildData(string memory guildName, string memory extendName, bytes memory extendData) external {
+        require(msg.sender == operator, 'GuildFactory: FORBIDDEN');
+
+        address guildAddr = guilds[guildName];
+        require(guildAddr != address(0), "GuildFactory: Guild not exist");
+
+        Guild(guildAddr).ModifyGuildData(extendName, extendData);
     }
 
     function callGuild(string memory guildName, bytes memory callData)
