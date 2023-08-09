@@ -83,7 +83,7 @@ contract GuildFactory {
        string memory tokenName,
        uint256 usdValue
     ) external returns(address guildAddr) {
-        require(msg.sender == owner, 'GuildFactory: FORBIDDEN');
+        require(bytes(guildName).length > 4, "GuildFactory: Name Error");
         require(guilds[guildName] == address(0), 'GuildFactory: AlreadyExist');
 
         uint256 _usdPrice = GuildConfig(GuildConfigAddr).CreateGuildUSDPrice();
@@ -103,6 +103,8 @@ contract GuildFactory {
 
         // init guild
         Guild guildCont = Guild(guildAddr);
+
+        guildCont.initGuild(guildName, msg.sender);
         guildCont.setGuildConfig(GuildConfigAddr);
 
         emit GuildCreated(guildName, guildAddr);
