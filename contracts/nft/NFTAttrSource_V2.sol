@@ -81,11 +81,11 @@ contract NFTAttrSource_V2 is
         data.attack = uint32(data.attack + uint64(data.attack) * (level-1) * _heroBattleFactor / 10000);
         data.defense = uint32(data.defense + uint64(data.defense) * (level-1) * _heroBattleFactor / 10000);
         data.hitpoint = uint32(data.hitpoint + uint64(data.hitpoint) * (level-1) * _heroBattleFactor / 10000);
-        data.miss = uint16(data.miss + uint64(data.miss * (level-1)) * _heroBattleFactor / 10000);
-        data.doge = uint16(data.doge + uint64(data.doge * (level-1)) * _heroBattleFactor / 10000);
-        data.critical = uint16(data.critical + uint64(data.critical) * (level-1) * _heroBattleFactor / 10000);
-        data.decritical = uint16(data.decritical + uint64(data.decritical) * (level-1) * _heroBattleFactor / 10000);
-        data.speed = uint16(data.speed + uint64(data.speed) * (level-1) * _heroBattleFactor / 10000);
+        data.miss = uint32(data.miss + uint64(data.miss * (level-1)) * _heroBattleFactor / 10000);
+        data.doge = uint32(data.doge + uint64(data.doge * (level-1)) * _heroBattleFactor / 10000);
+        data.critical = uint32(data.critical + uint64(data.critical) * (level-1) * _heroBattleFactor / 10000);
+        data.decritical = uint32(data.decritical + uint64(data.decritical) * (level-1) * _heroBattleFactor / 10000);
+        data.speed = uint32(data.speed + uint64(data.speed) * (level-1) * _heroBattleFactor / 10000);
     }
 
     /**
@@ -134,7 +134,7 @@ contract NFTAttrSource_V2 is
         data.maxLoad = uint32(data.maxLoad + uint64(data.maxLoad) * (level-1) * _shipMineFactor / 10000);
         data.maxRange = uint32(data.maxRange + uint64(data.maxRange) * (level-1) * _shipMineFactor / 10000);
         data.foodPerMile = uint32(data.foodPerMile + uint64(data.foodPerMile) * (level-1) * _shipMineFactor / 10000);
-        data.maxSailer = uint8(data.maxSailer + uint64(data.maxSailer) * (level-1) * _shipMineFactor / 10000);
+        //data.maxSailer = uint8(data.maxSailer + uint64(data.maxSailer) * (level-1) * _shipMineFactor / 10000);
         data.hashRate = uint32(data.hashRate + uint64(data.hashRate) * (level-1) * _shipMineFactor / 10000);
     }
 
@@ -152,12 +152,12 @@ contract NFTAttrSource_V2 is
         data.attack = uint32(data.attack + uint64(data.attack) * (level-1) * _shipBattleFactor / 10000);
         data.defense = uint32(data.defense + uint64(data.defense) * (level-1) * _shipBattleFactor / 10000);
         data.hitpoint = uint32(data.hitpoint + uint64(data.hitpoint) * (level-1) * _shipBattleFactor / 10000);
-        data.miss = uint16(data.miss + uint64(data.miss * (level-1)) * _shipBattleFactor / 10000);
-        data.doge = uint16(data.doge + uint64(data.doge * (level-1)) * _shipBattleFactor / 10000);
-        data.critical = uint16(data.critical + uint64(data.critical) * (level-1) * _shipBattleFactor / 10000);
-        data.decritical = uint16(data.decritical + uint64(data.decritical) * (level-1) * _shipBattleFactor / 10000);
-        data.speed = uint16(data.speed + uint64(data.speed) * (level-1) * _shipBattleFactor / 10000);
-        data.maxSailer = uint8(data.maxSailer + uint64(data.maxSailer) * (level-1) * _shipBattleFactor / 10000);
+        data.miss = uint32(data.miss + uint64(data.miss * (level-1)) * _shipBattleFactor / 10000);
+        data.doge = uint32(data.doge + uint64(data.doge * (level-1)) * _shipBattleFactor / 10000);
+        data.critical = uint32(data.critical + uint64(data.critical) * (level-1) * _shipBattleFactor / 10000);
+        data.decritical = uint32(data.decritical + uint64(data.decritical) * (level-1) * _shipBattleFactor / 10000);
+        data.speed = uint32(data.speed + uint64(data.speed) * (level-1) * _shipBattleFactor / 10000);
+        //data.maxSailer = uint8(data.maxSailer + uint64(data.maxSailer) * (level-1) * _shipBattleFactor / 10000);
     }
 
     /**

@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 
-import "../MTT.sol";
+import "../VMTT.sol";
 import "../MTTGold.sol";
 import "../nft/HeroNFT.sol";
 import "../nft/WarrantNFT.sol";
@@ -16,7 +16,7 @@ import "../nft/HeroNFTCodec.sol";
 import "../nft/NFTAttrSource.sol";
 
 import "./GameService.sol";
-import "./MTTMinePool.sol";
+import "./VMTTMinePool.sol";
 
 contract Expedition is
     Context,
@@ -35,7 +35,7 @@ contract Expedition is
 
     event OutputMTT(uint256 value, ExpeditionPoolData poolData);
     event StartExpedition(address indexed userAddr, ExpeditionTeamData teamData, ExpeditionPoolData poolData);
-    event FetchExpeditionMTT(address indexed userAddr, uint256 value, ExpeditionTeamData teamData, ExpeditionPoolData poolData);
+    event FetchExpeditionMTT(address indexed userAddr, uint256 value, ExpeditionTeamData teamData, ExpeditionPoolData poolData, uint16 portID, uint8 fetchType);
 
     struct ExpeditionPoolConf {
         uint256 minHashRate; // expedition team minimum hashrate require
@@ -46,9 +46,9 @@ contract Expedition is
         
         uint256 maxMTTPerGold; // limit max mtt output per gold, 8 decimals, mtt = gold * mttpergold/100000000
 
-        uint256 minMTTPerBlock; // min MTT output per block, no matter how many hashrate in this pool
-        uint256 maxMTTPerBlock; // max MTT output per block, even more than maxOutputhashRate hashrate in this pool
-        uint256 maxOutputhashRate; // MTT output = min(maxMTTPerBlock, max(minMTTPerBlock, maxMTTPerBlock*totalHashRate/maxOutputhashRate))
+        uint256 minMTTPerBlock; // min VMTT output per block, no matter how many hashrate in this pool
+        uint256 maxMTTPerBlock; // max VMTT output per block, even more than maxOutputhashRate hashrate in this pool
+        uint256 maxOutputhashRate; // VMTT output = min(maxMTTPerBlock, max(minMTTPerBlock, maxMTTPerBlock*totalHashRate/maxOutputhashRate))
     }
 
     struct ExpeditionTeamData {
@@ -59,7 +59,7 @@ contract Expedition is
     }
     struct ExpeditionPoolData {
         uint256 totalHashRate; // all team hashrate
-        uint256 totalOutputMTT; // total output MTT
+        uint256 totalOutputMTT; // total output VMTT
         uint256 totalInputGold; // total input gold
         uint256 currentOutputMTT; // current output mtt
         uint256 currentInputGold; // current input gold
@@ -258,6 +258,7 @@ contract Expedition is
         
         HeroExpeditionTeam storage team = phep.expedHeros[_msgSender()];
         require(team.teamHashRate > 0, "Expedition: team not exist");
+        require(team.teamData.inputGoldLeft == 0, "Expedition: team inputGoldLeft must =0");
 
         for(uint i=0; i<team.heroNFTIDs.length; ++i){
             // send back hero
@@ -375,6 +376,7 @@ contract Expedition is
         
         ShipExpeditionTeam storage team = psep.expedShips[_msgSender()];
         require(team.teamHashRate > 0, "Expedition: team not exist");
+        require(team.teamData.inputGoldLeft == 0, "Expedition: team inputGoldLeft must =0");
 
         for(uint j=0; j<team.ships.length; ++j){
             // send back ship
@@ -469,7 +471,9 @@ contract Expedition is
     function _fetchExpedMTT(
         ExpeditionPoolConf storage conf,
         ExpeditionTeamData storage teamData, 
-        ExpeditionPoolData storage poolData
+        ExpeditionPoolData storage poolData,
+        uint16 portID,
+        uint8 fetchType
     ) internal {
         require(teamData.inputGoldLeft > 0, "Expedition: insufficient input gold");
         require(teamData.expedLastFetchBlock < block.number, "Expedition: wait some blocks");
@@ -493,12 +497,12 @@ contract Expedition is
             value = maxMTT;
         }
 
-        MTTMinePool(_MTTMinePoolAddr).send(_msgSender(), value, "expedition");
+        VMTTMinePool(_MTTMinePoolAddr).send(_msgSender(), value, "expedition");
 
         poolData.currentOutputMTT -= value;
         poolData.currentInputGold -= goldCost;
 
-        emit FetchExpeditionMTT(_msgSender(), value, teamData, poolData);
+        emit FetchExpeditionMTT(_msgSender(), value, teamData, poolData, portID, fetchType);
     }
 
     function startHeroExped(uint16 portID, uint256 inputGold, uint256 blockInterval) external {
@@ -530,7 +534,7 @@ contract Expedition is
         // output mtt
         _outputMTT(phep.poolData);
 
-        _fetchExpedMTT(phep.poolConf, team.teamData, phep.poolData);
+        _fetchExpedMTT(phep.poolConf, team.teamData, phep.poolData, portID, 1);
     }
     function fetchShipExpedMTT(uint16 portID) external {
         PortShipExpedPool storage psep = _shipExpeditions[portID];
@@ -542,7 +546,7 @@ contract Expedition is
         // output mtt
         _outputMTT(psep.poolData);
 
-        _fetchExpedMTT(psep.poolConf, team.teamData, psep.poolData);
+        _fetchExpedMTT(psep.poolConf, team.teamData, psep.poolData, portID, 2);
     }
 
     /**

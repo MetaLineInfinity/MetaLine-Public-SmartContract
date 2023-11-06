@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Metaline Contracts (Billing.sol)
+// Metaline Contracts (ESportPool.sol)
 
 pragma solidity ^0.8.0;
 
@@ -22,7 +22,7 @@ contract ESportPool is
     bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
     bytes32 public constant SERVICE_ROLE = keccak256("SERVICE_ROLE");
 
-    event OnBuyTicket(uint32 poolId, uint256 usdPrice, uint256 tokenValue, uint256 poolValue, uint64 totalTickets, uint64 currentRoundTickets);
+    event OnBuyTicket(uint32 poolId, uint256 usdPrice, uint32 buyCount, uint256 tokenValue, uint256 poolValue, uint64 totalTickets, uint64 currentRoundTickets);
     event DispatchAward(uint32 poolId, uint256 poolValue, uint64 currentRound, RoundInfos rinfo);
     
     struct PoolConfig {
@@ -122,7 +122,8 @@ contract ESportPool is
         ret = _roundInfos[poolId][round];
     }
 
-    function buyTicket(uint32 poolId, uint256 usdPrice) external {
+    function buyTicket(uint32 poolId, uint256 usdPrice, uint32 buyCount) external {
+        require(buyCount <= 10, "ESportPool: buyCount must <= 10");
         PoolConfig memory conf = _poolConfig[poolId];
         require(conf.ticketUsdPrice > 0, "ESportPool: pool not exist");
 
@@ -137,14 +138,15 @@ contract ESportPool is
             uint count = info.currentRoundTickets / conf.priceGrowCount;
             _usdPrice +=  _usdPrice * count * conf.priceGrowPer / 10000;
         }
+        _usdPrice = _usdPrice * buyCount;
         require(usdPrice >= _usdPrice, "ESportPool: price error");
 
         uint256 tokenValue = _oracleCharger.charge(conf.tokenName, _usdPrice, address(this));
-        ++info.totalTickets;
-        ++info.currentRoundTickets;
+        info.totalTickets += buyCount;
+        info.currentRoundTickets += buyCount;
         info.poolValue += tokenValue;
 
-        emit OnBuyTicket(poolId, _usdPrice, tokenValue, info.poolValue, info.totalTickets, info.currentRoundTickets);
+        emit OnBuyTicket(poolId, _usdPrice, buyCount, tokenValue, info.poolValue, info.totalTickets, info.currentRoundTickets);
     }
 
     function dispatchAward(uint32 poolId, address[] calldata winners) external {

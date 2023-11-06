@@ -164,8 +164,15 @@
             ]
         },
         {
-            "group":"platform",
+            "group":"warrant_v3",
             "gen":10,
+            "contracts":[
+                {"name":"WarrantIssuer_V3","deployer":"deployer","args":[]}
+            ]
+        },
+        {
+            "group":"platform",
+            "gen":11,
             "contracts":[
                 {"name":"Billing","deployer":"deployer","args":[]},
                 {"name":"UniversalNFT","deployer":"deployer","args":[1, "MetaLine Universal NFT","MTUN", "https://metadata.metaline.games/e/"]},
@@ -175,7 +182,7 @@
         },
         {
             "group":"shards",
-            "gen":11,
+            "gen":12,
             "contracts":[
                 {"name":"HeroNFTMysteryShard","deployer":"deployer","args":[]},
                 {"name":"HeroNFTMSCombiner","deployer":"deployer","args":[]},
@@ -185,11 +192,20 @@
         },
         {
             "group":"expedition",
-            "gen":12,
+            "gen":13,
             "contracts":[
+                {"name":"VMTT","deployer":"deployer","args":["20000000000000000000000000"]},
+                {"name":"VMTTMinePool","deployer":"deployer","args":["addr:VMTT", "1900000000000000000"]},
                 {"name":"Expedition","deployer":"deployer","args":[]},
-                {"name":"NFTAttrSource_V2","deployer":"deployer","args":[]},
-                {"name":"MTTMinePool","deployer":"deployer","args":["addr:MTT", "1900000000000000000"]}
+                {"name":"VeTokenPool","deployer":"deployer","args":[]},
+                {"name":"NFTAttrSource_V2","deployer":"deployer","args":[]}
+            ]
+        },
+        {
+            "group":"espool_v2",
+            "gen":14,
+            "contracts":[
+                {"name":"ESportPool_V2","deployer":"deployer","args":[]}
             ]
         }
     ]
