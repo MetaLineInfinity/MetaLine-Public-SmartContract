@@ -19,6 +19,11 @@ import {extTask} from "./hardhat.task";
 
 console.log("config hardhat.");
 
+// set proxy
+const { ProxyAgent, setGlobalDispatcher } = require("undici");
+const proxyAgent = new ProxyAgent('http://127.0.0.1:7890');
+setGlobalDispatcher(proxyAgent);
+
 extTask.RegTasks();
 
 //get prikeys from a json file
