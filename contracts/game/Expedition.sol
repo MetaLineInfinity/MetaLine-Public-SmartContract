@@ -281,6 +281,37 @@ contract Expedition is
         delete phep.expedHeros[_msgSender()];
     }
 
+    function _calcShipHeroPetHashRate(uint i, uint256 nftid, IHeroNFTCodec_V1 codec, NFTAttrSource_V1 attSrc) internal returns(uint256 hashRate) {
+        require(HeroNFT(_heroNFTAddr).ownerOf(nftid) == _msgSender(), "Expedition: not your hero or pet");
+        
+        HeroNFTDataBase memory hdb = HeroNFT(_heroNFTAddr).getNftData(nftid);
+
+        if(i==0){
+            // must be hero nft
+            require(hdb.nftType == 1, "Expedition: captain must be hero"); 
+        }
+
+        if(hdb.nftType == 1) { // hero 
+            HeroNFTFixedData_V1 memory hndata = codec.getHeroNftFixedData(hdb);
+            HeroNFTWriteableData_V1 memory wdata = codec.getHeroNftWriteableData(hdb);
+
+            HeroNFTMinerAttr memory hmattr = attSrc.getHeroMinerAttr(hndata.minerAttr, wdata.starLevel);
+            hashRate = hmattr.hashRate;
+        } 
+        else if(hdb.nftType == 2) { // pet
+            HeroPetNFTFixedData_V1 memory hndata = codec.getHeroPetNftFixedData(hdb);
+            
+            HeroNFTMinerAttr memory hmattr = attSrc.getHeroMinerAttr(hndata.minerAttr, 0);
+            hashRate = hmattr.hashRate;
+        }
+        else {
+            revert("Expedition: nft type error");
+        }
+        
+        // transfer hero into pool
+        HeroNFT(_heroNFTAddr).safeTransferFrom(_msgSender(), address(this), nftid);
+    }
+
     function setShipExpedTeam(uint16 portID, ExpeditionShip[] memory expedShips) external {
         
         require(GameService(_gameService)._bindWarrant(_msgSender(), portID) != 0, "Expedition: must bind warrant");
@@ -316,34 +347,9 @@ contract Expedition is
             ShipNFT(_shipNFTAddr).safeTransferFrom(_msgSender(), address(this), expedShips[j].shipNFTID);
 
             for(uint i=0; i<expedShips[j].heroNFTIDs.length; ++i){
-                require(HeroNFT(_heroNFTAddr).ownerOf(expedShips[j].heroNFTIDs[i]) == _msgSender(), "Expedition: not your hero or pet");
 
-                HeroNFTDataBase memory hdb = HeroNFT(_heroNFTAddr).getNftData(expedShips[j].heroNFTIDs[i]);
+                shipet.teamHashRate += _calcShipHeroPetHashRate(i, expedShips[j].heroNFTIDs[i], codec, attSrc);
 
-                if(i==0){
-                    // must be hero nft
-                    require(hdb.nftType == 1, "Expedition: captain must be hero"); 
-                }
-
-                if(hdb.nftType == 1) { // hero 
-                    HeroNFTFixedData_V1 memory hndata = codec.getHeroNftFixedData(hdb);
-                    HeroNFTWriteableData_V1 memory wdata = codec.getHeroNftWriteableData(hdb);
-
-                    HeroNFTMinerAttr memory hmattr = attSrc.getHeroMinerAttr(hndata.minerAttr, wdata.starLevel);
-                    shipet.teamHashRate += hmattr.hashRate;
-                } 
-                else if(hdb.nftType == 2) { // pet
-                    HeroPetNFTFixedData_V1 memory hndata = codec.getHeroPetNftFixedData(hdb);
-                    
-                    HeroNFTMinerAttr memory hmattr = attSrc.getHeroMinerAttr(hndata.minerAttr, 0);
-                    shipet.teamHashRate += hmattr.hashRate;
-                }
-                else {
-                    revert("Expedition: nft type error");
-                }
-
-                // transfer hero into pool
-                HeroNFT(_heroNFTAddr).safeTransferFrom(_msgSender(), address(this), expedShips[j].heroNFTIDs[i]);
             }
 
             shipet.ships.push(expedShips[j]);
