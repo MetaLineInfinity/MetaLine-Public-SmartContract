@@ -22,7 +22,7 @@ library RandomPoolLib {
     }
 
     // initialize a random pool
-    function initRandomPool(RandomPool storage pool) internal {
+    function initRandomPool(RandomPool storage pool) external {
         for(uint i=0; i< pool.pool.length; ++i){
             pool.totalRate += pool.pool[i].rate;
         }
@@ -31,7 +31,7 @@ library RandomPoolLib {
     }
 
     // use and randomNum to fetch a random result in the random set array
-    function random(RandomPool storage pool, uint256 r) internal view returns(uint ret) {
+    function random(RandomPool storage pool, uint256 r) external view returns(uint ret) {
         require(pool.totalRate > 0);
 
         uint32 rate = uint32((r>>224) % pool.totalRate);
@@ -51,7 +51,7 @@ library RandomPoolLib {
         uint256 min,
         uint256 max,
         uint256 r
-    ) internal pure returns (uint256 ret) {
+    ) public pure returns (uint256 ret) {
         if(min >= max) {
             return min;
         }

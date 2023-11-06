@@ -43,16 +43,6 @@
             }
         },
         {
-            "network":"zkSyncTestnet",
-            "addresses":{
-                "oracle_rand_fee_addr":"0x9812752121fb9eBEc49A4B8153240866156E87C5",
-                "receive_mb_income_addr":"0x9812752121fb9eBEc49A4B8153240866156E87C5",
-                "operater_address":"0x9812752121fb9eBEc49A4B8153240866156E87C5"
-            },
-            "contracts":{
-            }
-        },
-        {
             "network":"localhost",
             "addresses":{
                 "oracle_rand_fee_addr":"0x9812752121fb9eBEc49A4B8153240866156E87C5",
