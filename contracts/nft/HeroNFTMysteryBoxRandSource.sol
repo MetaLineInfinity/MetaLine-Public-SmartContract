@@ -5,6 +5,8 @@ pragma solidity ^0.8.0;
 
 import "../mysterybox/MBRandomSourceBase.sol";
 
+import "../game/VMTTMinePool.sol";
+
 import "./HeroNFTCodec.sol";
 import "./HeroNFT.sol";
 
@@ -14,13 +16,15 @@ contract HeroNFTMysteryBoxRandSource is
     using RandomPoolLib for RandomPoolLib.RandomPool;
 
     HeroNFT public _heroNFTContract;
+    VMTTMinePool public _minePool;
 
-    constructor(address heroNftAddr)
+    constructor(address heroNftAddr, address minepool)
     {
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
         _setupRole(MINTER_ROLE, _msgSender());
 
         _heroNFTContract = HeroNFT(heroNftAddr);
+        _minePool = VMTTMinePool(minepool);
     }
 
     function randomAndMint(uint256 r, uint32 mysteryTp, address to) virtual override external 
@@ -32,25 +36,32 @@ contract HeroNFTMysteryBoxRandSource is
 
         require(poolIDArray.length == 33, "mb type config wrong");
 
-        HeroNFTDataBase memory baseData = _getSingleRandHero(r, poolIDArray);
+        (HeroNFTDataBase memory baseData, uint256 mintTokenValue) 
+            = _getSingleRandHero(r, poolIDArray);
 
-        // mint 
-        uint256 newId = _heroNFTContract.mint(to, baseData);
+        if(mintTokenValue > 0) {
+            // mint token
+            _minePool.send(to, mintTokenValue, "PetMB");
+        }
+        else {
+            // mint 
+            uint256 newId = _heroNFTContract.mint(to, baseData);
 
-        nfts = new MBContentMinterNftInfo[](1); // 1 nft
-        sfts = new MBContentMinter1155Info[](0); // no sft
+            nfts = new MBContentMinterNftInfo[](1); // 1 nft
+            sfts = new MBContentMinter1155Info[](0); // no sft
 
-        nfts[0] = MBContentMinterNftInfo({
-            addr : address(_heroNFTContract),
-            tokenIds : new uint256[](1)
-        });
-        nfts[0].tokenIds[0] = newId;
+            nfts[0] = MBContentMinterNftInfo({
+                addr : address(_heroNFTContract),
+                tokenIds : new uint256[](1)
+            });
+            nfts[0].tokenIds[0] = newId;
+        }
     }
 
     function _getSingleRandHero(
         uint256 r,
         uint32[] storage poolIDArray
-    ) internal view returns (HeroNFTDataBase memory baseData)
+    ) internal view returns (HeroNFTDataBase memory baseData, uint256 mintTokenValue)
     {
         uint32 index = 0;
         
@@ -58,41 +69,52 @@ contract HeroNFTMysteryBoxRandSource is
         require(pool.exist, "job pool not exist");
         uint8 job = uint8(pool.randPool.random(r));
 
-        r = _rand.nextRand(++index, r);
-        pool = _randPools[poolIDArray[1]]; // index 1 : grade rand (1-10)
-        require(pool.exist, "grade pool not exist");
-        uint8 grade = uint8(pool.randPool.random(r));
-
-        if(job <= 2){
-            pool = _randPools[poolIDArray[1 + grade]]; // index 2-11 : job(1-2) mineAttr rand by grade 
+        if(job == 0) { // job id == 0 mint token
+            // mint token
+            pool = _randPools[poolIDArray[33]]; // index 33 : mintTokenValue rand
+            r = _rand.nextRand(++index, r);
+            require(pool.exist, "mintTokenValue pool not exist");
+            mintTokenValue = pool.randPool.random(r);
         }
-        else{
-            pool = _randPools[poolIDArray[11 + grade]]; // index 12-21 : job(3-15) mineAttr rand by grade
+        else {
+
+            r = _rand.nextRand(++index, r);
+            pool = _randPools[poolIDArray[1]]; // index 1 : grade rand (1-10)
+            require(pool.exist, "grade pool not exist");
+            uint8 grade = uint8(pool.randPool.random(r));
+
+            if(job <= 2){
+                pool = _randPools[poolIDArray[1 + grade]]; // index 2-11 : job(1-2) mineAttr rand by grade 
+            }
+            else{
+                pool = _randPools[poolIDArray[11 + grade]]; // index 12-21 : job(3-15) mineAttr rand by grade
+            }
+            r = _rand.nextRand(++index, r);
+            require(pool.exist, "mineAttr pool not exist");
+            uint16 mineAttr = uint8(pool.randPool.random(r));
+
+            pool = _randPools[poolIDArray[21 + grade]]; // index 22-31 : battleAttr rand by grade
+            r = _rand.nextRand(++index, r);
+            require(pool.exist, "battleAttr pool not exist");
+            uint16 battleAttr = uint8(pool.randPool.random(r));
+
+            HeroNFTFixedData_V1 memory fdata = HeroNFTFixedData_V1({
+                job : job,
+                grade : grade,
+                minerAttr : mineAttr,
+                battleAttr : battleAttr
+            });
+
+            HeroNFTWriteableData_V1 memory wdata = HeroNFTWriteableData_V1({
+                starLevel: 0,
+                level : 1
+            });
+
+            IHeroNFTCodec_V1 codec = IHeroNFTCodec_V1(_heroNFTContract.getCodec());
+            baseData = codec.fromHeroNftFixedAnWriteableData(fdata, wdata);
+            baseData.mintType = uint8(poolIDArray[32]); // index 32 : mint type
         }
-        r = _rand.nextRand(++index, r);
-        require(pool.exist, "mineAttr pool not exist");
-        uint16 mineAttr = uint8(pool.randPool.random(r));
 
-        pool = _randPools[poolIDArray[21 + grade]]; // index 22-31 : battleAttr rand by grade
-        r = _rand.nextRand(++index, r);
-        require(pool.exist, "battleAttr pool not exist");
-        uint16 battleAttr = uint8(pool.randPool.random(r));
-
-        HeroNFTFixedData_V1 memory fdata = HeroNFTFixedData_V1({
-            job : job,
-            grade : grade,
-            minerAttr : mineAttr,
-            battleAttr : battleAttr
-        });
-
-        HeroNFTWriteableData_V1 memory wdata = HeroNFTWriteableData_V1({
-            starLevel: 0,
-            level : 1
-        });
-
-        IHeroNFTCodec_V1 codec = IHeroNFTCodec_V1(_heroNFTContract.getCodec());
-        baseData = codec.fromHeroNftFixedAnWriteableData(fdata, wdata);
-        baseData.mintType = uint8(poolIDArray[32]); // index 32 : mint type
     }
 
     function batchRandomAndMint(uint256 r, uint32 mysteryTp, address to, uint8 batchCount) virtual override external 
@@ -112,15 +134,27 @@ contract HeroNFTMysteryBoxRandSource is
             tokenIds : new uint256[](batchCount)
         });
 
+        uint256 totalMintToken = 0;
         for(uint8 i=0; i< batchCount; ++i)
         {
             r = _rand.nextRand(i, r);
-            HeroNFTDataBase memory baseData = _getSingleRandHero(r, poolIDArray);
+            (HeroNFTDataBase memory baseData,uint256 mintTokenValue) 
+                = _getSingleRandHero(r, poolIDArray);
 
-            // mint 
-            uint256 newId = _heroNFTContract.mint(to, baseData);
+            if(mintTokenValue > 0) {
+                totalMintToken += mintTokenValue;
+            }
+            else {
+                // mint 
+                uint256 newId = _heroNFTContract.mint(to, baseData);
 
-            nfts[0].tokenIds[i] = newId;
+                nfts[0].tokenIds[i] = newId;
+            }
+        }
+        
+        if(totalMintToken > 0){
+            // mint token
+            _minePool.send(to, totalMintToken, "PetMB");
         }
     }
 }

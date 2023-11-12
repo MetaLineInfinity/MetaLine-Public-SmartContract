@@ -5,6 +5,8 @@ pragma solidity ^0.8.0;
 
 import "../mysterybox/MBRandomSourceBase.sol";
 
+import "../game/VMTTMinePool.sol";
+
 import "./HeroNFTCodec.sol";
 import "./HeroNFT.sol";
 
@@ -14,13 +16,15 @@ contract HeroPetNFTMysteryBoxRandSource is
     using RandomPoolLib for RandomPoolLib.RandomPool;
 
     HeroNFT public _heroNFTContract;
+    VMTTMinePool public _minePool;
     
-    constructor(address heroNftAddr)
+    constructor(address heroNftAddr, address minepool)
     {
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
         _setupRole(MINTER_ROLE, _msgSender());
 
         _heroNFTContract = HeroNFT(heroNftAddr);
+        _minePool = VMTTMinePool(minepool);
     }
 
     function randomAndMint(uint256 r, uint32 mysteryTp, address to) virtual override external 
@@ -30,27 +34,35 @@ contract HeroPetNFTMysteryBoxRandSource is
 
         uint32[] storage poolIDArray = _mbRandomSets[mysteryTp];
 
-        require(poolIDArray.length == 10, "mb type config wrong");
+        require(poolIDArray.length == 11, "mb type config wrong");
 
-        HeroNFTDataBase memory baseData = _getSingleRandHero(r, poolIDArray);
+        (HeroNFTDataBase memory baseData, uint256 mintTokenValue)
+            = _getSingleRandHero(r, poolIDArray);
 
-        // mint 
-        uint256 newId = _heroNFTContract.mint(to, baseData);
+        if(mintTokenValue > 0) {
+            // mint token
+            _minePool.send(to, mintTokenValue, "PetMB");
+        }
+        else {
+            // mint 
+            uint256 newId = _heroNFTContract.mint(to, baseData);
 
-        nfts = new MBContentMinterNftInfo[](1); // 1 nft
-        sfts = new MBContentMinter1155Info[](0); // no sft
+            nfts = new MBContentMinterNftInfo[](1); // 1 nft
+            sfts = new MBContentMinter1155Info[](0); // no sft
 
-        nfts[0] = MBContentMinterNftInfo({
-            addr : address(_heroNFTContract),
-            tokenIds : new uint256[](1)
-        });
-        nfts[0].tokenIds[0] = newId;
+            nfts[0] = MBContentMinterNftInfo({
+                addr : address(_heroNFTContract),
+                tokenIds : new uint256[](1)
+            });
+            nfts[0].tokenIds[0] = newId;
+        }
+
     }
 
     function _getSingleRandHero(
         uint256 r,
         uint32[] storage poolIDArray
-    ) internal view returns (HeroNFTDataBase memory baseData)
+    ) internal view returns (HeroNFTDataBase memory baseData, uint256 mintTokenValue)
     {
         uint32 index = 0;
         
@@ -58,62 +70,72 @@ contract HeroPetNFTMysteryBoxRandSource is
         require(pool.exist, "job pool not exist");
         uint8 petId = uint8(pool.randPool.random(r));
 
-        r = _rand.nextRand(++index, r);
-        pool = _randPools[poolIDArray[1]]; // index 1 : avatar slot 1 rand (1-10)
-        require(pool.exist, "grade pool not exist");
-        uint8 avatar_slot_1_2 = uint8(pool.randPool.random(r)) << 4;
-        
-        r = _rand.nextRand(++index, r);
-        pool = _randPools[poolIDArray[2]]; // index 2 : avatar slot 2 rand (1-10)
-        require(pool.exist, "grade pool not exist");
-        avatar_slot_1_2 |= uint8(pool.randPool.random(r));
-        
-        r = _rand.nextRand(++index, r);
-        pool = _randPools[poolIDArray[3]]; // index 3 : avatar slot 3 rand (1-10)
-        require(pool.exist, "grade pool not exist");
-        uint8 avatar_slot_3_4 = uint8(pool.randPool.random(r)) << 4;
-        
-        r = _rand.nextRand(++index, r);
-        pool = _randPools[poolIDArray[4]]; // index 4 : avatar slot 4 rand (1-10)
-        require(pool.exist, "grade pool not exist");
-        avatar_slot_3_4 |= uint8(pool.randPool.random(r));
-        
-        r = _rand.nextRand(++index, r);
-        pool = _randPools[poolIDArray[5]]; // index 5 : avatar slot 5 rand (1-10)
-        require(pool.exist, "grade pool not exist");
-        uint8 avatar_slot_5_6 = uint8(pool.randPool.random(r)) << 4;
-        
-        r = _rand.nextRand(++index, r);
-        pool = _randPools[poolIDArray[6]]; // index 6 : avatar slot 6 rand (1-10)
-        require(pool.exist, "grade pool not exist");
-        avatar_slot_5_6 |= uint8(pool.randPool.random(r));
+        if(petId == 0) { // pet id = 0 mint token
+            // mint token
+            pool = _randPools[poolIDArray[10]]; // index 11 : mintTokenValue rand
+            r = _rand.nextRand(++index, r);
+            require(pool.exist, "mintTokenValue pool not exist");
+            mintTokenValue = pool.randPool.random(r);
+        }
+        else {
+            r = _rand.nextRand(++index, r);
+            pool = _randPools[poolIDArray[1]]; // index 1 : avatar slot 1 rand (1-10)
+            require(pool.exist, "grade pool not exist");
+            uint8 avatar_slot_1_2 = uint8(pool.randPool.random(r)) << 4;
+            
+            r = _rand.nextRand(++index, r);
+            pool = _randPools[poolIDArray[2]]; // index 2 : avatar slot 2 rand (1-10)
+            require(pool.exist, "grade pool not exist");
+            avatar_slot_1_2 |= uint8(pool.randPool.random(r));
+            
+            r = _rand.nextRand(++index, r);
+            pool = _randPools[poolIDArray[3]]; // index 3 : avatar slot 3 rand (1-10)
+            require(pool.exist, "grade pool not exist");
+            uint8 avatar_slot_3_4 = uint8(pool.randPool.random(r)) << 4;
+            
+            r = _rand.nextRand(++index, r);
+            pool = _randPools[poolIDArray[4]]; // index 4 : avatar slot 4 rand (1-10)
+            require(pool.exist, "grade pool not exist");
+            avatar_slot_3_4 |= uint8(pool.randPool.random(r));
+            
+            r = _rand.nextRand(++index, r);
+            pool = _randPools[poolIDArray[5]]; // index 5 : avatar slot 5 rand (1-10)
+            require(pool.exist, "grade pool not exist");
+            uint8 avatar_slot_5_6 = uint8(pool.randPool.random(r)) << 4;
+            
+            r = _rand.nextRand(++index, r);
+            pool = _randPools[poolIDArray[6]]; // index 6 : avatar slot 6 rand (1-10)
+            require(pool.exist, "grade pool not exist");
+            avatar_slot_5_6 |= uint8(pool.randPool.random(r));
 
-        pool = _randPools[poolIDArray[7]]; // index 7 : mineAttr rand
-        r = _rand.nextRand(++index, r);
-        require(pool.exist, "mineAttr pool not exist");
-        uint16 mineAttr = uint8(pool.randPool.random(r));
+            pool = _randPools[poolIDArray[7]]; // index 7 : mineAttr rand
+            r = _rand.nextRand(++index, r);
+            require(pool.exist, "mineAttr pool not exist");
+            uint16 mineAttr = uint8(pool.randPool.random(r));
 
-        pool = _randPools[poolIDArray[8]]; // index 8 : battleAttr rand
-        r = _rand.nextRand(++index, r);
-        require(pool.exist, "battleAttr pool not exist");
-        uint16 battleAttr = uint8(pool.randPool.random(r));
+            pool = _randPools[poolIDArray[8]]; // index 8 : battleAttr rand
+            r = _rand.nextRand(++index, r);
+            require(pool.exist, "battleAttr pool not exist");
+            uint16 battleAttr = uint8(pool.randPool.random(r));
 
-        HeroPetNFTFixedData_V1 memory fdata = HeroPetNFTFixedData_V1({
-            petId : petId,
-            avatar_slot_1_2 : avatar_slot_1_2,
-            avatar_slot_3_4 : avatar_slot_3_4,
-            avatar_slot_5_6 : avatar_slot_5_6,
-            minerAttr : mineAttr,
-            battleAttr : battleAttr
-        });
+            HeroPetNFTFixedData_V1 memory fdata = HeroPetNFTFixedData_V1({
+                petId : petId,
+                avatar_slot_1_2 : avatar_slot_1_2,
+                avatar_slot_3_4 : avatar_slot_3_4,
+                avatar_slot_5_6 : avatar_slot_5_6,
+                minerAttr : mineAttr,
+                battleAttr : battleAttr
+            });
 
-        HeroPetNFTWriteableData_V1 memory wdata = HeroPetNFTWriteableData_V1({
-            level:1
-        });
+            HeroPetNFTWriteableData_V1 memory wdata = HeroPetNFTWriteableData_V1({
+                level:1
+            });
 
-        IHeroNFTCodec_V1 codec = IHeroNFTCodec_V1(_heroNFTContract.getCodec());
-        baseData = codec.fromHeroPetNftFixedAnWriteableData(fdata, wdata);
-        baseData.mintType = uint8(poolIDArray[9]); // index 9 : mint type
+            IHeroNFTCodec_V1 codec = IHeroNFTCodec_V1(_heroNFTContract.getCodec());
+            baseData = codec.fromHeroPetNftFixedAnWriteableData(fdata, wdata);
+            baseData.mintType = uint8(poolIDArray[9]); // index 9 : mint type
+        }
+
     }
 
     function batchRandomAndMint(uint256 r, uint32 mysteryTp, address to, uint8 batchCount) virtual override external 
@@ -123,7 +145,7 @@ contract HeroPetNFTMysteryBoxRandSource is
 
         uint32[] storage poolIDArray = _mbRandomSets[mysteryTp];
 
-        require(poolIDArray.length == 10, "mb type config wrong");
+        require(poolIDArray.length == 11, "mb type config wrong");
 
         nfts = new MBContentMinterNftInfo[](1); // 1 nft
         sfts = new MBContentMinter1155Info[](0); // no sft record
@@ -133,15 +155,27 @@ contract HeroPetNFTMysteryBoxRandSource is
             tokenIds : new uint256[](batchCount)
         });
 
+        uint256 totalMintToken = 0;
         for(uint8 i=0; i< batchCount; ++i)
         {
             r = _rand.nextRand(i, r);
-            HeroNFTDataBase memory baseData = _getSingleRandHero(r, poolIDArray);
+            (HeroNFTDataBase memory baseData, uint256 mintTokenValue)
+                = _getSingleRandHero(r, poolIDArray);
 
-            // mint 
-            uint256 newId = _heroNFTContract.mint(to, baseData);
+            if(mintTokenValue > 0) {
+                totalMintToken += mintTokenValue;
+            }
+            else {
+                // mint 
+                uint256 newId = _heroNFTContract.mint(to, baseData);
 
-            nfts[0].tokenIds[i] = newId;
+                nfts[0].tokenIds[i] = newId;
+            }
+        }
+
+        if(totalMintToken > 0){
+            // mint token
+            _minePool.send(to, totalMintToken, "PetMB");
         }
     }
 }
