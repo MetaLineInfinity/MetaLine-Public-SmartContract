@@ -30,7 +30,8 @@ contract VMTTMinePool is
 
     constructor(
         address _MTTAddr,
-        uint256 _perblock
+        uint256 _perblock,
+        uint256 _liquidity
     ) {
         require(_perblock > 0, "VMTTMinePool: mtt per block must >0");
 
@@ -38,6 +39,8 @@ contract VMTTMinePool is
 
         VMTT_PER_BLOCK = _perblock;
         VMTT_LAST_OUTPUT_BLOCK = block.number;
+
+        VMTT_LIQUIDITY = _liquidity;
         
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
 

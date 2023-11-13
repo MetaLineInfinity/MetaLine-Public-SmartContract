@@ -195,7 +195,7 @@
             "gen":13,
             "contracts":[
                 {"name":"VMTT","deployer":"deployer","args":["20000000000000000000000000"]},
-                {"name":"VMTTMinePool","deployer":"deployer","args":["addr:VMTT", "1900000000000000000"]},
+                {"name":"VMTTMinePool","deployer":"deployer","args":["addr:VMTT", "1900000000000000000", "0"]},
                 {"name":"Expedition","deployer":"deployer","args":[]},
                 {"name":"VeTokenPool","deployer":"deployer","args":[]},
                 {"name":"NFTAttrSource_V2","deployer":"deployer","args":[]}
