@@ -53,6 +53,16 @@
             }
         },
         {
+            "network":"zkSyncMainnet",
+            "addresses":{
+                "oracle_rand_fee_addr":"0xE7EFAcb6F9A8C85bea83455eD6AA8822e34F8e2B",
+                "receive_mb_income_addr":"",
+                "operater_address":"0xE7EFAcb6F9A8C85bea83455eD6AA8822e34F8e2B"
+            },
+            "contracts":{
+            }
+        },
+        {
             "network":"localhost",
             "addresses":{
                 "oracle_rand_fee_addr":"0x9812752121fb9eBEc49A4B8153240866156E87C5",
@@ -84,105 +94,66 @@
             "group":"mysteryboxShop",
             "gen":1,
             "contracts":[
-                {"name":"MysteryBox1155","deployer":"deployer","args":["https://metadata.metaline.games/a/{id}"]},
-                {"name":"MysteryBoxShop","deployer":"deployer","args":[]}
-            ]
-        },
-        {
-            "group":"MTT",
-            "gen":2,
-            "contracts":[
-                {"name":"MTT","deployer":"deployer","args":[]}
-            ]
-        },
-        {
-            "group":"mysteryboxShopV1",
-            "gen":3,
-            "contracts":[
-                {"name":"MysteryBoxShopV1","deployer":"deployer","args":[]}
-            ]
-        },
-        {
-            "group":"mysteryboxShopV2",
-            "gen":4,
-            "contracts":[
+                {"name":"MysteryBox1155","deployer":"deployer","args":["https://metadata.metaline.games/a/zk/{id}"]},
                 {"name":"MysteryBoxShopV2","deployer":"deployer","args":[]}
             ]
         },
         {
             "group":"mysterybox",
-            "gen":5,
+            "gen":2,
             "contracts":[
                 {"name":"RandomPoolLib","deployer":"deployer","args":[]},
                 {"name":"Random","deployer":"deployer","args":[]},
-                {"name":"HeroNFT","deployer":"deployer","args":[1000000000, "MetaLine Hero&Pet NFT","HERO", "https://metadata.metaline.games/b/"]},
+                {"name":"HeroNFT","deployer":"deployer","args":[1000000000, "MetaLine Hero&Pet NFT","HERO", "https://metadata.metaline.games/b/zk/"]},
                 {"name":"HeroNFTCodec_V1","deployer":"deployer","args":[]},
-                {"name":"NFTAttrSource_V1","deployer":"deployer","args":[]},
+                {"name":"NFTAttrSource_V2","deployer":"deployer","args":[]},
                 {"name":"HeroNFTMysteryBox","deployer":"deployer","args":[]},
+                {"name":"VMTT","deployer":"deployer","args":["20000000000000000000000000"]},
+                {"name":"VMTTMinePool","deployer":"deployer","args":["addr:VMTT", "1900000000000000000", "1000000000000000000000000"]},
                 {"name":"HeroNFTMysteryBoxRandSource","deployer":"deployer","args":["addr:HeroNFT", "addr:VMTTMinePool"],"libraries":{"RandomPoolLib":"addr:RandomPoolLib"}},
-                {"name":"HeroPetNFTMysteryBoxRandSource","deployer":"deployer","args":["addr:HeroNFT", "addr:VMTTMinePool"],"libraries":{"RandomPoolLib":"addr:RandomPoolLib"}}
+                {"name":"HeroPetNFTMysteryBoxRandSource","deployer":"deployer","args":["addr:HeroNFT", "addr:VMTTMinePool"],"libraries":{"RandomPoolLib":"addr:RandomPoolLib"}},
+                {"name":"DailySign","deployer":"deployer","args":["addr:VMTT", "500000000000000000", "86400"]}
             ]
         },
         {
             "group":"game1",
-            "gen":6,
+            "gen":3,
             "contracts":[
-                {"name":"ShipNFT","deployer":"deployer","args":[1000000000, "MetaLine Ship NFT","SHIP", "https://metadata.metaline.games/c/"]},
-                {"name":"WarrantNFT","deployer":"deployer","args":[1000000000, "MetaLine Warrant NFT","WRNT", "https://metadata.metaline.games/d/"]},
+                {"name":"ShipNFT","deployer":"deployer","args":[1000000000, "MetaLine Ship NFT","SHIP", "https://metadata.metaline.games/c/zk/"]},
+                {"name":"WarrantNFT","deployer":"deployer","args":[1000000000, "MetaLine Warrant NFT","WRNT", "https://metadata.metaline.games/d/zk/"]},
                 {"name":"DirectMysteryBox","deployer":"deployer","args":[]},
                 {"name":"GameService","deployer":"deployer","args":[]},
                 {"name":"OffOnChainBridge","deployer":"deployer","args":[]},
-                {"name":"WarrantIssuer","deployer":"deployer","args":[]},
+                {"name":"WarrantIssuer_V3","deployer":"deployer","args":[]},
                 {"name":"Shipyard","deployer":"deployer","args":[]},
                 {"name":"MTTGold","deployer":"deployer","args":["addr:OffOnChainBridge"]},
-                {"name":"TokenPrices","deployer":"deployer","args":[]}
-            ]
-        },
-        {
-            "group":"assetminter",
-            "gen":7,
-            "contracts":[
-                {"name":"AssetMinter","deployer":"deployer","args":[]}
+                {"name":"TokenPrices","deployer":"deployer","args":[]},
+                {"name":"AssetMinter_V2","deployer":"deployer","args":[]},
+                {"name":"HeroPetTrain","deployer":"deployer","args":[]}
             ]
         },
         {
             "group":"market",
-            "gen":8,
+            "gen":4,
             "contracts":[
-                {"name":"HeroPetTrain","deployer":"deployer","args":[]},
                 {"name":"PortMarket","deployer":"deployer","args":[]},
                 {"name":"PortMarketPair","deployer":"deployer","args":[]},
                 {"name":"PortMarketFactory","deployer":"deployer","args":["addr:PortMarketPair", "addr:PortMarket"]}
             ]
         },
         {
-            "group":"warrant_v2",
-            "gen":9,
-            "contracts":[
-                {"name":"AssetMinter_V2","deployer":"deployer","args":[]},
-                {"name":"WarrantIssuer_V2","deployer":"deployer","args":[]}
-            ]
-        },
-        {
-            "group":"warrant_v3",
-            "gen":10,
-            "contracts":[
-                {"name":"WarrantIssuer_V3","deployer":"deployer","args":[]}
-            ]
-        },
-        {
             "group":"platform",
-            "gen":11,
+            "gen":5,
             "contracts":[
                 {"name":"Billing","deployer":"deployer","args":[]},
-                {"name":"UniversalNFT","deployer":"deployer","args":[1000000000, "MetaLine Universal NFT","MTUN", "https://metadata.metaline.games/e/"]},
+                {"name":"UniversalNFT","deployer":"deployer","args":[1000000000, "MetaLine Universal NFT","MTUN", "https://metadata.metaline.games/e/zk/"]},
                 {"name":"PlatOnOffChainBridge","deployer":"deployer","args":[]},
-                {"name":"ESportPool","deployer":"deployer","args":[]}
+                {"name":"ESportPool_V2","deployer":"deployer","args":[]}
             ]
         },
         {
             "group":"shards",
-            "gen":12,
+            "gen":6,
             "contracts":[
                 {"name":"HeroNFTMysteryShard","deployer":"deployer","args":[]},
                 {"name":"HeroNFTMSCombiner","deployer":"deployer","args":[]},
@@ -192,20 +163,20 @@
         },
         {
             "group":"expedition",
-            "gen":13,
+            "gen":7,
             "contracts":[
-                {"name":"VMTT","deployer":"deployer","args":["20000000000000000000000000"]},
-                {"name":"VMTTMinePool","deployer":"deployer","args":["addr:VMTT", "1900000000000000000", "0"]},
                 {"name":"Expedition","deployer":"deployer","args":[]},
-                {"name":"VeTokenPool","deployer":"deployer","args":[]},
-                {"name":"NFTAttrSource_V2","deployer":"deployer","args":[]}
+                {"name":"VeTokenPool","deployer":"deployer","args":[]}
             ]
         },
         {
-            "group":"espool_v2",
-            "gen":14,
+            "group":"guild",
+            "gen":8,
             "contracts":[
-                {"name":"ESportPool_V2","deployer":"deployer","args":[]}
+                {"name":"Guild","deployer":"deployer","args":[]},
+                {"name":"GuildConfig","deployer":"deployer","args":[]},
+                {"name":"GuildFactory","deployer":"deployer","args":["addr:Guild"]},
+                {"name":"GuildProxy","deployer":"deployer","args":["addr:Guild"]}
             ]
         }
     ]

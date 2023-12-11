@@ -382,6 +382,20 @@ export class ContractTool
         }
         return src;
     }
+
+    static GetDeepStrings(args: any) {
+        if (typeof args == "string") {
+            return this.GetString(args);
+        }
+        else if (typeof args == "object") {
+            for (var i = 0; i < args.length; i++) {
+                args[i] = this.GetDeepStrings(args[i]);
+            }
+        }
+        return args;
+    }
+
+
     static async ProxyUpdate(nameProxy: string, target: string): Promise<ContractReceipt>
     {
         return await ContractTool.CallState(ContractInfo.getContract(nameProxy), "upgradeTo", ["addr:" + target]);
@@ -406,20 +420,21 @@ export class ContractTool
 
     static async CallState(c: Contract, func: string, args: any[]): Promise<ContractReceipt>
     {
-        for (var i = 0; i < args.length; i++)
-        {
-            if (typeof args[i] == "string")
-            {
-                args[i] = this.GetString(args[i]);
-            }
-            else if (typeof args[i] == "object") {
-                for (var x = 0; x < args[i].length; x++) {
-                    if (typeof args[i][x] == "string") {
-                        args[i][x] = this.GetString(args[i][x]);
-                    }
-                }
-            }
-        }
+        // for (var i = 0; i < args.length; i++)
+        // {
+        //     if (typeof args[i] == "string")
+        //     {
+        //         args[i] = this.GetString(args[i]);
+        //     }
+        //     else if (typeof args[i] == "object") {
+        //         for (var x = 0; x < args[i].length; x++) {
+        //             if (typeof args[i][x] == "string") {
+        //                 args[i][x] = this.GetString(args[i][x]);
+        //             }
+        //         }
+        //     }
+        // }
+        args = this.GetDeepStrings(args);
         console.log("go<" + func + ">" + JSON.stringify(args));
         let funcabi: ethers.utils.FunctionFragment = c.interface.getFunction(func);
 
@@ -447,20 +462,21 @@ export class ContractTool
     }
     static async CallView(c: Contract, func: string, args: any[]): Promise<any>
     {
-        for (var i = 0; i < args.length; i++)
-        {
-            if (typeof args[i] == "string")
-            {
-                args[i] = this.GetString(args[i]);
-            }
-            else if (typeof args[i] == "object") {
-                for (var x = 0; x < args[i].length; x++) {
-                    if (typeof args[i][x] == "string") {
-                        args[i][x] = this.GetString(args[i][x]);
-                    }
-                }
-            }
-        }
+        // for (var i = 0; i < args.length; i++)
+        // {
+        //     if (typeof args[i] == "string")
+        //     {
+        //         args[i] = this.GetString(args[i]);
+        //     }
+        //     else if (typeof args[i] == "object") {
+        //         for (var x = 0; x < args[i].length; x++) {
+        //             if (typeof args[i][x] == "string") {
+        //                 args[i][x] = this.GetString(args[i][x]);
+        //             }
+        //         }
+        //     }
+        // }
+        args = this.GetDeepStrings(args);
         let funcabi: ethers.utils.FunctionFragment = c.interface.getFunction(func);
         if (funcabi.stateMutability.includes("view") || funcabi.stateMutability.includes("pure"))
         {

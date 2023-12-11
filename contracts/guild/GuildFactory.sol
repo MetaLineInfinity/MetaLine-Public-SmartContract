@@ -53,6 +53,12 @@ contract GuildFactory {
         _oracleCharger.setTPOracleAddr(tpOracleAddr);
     }
 
+    function setReceiveIncomeAddr(address incomeAddr) external {
+        require(msg.sender == owner, 'GuildFactory: FORBIDDEN');
+
+        _oracleCharger.setReceiveIncomeAddr(incomeAddr);
+    }
+
     // maximumUSDPrice = 0: no limit
     // minimumUSDPrice = 0: no limit
     function addChargeToken(
@@ -72,24 +78,25 @@ contract GuildFactory {
         _oracleCharger.removeChargeToken(tokenName);
     }
 
-    function charge(string memory tokenName, uint256 usdValue, address from, address receiveAddr) external returns(uint256 tokenValue) {
+    function charge(string memory tokenName, uint256 usdValue, address from) external payable returns(uint256 tokenValue) {
         require(bytes(guildsByName[msg.sender]).length > 0, 'GuildFactory: FORBIDDEN');
 
-        return _oracleCharger.charge(tokenName, usdValue, from, receiveAddr);
+        return _oracleCharger.charge(tokenName, usdValue, from);
     }
 
     function createGuild(
        string memory guildName,
        string memory tokenName,
        uint256 usdValue
-    ) external returns(address guildAddr) {
+    ) external payable returns(address guildAddr) {
         require(bytes(guildName).length > 4, "GuildFactory: Name Error");
         require(guilds[guildName] == address(0), 'GuildFactory: AlreadyExist');
 
         uint256 _usdPrice = GuildConfig(GuildConfigAddr).CreateGuildUSDPrice();
         require(usdValue >= _usdPrice, "GuildFactory: price error");
 
-        _oracleCharger.charge(tokenName, _usdPrice, msg.sender, address(this));
+        // _oracleCharger.charge(tokenName, _usdPrice, msg.sender, address(this));
+        _oracleCharger.charge(tokenName, _usdPrice, msg.sender);
 
         bytes32 salt = keccak256(abi.encodePacked(guildName));
         guildAddr = address(
@@ -101,13 +108,15 @@ contract GuildFactory {
         guilds[guildName] = guildAddr;
         guildsByName[guildAddr] = guildName;
 
+        emit GuildCreated(guildName, guildAddr);
+
         // init guild
         Guild guildCont = Guild(guildAddr);
 
         guildCont.initGuild(guildName, msg.sender);
         guildCont.setGuildConfig(GuildConfigAddr);
-
-        emit GuildCreated(guildName, guildAddr);
+        
+        guildCont.ModifyGuildData("level", abi.encodePacked(uint8(1)));
     }
 
     function modGuildMemberNFTData(string memory guildName, uint256 tokenId, bytes memory writeabelData) external {

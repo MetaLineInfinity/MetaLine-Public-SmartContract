@@ -1,14 +1,5 @@
 export const HeroPetNFTMysteryShardRandSource_config = {
-    // removePool: [
-    //     [1],
-    //     [2],
-    //     [3],
-    //     [4],
-    //     [5],
-    //     [6],
-    //     [7],
-    //     [8],
-    // ],
+    // removePool: [[1], [2], [3], [4], [5], [6], [7], [8]],
     addPool: [
         ["1", [[1000, 1, 1]]],
         ["2", [[1000, 2, 2]]],

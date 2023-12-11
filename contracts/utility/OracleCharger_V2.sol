@@ -24,6 +24,7 @@ library OracleCharger_V2 {
     struct OracleChargerStruct {
         uint locked;
         address tokenPriceOracleAddr;
+        address receiveIncomeAddr;
         mapping(string=>ChargeTokenSet) chargeTokens;
     }
     
@@ -36,6 +37,10 @@ library OracleCharger_V2 {
 
     function setTPOracleAddr(OracleChargerStruct storage charger, address tpOracleAddr) internal {
         charger.tokenPriceOracleAddr = tpOracleAddr;
+    }
+
+    function setReceiveIncomeAddr(OracleChargerStruct storage charger, address incomeAddr) internal {
+        charger.receiveIncomeAddr = incomeAddr;
     }
 
     function addChargeToken(
@@ -63,9 +68,11 @@ library OracleCharger_V2 {
         delete charger.chargeTokens[tokenName];
     }
 
-    function charge(OracleChargerStruct storage charger, string memory tokenName, uint256 usdValue, address from, address receiveAddr) 
+    function charge(OracleChargerStruct storage charger, string memory tokenName, uint256 usdValue, address from) 
         internal lock(charger) returns(uint256 tokenCost) 
     {
+        require(charger.receiveIncomeAddr != address(0), "income addr not set");
+
         ChargeTokenSet storage tokenSet = charger.chargeTokens[tokenName];
         require(tokenSet.decimals > 0, "token not set");
 
@@ -82,7 +89,7 @@ library OracleCharger_V2 {
         if(tokenSet.tokenAddr == address(0)){
             // charge eth
             require(msg.value >= tokenCost, "insufficient eth");
-            (bool sent, ) = receiveAddr.call{value: tokenCost}("");
+            (bool sent, ) = charger.receiveIncomeAddr.call{value: tokenCost}("");
             require(sent, "Trans fee err");
             if(msg.value > tokenCost){
                 // send back
@@ -95,7 +102,7 @@ library OracleCharger_V2 {
 
             require(IERC20(tokenSet.tokenAddr).balanceOf(from) >= tokenCost, "insufficient token");
 
-            TransferHelper.safeTransferFrom(tokenSet.tokenAddr, from, receiveAddr, tokenCost);
+            TransferHelper.safeTransferFrom(tokenSet.tokenAddr, from, charger.receiveIncomeAddr, tokenCost);
         }
     }
     

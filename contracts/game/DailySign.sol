@@ -49,7 +49,8 @@ contract DailySign is
     function sign() external {
         require(_lastSignTime[_msgSender()] + TimeSlice <= block.timestamp, "DailySign: Cool Down");
 
-        TransferHelper.safeTransferFrom(TokenAddr, address(this), _msgSender(), TokenValuePerSign);
+        // TransferHelper.safeTransferFrom(TokenAddr, address(this), _msgSender(), TokenValuePerSign);
+        TransferHelper.safeTransfer(TokenAddr, _msgSender(), TokenValuePerSign);
 
         _lastSignTime[_msgSender()] = uint32(block.timestamp);
     }

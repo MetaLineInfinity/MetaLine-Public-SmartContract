@@ -1,6 +1,7 @@
 import { eth_addr } from "./init_config";
 
 export const DirectMysteryBox_config = {
+    // setOnSaleDirectMB(uint32 directMBID, tuple(address randsource, uint32 mysteryType, address tokenAddr, uint256 tokenId, uint256 price, uint64 beginTime, uint64 endTime, uint64 renewTime, uint256 renewCount) saleConfig, tuple(uint64 nextRenewTime, uint256 countLeft) saleData)
     setOnSaleDirectMB: [
         [
             "1",

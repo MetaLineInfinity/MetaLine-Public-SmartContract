@@ -127,6 +127,16 @@ const config: HardhatUserConfig = {
       saveDeployments: true,
       tags: ["staging"],
     },
+    zkSyncMainnet: {
+      url: "https://mainnet.era.zksync.io",
+      ethNetwork: "goerli", // RPC URL of the network (e.g. `https://goerli.infura.io/v3/<API_KEY>`)
+      zksync: true,
+      accounts: onlykeys,
+      chainId: 324,
+      live: true,
+      saveDeployments: true,
+      tags: ["staging"],
+    },
   },
   etherscan: {
     // Your API key for Etherscan

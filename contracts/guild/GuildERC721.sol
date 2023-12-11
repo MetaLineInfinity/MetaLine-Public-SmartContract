@@ -42,11 +42,11 @@ contract GuildERC721 is
      *
      * - The caller must own `tokenId` or be an approved operator.
      */
-    function burn(uint256 tokenId) public virtual {
-        //solhint-disable-next-line max-line-length
-        require(_isApprovedOrOwner(msg.sender, tokenId), "ERC721Burnable: caller is not owner nor approved");
-        _burn(tokenId);
-    }
+    // function burn(uint256 tokenId) public virtual {
+    //     //solhint-disable-next-line max-line-length
+    //     require(_isApprovedOrOwner(msg.sender, tokenId), "ERC721Burnable: caller is not owner nor approved");
+    //     _burn(tokenId);
+    // }
 
     // Token name
     string private _name;

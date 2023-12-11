@@ -44,12 +44,23 @@ contract Guild is
     // erc2981 royalty fee, /10000
     uint256 public _royalties;
     string internal _baseTokenURI;
+
+    uint32 public membersCount; // guild total members count
+    mapping(uint256 => uint32) private _inviteCount; // token id => invite member count
     
     mapping(uint256 => MemberNFTData) private _memberNFTData; // token id => nft data stucture
     mapping(string => bytes) private _guildDatas; // data name => data
 
     // proxy implementation do not use constructor, use initialize instead
     constructor() payable {}
+
+    function _bytesToUint(bytes memory b) internal pure returns (uint256){
+        uint256 number;
+        for(uint i=0;i<b.length;i++){
+            number = number + uint(uint8(b[i]))*(2**(8*(b.length-(i+1))));
+        }
+        return number;
+    }
     
     function isOwner(address addr) public view returns(bool) {
         return ownerOf(ownerTokenID) == addr;
@@ -57,7 +68,6 @@ contract Guild is
 
     function setGuildConfig(address confAddr) external {
         require(msg.sender == guildFactory, 'GuildFactory: FORBIDDEN');
-
         guildConfigAddr = confAddr;
     }
     
@@ -96,6 +106,11 @@ contract Guild is
         // increase token id
         _tokenIdTracker.increment();
 
+        membersCount++;
+        if (curID != invitorTokenID) {
+            _inviteCount[invitorTokenID]++;
+        }
+
         return curID;
     }
 
@@ -103,7 +118,28 @@ contract Guild is
         require(_exists(invitorTokenID), "Guild: Invitor not exist");
         require(balanceOf(to) == 0, "Guild: already minted");
 
+        GuildLvConfig memory lvConf = GuildConfig(guildConfigAddr).getLvConfig(uint8(_bytesToUint(_guildDatas["level"])));
+        require(membersCount < lvConf.maxMembers, "Guild: too many members");
+
         return _internalMint(to, invitorTokenID);
+    }
+
+    function burn(uint256 tokenId) public virtual {
+        require(_isApprovedOrOwner(msg.sender, tokenId), "ERC721Burnable: caller is not owner nor approved");
+        if (tokenId == ownerTokenID) { // owner
+            require(membersCount == 1, "Guild: has members");
+        }
+        else { // member
+            require(_inviteCount[tokenId] == 0, "Guild: has invite members");
+        }
+
+        _burn(tokenId);
+
+        membersCount--;
+        uint256 invitorTokenID = _memberNFTData[tokenId].invitorTokenId;
+        if (tokenId != invitorTokenID) {
+            _inviteCount[invitorTokenID]--;
+        }
     }
     
     function modMemberNFTData(uint256 tokenId, bytes memory writeabelData) external {
@@ -137,9 +173,9 @@ contract Guild is
         return _guildDatas[extendName];
     }
 
-    function PayByUSDValue(uint256 usdPrice, string memory tokenName) external {
+    function PayByUSDValue(uint256 usdPrice, string memory tokenName) external payable {
 
-        uint256 tokenValue = GuildFactory(guildFactory).charge(tokenName, usdPrice, msg.sender, address(this));
+        uint256 tokenValue = GuildFactory(guildFactory).charge(tokenName, usdPrice, msg.sender);
         // TO DO : send share to owner|invitor ?
 
         uint16 invitorShare = GuildConfig(guildConfigAddr).GuildInvitorShare();
@@ -170,7 +206,7 @@ contract Guild is
         address to,
         uint256 tokenId
     ) internal view override {
-        from;
+        if (from == address(0) || to == address(0)) return; // mint or burn
         require(tokenId != ownerTokenID, "Guild: use 'TransferGuild' to transfer owner token");
         require(balanceOf(to) == 0, "Guild: transfer to address balance > 0");
     }
@@ -211,20 +247,20 @@ contract Guild is
     }
 
     function transferToken(address erc20, uint256 value, address receiver) external {
-        require(msg.sender == guildFactory, "GuildFactory: FORBIDDEN");
+        require(msg.sender == guildFactory, "Guild: FORBIDDEN");
 
         uint256 amount = IERC20(erc20).balanceOf(address(this));
         if(amount > 0) {
-            require(value <= amount, "GuildFactory: insufficient token");
+            require(value <= amount, "Guild: insufficient token");
             TransferHelper.safeTransfer(erc20, receiver, value);
         }
     }
     function transferEth(uint256 value, address receiver) external {
-        require(msg.sender == guildFactory, "GuildFactory: FORBIDDEN");
-        require(value <= address(this).balance, "GuildFactory: insufficient value");
+        require(msg.sender == guildFactory, "Guild: FORBIDDEN");
+        require(value <= address(this).balance, "Guild: insufficient value");
 
         // send eth
         (bool sent, ) = receiver.call{value:value}("");
-        require(sent, "GuildFactory: transfer error");
+        require(sent, "Guild: transfer error");
     }
 }

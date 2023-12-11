@@ -6,9 +6,6 @@ import { ContractTool } from "../utils/util_contracttool";
 import { logtools } from "../utils/util_log";
 
 import { Expedition_config } from "./config_Expedition";
-
-import { NFTAttrSource_V2_config } from "./config_NFTAttrSource_V2";
-import { Shipyard_config_v3 } from "./config_Shipyard_v3";
 import { eth_addr } from "./init_config";
 
 
@@ -54,7 +51,6 @@ export class Init_Expedition {
         // VMTT
         // --addPoolAddr
         await ContractTool.CallState(VMTT, "addPoolAddr", ["addr:VeTokenPool"]);
-        await ContractTool.CallState(VMTT, "addPoolAddr", ["addr:VMTTMinePool"]);
 
         return true;
     }
@@ -65,19 +61,9 @@ export class Init_Expedition {
 
     static async ConfigAll(hre: HardhatRuntimeEnvironment): Promise<boolean> {
         
-        const NFTAttrSource_V2 = ContractInfo.getContract("NFTAttrSource_V2");
         const Expedition = ContractInfo.getContract("Expedition");
-        const Shipyard = ContractInfo.getContract("Shipyard");
 
         let define_configs: any = [];
-
-        // NFTAttrSource_V2
-        const NFTAttrSource_V2Config = {
-            contract: NFTAttrSource_V2,
-            name: "NFTAttrSource_V2",
-            configs: NFTAttrSource_V2_config,
-        };
-        define_configs.push(NFTAttrSource_V2Config);
 
         // Expedition
         const ExpeditionConfig = {
@@ -86,15 +72,6 @@ export class Init_Expedition {
             configs: Expedition_config,
         };
         define_configs.push(ExpeditionConfig);
-
-        // Shipyard - battle ship
-        const ShipyardConfig = {
-            contract: Shipyard,
-            name: "Shipyard",
-            configs: Shipyard_config_v3,
-        };
-        define_configs.push(ShipyardConfig);
-
 
         // set config
         for (let i = 0; i < define_configs.length; i++) {
