@@ -10,9 +10,9 @@ export const MysteryBoxShopV2_config = {
     setOnSaleMysteryBox: [
 
         ["sale1", ["addr:MysteryBox1155", getMysterybox1155Id(1, 10001), zeroaddr, 0, "180000000000000", "0", 0, 3600, 99999, 0, zeroaddr, 0, 0], [0, 99999]],
-        ["sale2", ["addr:MysteryBox1155", getMysterybox1155Id(1, 10002), zeroaddr, 0, "180000000000000", "0", 0, 3600, 99999, 0, zeroaddr, 0, 0], [0, 99999]],
+        ["sale2", ["addr:MysteryBox1155", getMysterybox1155Id(1, 10002), zeroaddr, 0, "180000000000000", "0", 0, 3600, 99999, 0, "0xd07180c423f9b8cf84012aa28cc174f3c433ee29", 0, 0], [0, 99999]],
 
         ["sale3", ["addr:MysteryBox1155", getMysterybox1155Id(2, 10001), zeroaddr, 0, "180000000000000", "0", 0, 3600, 99999, 0, zeroaddr, 0, 0], [0, 99999]],
-        ["sale4", ["addr:MysteryBox1155", getMysterybox1155Id(2, 10002), zeroaddr, 0, "180000000000000", "0", 0, 3600, 99999, 0, zeroaddr, 0, 0], [0, 99999]],
+        ["sale4", ["addr:MysteryBox1155", getMysterybox1155Id(2, 10002), zeroaddr, 0, "180000000000000", "0", 0, 3600, 99999, 0, "0xd07180c423f9b8cf84012aa28cc174f3c433ee29", 0, 0], [0, 99999]],
     ],
 };

@@ -56,7 +56,7 @@
             "network":"zkSyncMainnet",
             "addresses":{
                 "oracle_rand_fee_addr":"0xE7EFAcb6F9A8C85bea83455eD6AA8822e34F8e2B",
-                "receive_mb_income_addr":"",
+                "receive_mb_income_addr":"0x00072931DcBf9953e8170704757673d7A010284D",
                 "operater_address":"0xE7EFAcb6F9A8C85bea83455eD6AA8822e34F8e2B"
             },
             "contracts":{
@@ -108,8 +108,8 @@
                 {"name":"HeroNFTCodec_V1","deployer":"deployer","args":[]},
                 {"name":"NFTAttrSource_V2","deployer":"deployer","args":[]},
                 {"name":"HeroNFTMysteryBox","deployer":"deployer","args":[]},
-                {"name":"VMTT","deployer":"deployer","args":["20000000000000000000000000"]},
-                {"name":"VMTTMinePool","deployer":"deployer","args":["addr:VMTT", "1900000000000000000", "1000000000000000000000000"]},
+                {"name":"VMTT","deployer":"deployer","args":["10000000000000000000000000"]},
+                {"name":"VMTTMinePool","deployer":"deployer","args":["addr:VMTT", "79000000000000000", "1000000000000000000000000"]},
                 {"name":"HeroNFTMysteryBoxRandSource","deployer":"deployer","args":["addr:HeroNFT", "addr:VMTTMinePool"],"libraries":{"RandomPoolLib":"addr:RandomPoolLib"}},
                 {"name":"HeroPetNFTMysteryBoxRandSource","deployer":"deployer","args":["addr:HeroNFT", "addr:VMTTMinePool"],"libraries":{"RandomPoolLib":"addr:RandomPoolLib"}},
                 {"name":"DailySign","deployer":"deployer","args":["addr:VMTT", "500000000000000000", "86400"]}

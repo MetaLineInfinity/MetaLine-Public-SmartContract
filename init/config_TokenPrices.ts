@@ -2,9 +2,9 @@ import { eth_addr } from "./init_config";
 
 export const TokenPrices_config = {
     setChainLinkTokenPriceSource: [
-        [eth_addr, ""], // mainnet
+        // [eth_addr, ""], // mainnet
     ],
     setDefiPoolSource: [
-        // [eth_addr, [1, 1, "0x87425d8812f44726091831a9a109f4bdc3ea34b4"]] // for testnet , need modify TokenPrices contract
+        [eth_addr, [1, 0, "0xcD52cbc975fbB802F82A1F92112b1250b5a997Df"]] // for zksync, need modify TokenPrices contract
     ],
 };
