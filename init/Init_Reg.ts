@@ -7,6 +7,7 @@ import { Init_Platform } from "./init_platform";
 import { Init_Shards } from "./init_shards";
 import { Init_Expedition } from "./init_expedition";
 import { Init_Guild } from "./init_guild";
+import { Init_TokenPriceV1 } from "./init_tokenpricev1";
 
 export function RegAll() {
     InitTool.RegForGroup("mysteryboxShop", Init_MysteryBoxShop.InitAll, undefined, Init_MysteryBoxShop.ConfigAll, [
@@ -21,4 +22,6 @@ export function RegAll() {
     InitTool.RegForGroup("expedition", Init_Expedition.InitAll, undefined, Init_Expedition.ConfigAll, ["test_unusual/test_expedition.ts"]);
 
     InitTool.RegForGroup("guild", Init_Guild.InitAll, undefined, Init_Guild.ConfigAll, ["test_unusual/test_guild.ts"]);
+
+    InitTool.RegForGroup("tokenpricev1", Init_TokenPriceV1.InitAll, undefined, Init_TokenPriceV1.ConfigAll, [""]);
 }

@@ -52,7 +52,7 @@ export class Init_Game1 {
             await ContractTool.CallState(WarrantIssuer_V3, "setReceiveIncomeAddr", ["addr:receive_mb_income_addr"]);
             logtools.loggreen(`WarrantIssuer set income receiver to addr:${receive_mb_income_addr}`);
             // --TPO
-            await ContractTool.CallState(WarrantIssuer_V3, "setTPOracleAddr", ["addr:TokenPrices"]);
+            await ContractTool.CallState(WarrantIssuer_V3, "setTPOracleAddr", ["addr:TokenPrices_V1"]);
             // --init
             await ContractTool.CallState(WarrantIssuer_V3, "init", ["addr:WarrantNFT"]);
             // --grantRole
@@ -86,7 +86,7 @@ export class Init_Game1 {
             await ContractTool.CallState(Shipyard, "setReceiveIncomeAddr", ["addr:receive_mb_income_addr"]);
             logtools.loggreen(`Shipyard set income receiver to addr:${receive_mb_income_addr}`);
             // --TPO
-            await ContractTool.CallState(Shipyard, "setTPOracleAddr", ["addr:TokenPrices"]);
+            await ContractTool.CallState(Shipyard, "setTPOracleAddr", ["addr:TokenPrices_V1"]);
             // --init
             await ContractTool.CallState(Shipyard, "init", ["addr:WarrantNFT", "addr:ShipNFT"]);
             // --grantRole
@@ -143,7 +143,7 @@ export class Init_Game1 {
             await ContractTool.CallState(HeroPetTrain, "setReceiveIncomeAddr", ["addr:receive_mb_income_addr"]);
             logtools.loggreen(`HeroPetTrain set income receiver to addr:${receive_mb_income_addr}`);
             // --TPO
-            await ContractTool.CallState(HeroPetTrain, "setTPOracleAddr", ["addr:TokenPrices"]);
+            await ContractTool.CallState(HeroPetTrain, "setTPOracleAddr", ["addr:TokenPrices_V1"]);
             // --init
             await ContractTool.CallState(HeroPetTrain, "init", ["addr:WarrantNFT", "addr:HeroNFT", "addr:MTTGold"]);
             // --grantRole
@@ -154,7 +154,7 @@ export class Init_Game1 {
     }
 
     static async ConfigAll(hre: HardhatRuntimeEnvironment): Promise<boolean> {
-        const TokenPrices = ContractInfo.getContract("TokenPrices");
+        const TokenPrices_V1 = ContractInfo.getContract("TokenPrices_V1");
         const WarrantIssuer_V3 = ContractInfo.getContract("WarrantIssuer_V3");
         const GameService = ContractInfo.getContract("GameService");
         const Shipyard = ContractInfo.getContract("Shipyard");
@@ -167,8 +167,8 @@ export class Init_Game1 {
 
         // TokenPrices
         const TokenPricesConfig = {
-            contract: TokenPrices,
-            name: "TokenPrices",
+            contract: TokenPrices_V1,
+            name: "TokenPrices_V1",
             configs: TokenPrices_config,
         };
         define_configs.push(TokenPricesConfig);

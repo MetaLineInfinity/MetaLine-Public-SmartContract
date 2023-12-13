@@ -178,6 +178,13 @@
                 {"name":"GuildFactory","deployer":"deployer","args":["addr:Guild"]},
                 {"name":"GuildProxy","deployer":"deployer","args":["addr:Guild"]}
             ]
+        },
+        {
+            "group":"tokenpricev1",
+            "gen":9,
+            "contracts":[
+                {"name":"TokenPrices_V1","deployer":"deployer","args":[]}
+            ]
         }
     ]
 }

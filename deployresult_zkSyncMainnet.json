@@ -1316,6 +1316,33 @@
     "function supportsInterface(bytes4 interfaceId) view returns (bool)",
     "function unsetRandomSet(uint32 mysteryTp)"
    ]
+  },
+  "TokenPrices_V1": {
+   "deployer": "0x9a9D8832534A9DC2efCf99B5f14C8C66F6317027",
+   "addr": "0x56Df3A94f91be649805AC4Ca273Af4cad4c40E30",
+   "abi": [
+    "constructor()",
+    "event RoleAdminChanged(bytes32 indexed role, bytes32 indexed previousAdminRole, bytes32 indexed newAdminRole)",
+    "event RoleGranted(bytes32 indexed role, address indexed account, address indexed sender)",
+    "event RoleRevoked(bytes32 indexed role, address indexed account, address indexed sender)",
+    "function DEFAULT_ADMIN_ROLE() view returns (bytes32)",
+    "function DefiPoolType_UniswapV2() view returns (uint8)",
+    "function DefiPoolType_UniswapV3() view returns (uint8)",
+    "function MANAGER_ROLE() view returns (bytes32)",
+    "function _chainLinkFeeds(address) view returns (address)",
+    "function _defiPools(address) view returns (uint8 poolType, uint8 tokenIndex, address poolAddr)",
+    "function _univ3_getTokenPrice_0(address pairAddress, uint256 amount) view returns (uint256)",
+    "function _univ3_getTokenPrice_1(address pairAddress, uint256 amount) view returns (uint256)",
+    "function getERC20TokenUSDPrice(address tokenAddr) view returns (uint256)",
+    "function getRoleAdmin(bytes32 role) view returns (bytes32)",
+    "function grantRole(bytes32 role, address account)",
+    "function hasRole(bytes32 role, address account) view returns (bool)",
+    "function renounceRole(bytes32 role, address account)",
+    "function revokeRole(bytes32 role, address account)",
+    "function setChainLinkTokenPriceSource(address tokenAddr, address feedAddr)",
+    "function setDefiPoolSource(address tokenAddr, tuple(uint8 poolType, uint8 tokenIndex, address poolAddr) defiPoolSource)",
+    "function supportsInterface(bytes4 interfaceId) view returns (bool)"
+   ]
   }
  }
 }

@@ -25,7 +25,7 @@ export class Init_Platform {
 
         // Billing
         // --TPO
-        await ContractTool.CallState(Billing, "setTPOracleAddr", ["addr:TokenPrices"]);
+        await ContractTool.CallState(Billing, "setTPOracleAddr", ["addr:TokenPrices_V1"]);
 
         // PlatOnOffChainBridge
         await ContractTool.CallState(PlatOnOffChainBridge, "init", ["addr:UniversalNFT", "addr:MysteryBox1155"]);
@@ -34,7 +34,7 @@ export class Init_Platform {
 
         // ESportPool_V2
         // --TPO
-        await ContractTool.CallState(ESportPool_V2, "setTPOracleAddr", ["addr:TokenPrices"]);
+        await ContractTool.CallState(ESportPool_V2, "setTPOracleAddr", ["addr:TokenPrices_V1"]);
 
         return true;
     }
@@ -45,14 +45,14 @@ export class Init_Platform {
         const Billing = ContractInfo.getContract("Billing");
         const PlatOnOffChainBridge = ContractInfo.getContract("PlatOnOffChainBridge");
         const ESportPool_V2 = ContractInfo.getContract("ESportPool_V2");
-        const TokenPrices = ContractInfo.getContract("TokenPrices");
+        const TokenPrices_V1 = ContractInfo.getContract("TokenPrices_V1");
 
         let define_configs: any = [];
 
         // TokenPrices -- MTTGold
         const TokenPricesConfig = {
-            contract: TokenPrices,
-            name: "TokenPrices",
+            contract: TokenPrices_V1,
+            name: "TokenPrices_V1",
             configs: TokenPrices_config_v2,
         };
         define_configs.push(TokenPricesConfig);

@@ -19,7 +19,7 @@ export class Init_Guild {
         // GuildFactory
         await ContractTool.CallState(GuildFactory, "setOp", ["addr:operater_address"]);
         await ContractTool.CallState(GuildFactory, "setGuildConfig", ["addr:GuildConfig"]);
-        await ContractTool.CallState(GuildFactory, "setTPOracleAddr", ["addr:TokenPrices"]);
+        await ContractTool.CallState(GuildFactory, "setTPOracleAddr", ["addr:TokenPrices_V1"]);
         await ContractTool.CallState(GuildFactory, "setReceiveIncomeAddr", ["addr:receive_mb_income_addr"]);
 
         // GuildConfig

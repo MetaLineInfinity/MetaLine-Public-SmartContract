@@ -30,7 +30,7 @@ export class Init_Market {
         await ContractTool.CallState(HeroPetTrain, "setReceiveIncomeAddr", ["addr:receive_mb_income_addr"]);
         logtools.loggreen(`HeroPetTrain set income receiver to addr:${receive_mb_income_addr}`);
         // --TPO
-        await ContractTool.CallState(HeroPetTrain, "setTPOracleAddr", ["addr:TokenPrices"]);
+        await ContractTool.CallState(HeroPetTrain, "setTPOracleAddr", ["addr:TokenPrices_V1"]);
         // --init
         await ContractTool.CallState(HeroPetTrain, "init", ["addr:WarrantNFT", "addr:HeroNFT", "addr:MTTGold"]);
         // --grantRole
