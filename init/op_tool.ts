@@ -6,6 +6,7 @@ import { logtools } from "../utils/util_log";
 import { addChargeToken_ESportPool_Billing, eth_addr } from "./init_config";
 
 import * as InitConfig from "./init_config";
+import { HeroNFTMysteryBoxRandSource_config } from "./config_HeroNFTMysteryBoxRandSource";
 
 export class OP_Tools
 {
@@ -114,6 +115,39 @@ export class OP_Tools
             "setPackageTotalCount", 
             [5, 200]
             );
+        return true;
+    }
+
+    static async HeroNFTMBSConfig(hre: HardhatRuntimeEnvironment): Promise<boolean> {
+        
+        const HeroNFTMysteryBoxRandSource = ContractInfo.getContract("HeroNFTMysteryBoxRandSource");
+        const HeroPetNFTMysteryBoxRandSource = ContractInfo.getContract("HeroPetNFTMysteryBoxRandSource");
+        const DailySign = ContractInfo.getContract("DailySign");
+
+        let define_configs: any = [];
+        
+        // HeroNFTMysteryBoxRandSource
+        const HeroNFTMysteryBoxRandSourceConfig = {
+            contract: HeroNFTMysteryBoxRandSource,
+            name: "HeroNFTMysteryBoxRandSource",
+            configs: HeroNFTMysteryBoxRandSource_config,
+        };
+        define_configs.push(HeroNFTMysteryBoxRandSourceConfig);
+
+        
+        // set config
+        for (let i = 0; i < define_configs.length; i++) {
+            const contract = define_configs[i].contract;
+            const name = define_configs[i].name;
+            for (var func in define_configs[i].configs) {
+                const configs = define_configs[i].configs[func];
+                for (let j = 0; j < configs.length; j++) {
+                    await ContractTool.CallState(contract, func, configs[j]);
+                    logtools.logblue("SET Contract:" + name + ", func:" + func + ", args:" + configs[j].toString());
+                }
+            }
+        }
+
         return true;
     }
 }     
