@@ -4,8 +4,6 @@
 import "@nomiclabs/hardhat-waffle";
 import "@nomiclabs/hardhat-ethers";
 import "@nomiclabs/hardhat-etherscan";
-import "@matterlabs/hardhat-zksync-deploy";
-import "@matterlabs/hardhat-zksync-solc";
 import "hardhat-abi-exporter";
 import "hardhat-deploy";
 import "hardhat-contract-sizer";
@@ -48,15 +46,6 @@ const config: HardhatUserConfig = {
       }
     }
   },
-  zksolc: {
-    version: "latest", // Uses latest available in https://github.com/matter-labs/zksolc-bin/
-    settings: {
-      optimizer :{
-        enabled: true,
-        mode: "s"
-      }
-    },
-  },
   contractSizer:
   {
       alphaSort:true,
@@ -65,7 +54,7 @@ const config: HardhatUserConfig = {
   },
   namedAccounts: namedkeys,//from json
   paths: {
-    artifacts: "artifacts",
+    artifacts: "artifacts-eos",
     deploy: "deploy",
     sources: "contracts",
     tests: "test",
@@ -133,6 +122,22 @@ const config: HardhatUserConfig = {
       zksync: true,
       accounts: onlykeys,
       chainId: 324,
+      live: true,
+      saveDeployments: true,
+      tags: ["staging"],
+    },
+    eosMain: {
+      url: "https://api.evm.eosnetwork.com/",
+      accounts: onlykeys,
+      chainId: 17777,
+      live: true,
+      saveDeployments: true,
+      tags: ["staging"],
+    },
+    eosTest: {
+      url: "https://api.testnet.evm.eosnetwork.com/",
+      accounts: onlykeys,
+      chainId: 15557,
       live: true,
       saveDeployments: true,
       tags: ["staging"],

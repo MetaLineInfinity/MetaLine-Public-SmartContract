@@ -63,6 +63,16 @@
             }
         },
         {
+            "network":"eosTest",
+            "addresses":{
+                "oracle_rand_fee_addr":"0x9812752121fb9eBEc49A4B8153240866156E87C5",
+                "receive_mb_income_addr":"0x9812752121fb9eBEc49A4B8153240866156E87C5",
+                "operater_address":"0x9812752121fb9eBEc49A4B8153240866156E87C5"
+            },
+            "contracts":{
+            }
+        },
+        {
             "network":"localhost",
             "addresses":{
                 "oracle_rand_fee_addr":"0x9812752121fb9eBEc49A4B8153240866156E87C5",
@@ -94,7 +104,7 @@
             "group":"mysteryboxShop",
             "gen":1,
             "contracts":[
-                {"name":"MysteryBox1155","deployer":"deployer","args":["https://metadata.metaline.games/a/zk/{id}"]},
+                {"name":"MysteryBox1155","deployer":"deployer","args":["https://metadata.metaline.games/a/eos/{id}"]},
                 {"name":"MysteryBoxShopV2","deployer":"deployer","args":[]}
             ]
         },
@@ -104,7 +114,7 @@
             "contracts":[
                 {"name":"RandomPoolLib","deployer":"deployer","args":[]},
                 {"name":"Random","deployer":"deployer","args":[]},
-                {"name":"HeroNFT","deployer":"deployer","args":[1000000000, "MetaLine Hero&Pet NFT","HERO", "https://metadata.metaline.games/b/zk/"]},
+                {"name":"HeroNFT","deployer":"deployer","args":[1000000000, "MetaLine Hero&Pet NFT","HERO", "https://metadata.metaline.games/b/eos/"]},
                 {"name":"HeroNFTCodec_V1","deployer":"deployer","args":[]},
                 {"name":"NFTAttrSource_V2","deployer":"deployer","args":[]},
                 {"name":"HeroNFTMysteryBox","deployer":"deployer","args":[]},
@@ -119,8 +129,8 @@
             "group":"game1",
             "gen":3,
             "contracts":[
-                {"name":"ShipNFT","deployer":"deployer","args":[1000000000, "MetaLine Ship NFT","SHIP", "https://metadata.metaline.games/c/zk/"]},
-                {"name":"WarrantNFT","deployer":"deployer","args":[1000000000, "MetaLine Warrant NFT","WRNT", "https://metadata.metaline.games/d/zk/"]},
+                {"name":"ShipNFT","deployer":"deployer","args":[1000000000, "MetaLine Ship NFT","SHIP", "https://metadata.metaline.games/c/eos/"]},
+                {"name":"WarrantNFT","deployer":"deployer","args":[1000000000, "MetaLine Warrant NFT","WRNT", "https://metadata.metaline.games/d/eos/"]},
                 {"name":"DirectMysteryBox","deployer":"deployer","args":[]},
                 {"name":"GameService","deployer":"deployer","args":[]},
                 {"name":"OffOnChainBridge","deployer":"deployer","args":[]},
@@ -146,7 +156,7 @@
             "gen":5,
             "contracts":[
                 {"name":"Billing","deployer":"deployer","args":[]},
-                {"name":"UniversalNFT","deployer":"deployer","args":[1000000000, "MetaLine Universal NFT","MTUN", "https://metadata.metaline.games/e/zk/"]},
+                {"name":"UniversalNFT","deployer":"deployer","args":[1000000000, "MetaLine Universal NFT","MTUN", "https://metadata.metaline.games/e/eos/"]},
                 {"name":"PlatOnOffChainBridge","deployer":"deployer","args":[]},
                 {"name":"ESportPool_V2","deployer":"deployer","args":[]}
             ]
