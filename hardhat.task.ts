@@ -234,8 +234,9 @@ export module extTask {
             .setAction(async ({  }, _hre) => {
                 await ContractTool.LoadDeployInfo(_hre);
                 await ContractInfo.LoadFromFile(_hre);
-
-                await OP_Tools.HeroNFTMBSConfig(_hre);
+                
+                await OP_Tools.NFTAttrSourceConfig(_hre);
+                //await OP_Tools.HeroNFTMBSConfig(_hre);
                 //await OP_Tools.ESportPoolV2_Expedition_20230725(_hre);
                 //await OP_Tools.PlatOnOffChainBridgeServiceRole(_hre);
                 //await OP_Tools.UniversalNFTDataRole_VeTokenPool(_hre);

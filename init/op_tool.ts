@@ -7,6 +7,7 @@ import { addChargeToken_ESportPool_Billing, eth_addr } from "./init_config";
 
 import * as InitConfig from "./init_config";
 import { HeroNFTMysteryBoxRandSource_config } from "./config_HeroNFTMysteryBoxRandSource";
+import { NFTAttrSource_V2_config } from "./config_NFTAttrSource_V2";
 
 export class OP_Tools
 {
@@ -134,6 +135,36 @@ export class OP_Tools
         };
         define_configs.push(HeroNFTMysteryBoxRandSourceConfig);
 
+        
+        // set config
+        for (let i = 0; i < define_configs.length; i++) {
+            const contract = define_configs[i].contract;
+            const name = define_configs[i].name;
+            for (var func in define_configs[i].configs) {
+                const configs = define_configs[i].configs[func];
+                for (let j = 0; j < configs.length; j++) {
+                    await ContractTool.CallState(contract, func, configs[j]);
+                    logtools.logblue("SET Contract:" + name + ", func:" + func + ", args:" + configs[j].toString());
+                }
+            }
+        }
+
+        return true;
+    }
+
+    static async NFTAttrSourceConfig(hre: HardhatRuntimeEnvironment): Promise<boolean> {
+        
+        const NFTAttrSource_V2 = ContractInfo.getContract("NFTAttrSource_V2");
+
+        let define_configs: any = [];
+        
+        // NFTAttrSource_V2
+        const NFTAttrSource_V2Config = {
+            contract: NFTAttrSource_V2,
+            name: "NFTAttrSource_V2",
+            configs: NFTAttrSource_V2_config,
+        };
+        define_configs.push(NFTAttrSource_V2Config);
         
         // set config
         for (let i = 0; i < define_configs.length; i++) {
