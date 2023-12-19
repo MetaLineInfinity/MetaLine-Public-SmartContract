@@ -1,5 +1,6 @@
 abi/
 artifacts/
+artifacts-eos/
 artifacts-zk/
 cache/
 cache-zk/
