@@ -235,7 +235,9 @@ export module extTask {
                 await ContractTool.LoadDeployInfo(_hre);
                 await ContractInfo.LoadFromFile(_hre);
                 
-                await OP_Tools.NFTAttrSourceConfig(_hre);
+                //await OP_Tools.MysteryBoxShopV2Config(_hre);
+                //await OP_Tools.MysteryBoxShopV2White1(_hre);
+                //await OP_Tools.NFTAttrSourceConfig(_hre);
                 //await OP_Tools.HeroNFTMBSConfig(_hre);
                 //await OP_Tools.ESportPoolV2_Expedition_20230725(_hre);
                 //await OP_Tools.PlatOnOffChainBridgeServiceRole(_hre);
