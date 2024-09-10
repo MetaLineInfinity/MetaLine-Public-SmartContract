@@ -197,6 +197,13 @@
             "contracts":[
                 {"name":"ESportPool_V2","deployer":"deployer","args":[]}
             ]
+        },
+        {
+            "group":"guildpackticket",
+            "gen":15,
+            "contracts":[
+                {"name":"GuildPackTicket1155","deployer":"deployer","args":["https://metadata.metaline.games/f/{id}"]}
+            ]
         }
     ]
 }
