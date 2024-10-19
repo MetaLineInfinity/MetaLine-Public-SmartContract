@@ -50,6 +50,9 @@ npx hardhat --network localhost xgenconfigonly 13
 npx hardhat --network localhost xdeploy group espool_v2
 npx hardhat --network localhost xgeninitonly 14
 npx hardhat --network localhost xgenconfigonly 14
+npx hardhat --network localhost xdeploy group guildpackticket
+npx hardhat --network localhost xgeninitonly 15
+npx hardhat --network localhost xgenconfigonly 15
 ```
 
 # 🛠️ Test

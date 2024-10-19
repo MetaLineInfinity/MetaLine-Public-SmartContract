@@ -44,9 +44,9 @@ export class Init_GuildPackTicket
 
             zeroaddr,  // charge token id, 0:eth
             0,  // 1155 token id
-            '33000000000000000', // price
+            '151300000000000000', // price
 
-            '1679918400', 0, 0, 0, // beginTime, endTime, renewTime, renewCount
+            '1729602000', '1729688400', 0, 0, // beginTime, endTime, renewTime, renewCount
 
             3,  // whiteListId
             zeroaddr, // nft holder check
@@ -55,7 +55,7 @@ export class Init_GuildPackTicket
         ];
         let saledata=[
             0, // nextRenewTime
-            120 // countLeft
+            500 // countLeft
         ];
         await ContractTool.CallState(MysteryBoxShopV2,"setOnSaleMysteryBox",["saleGPT",saleconfig,saledata]);
 

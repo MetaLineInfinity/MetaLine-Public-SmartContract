@@ -94,9 +94,9 @@ const config: HardhatUserConfig = {
       tags: ["staging"],
     },
     arbitrumTest: {
-      url: "https://goerli-rollup.arbitrum.io/rpc",
+      url: "https://sepolia-rollup.arbitrum.io/rpc",
       accounts: onlykeys,
-      chainId: 421613,
+      chainId: 421614,
       live: true,
       saveDeployments: true,
       tags: ["staging"],

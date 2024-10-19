@@ -116,4 +116,25 @@ export class OP_Tools
             );
         return true;
     }
+
+    static async guildSecond(hre: HardhatRuntimeEnvironment): Promise<boolean>
+    {
+        let MysteryBoxShopV2 = ContractInfo.getContract("MysteryBoxShopV2");
+
+        let zeroaddr = "0x0000000000000000000000000000000000000000";
+
+        // setOnSaleMBCheckCondition(string pairName, uint256 price, uint32 whitelistId, address nftholderCheck, uint32 perAddrLimit, uint32 discountId)
+        await ContractTool.CallState(MysteryBoxShopV2,"setOnSaleMBCheckCondition",
+        [
+            "saleGPT",
+            "168400000000000000", // price
+            0,                  // whitelistId
+            zeroaddr,
+            0,
+            0
+        ]);
+
+        return true;
+    }
+    
 }     
